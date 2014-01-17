@@ -11,6 +11,17 @@ Kodegenet.Store = DS.Store.extend({
 });
 
 
+Kodegenet.CourseChapterController = Ember.ObjectController.extend({
+    actions: {
+        visAlleOppgaverAction: function() {
+            this.set('visAlleOppgaver', true);
+        },
+
+        skjulAlleOppgaverAction: function() {
+            this.set('visAlleOppgaver', false);
+        }
+    }
+});
 Kodegenet.CourseChapterRoute = Ember.Route.extend({
     model: function(chapter) {
         return this.store.find('chapter', chapter.chapter_id);
