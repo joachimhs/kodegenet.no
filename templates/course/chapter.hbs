@@ -1,3 +1,7 @@
 <div class="well chapter">
     {{markdown content.content}}
+
+    {{#each oppgave in oppgaver}}
+        {{markdown oppgave.content}}
+    {{/each}}
 </div>
