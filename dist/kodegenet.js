@@ -4,12 +4,23 @@ DS.RESTAdapter.reopen({
     namespace: 'json'
 });
 
+Ember.Inflector.inflector.irregular('oppgave', 'oppgaver');
+
 Kodegenet.Store = DS.Store.extend({
     adapter:  "DS.RESTAdapter"
 });
+
+
 Kodegenet.CourseChapterRoute = Ember.Route.extend({
     model: function(chapter) {
-        return this.store.find('chapter', chapter.chapter_id)
+        return this.store.find('chapter', chapter.chapter_id);
+    },
+
+    setupController: function(controller, model) {
+        this._super(controller, model);
+        ga('send', 'pageview', '/chapter' + model.get('id'));
+
+        document.title = 'Kodegenet Kapittel - ' + model.get("tittel");
     }
 });
 Kodegenet.CourseController = Ember.ObjectController.extend({
@@ -23,6 +34,25 @@ Kodegenet.CourseIndexRoute = Ember.Route.extend({
 Kodegenet.CoursesCourseRoute = Ember.Route.extend({
     model: function(course) {
         return this.store.find('course', course.course_id);
+    },
+
+    setupController: function(controller, model) {
+        this._super(controller, model);
+        ga('send', 'pageview', '/courses' + model.get('id'));
+
+        document.title = 'Kodegenet Kurs - ' + model.get('title');
+    }
+});
+Kodegenet.OppgaveRoute = Ember.Route.extend({
+    model: function(oppgave) {
+        return this.store.find('oppgave', oppgave.oppgave_id);
+    },
+
+    setupController: function(controller, model) {
+        this._super(controller, model);
+        ga('send', 'pageview', '/oppgave' + model.get('id'));
+
+        document.title = 'Kodegenet Oppgave - ' + model.get("tittel");
     }
 });
 Kodegenet.CoursesIndexRoute = Ember.Route.extend({
@@ -44,6 +74,13 @@ Kodegenet.CoursesRoute = Ember.Route.extend({
         return courses;*/
 
         return this.store.find('course');
+    },
+
+    setupController: function(controller, model) {
+        this._super(controller, model);
+        ga('send', 'pageview', '/courses');
+
+        document.title = 'Kodegenet Kursoversikt';
     }
 });
 Kodegenet.HeaderController = Ember.Controller.extend({
@@ -75,7 +112,7 @@ Kodegenet.HeaderController = Ember.Controller.extend({
 });
 Ember.Handlebars.registerBoundHelper('markdown', function(property) {
     var converter = new Showdown.converter();
-    if (property != null) {
+    if (property !== null) {
         return new Handlebars.SafeString(converter.makeHtml(property));
     }
 });
@@ -93,11 +130,17 @@ Kodegenet.IndexController = Ember.ArrayController.extend({
     }.observes('content.length')
 });
 Kodegenet.IndexRoute = Ember.Route.extend({
+    setupController: function(controller, model) {
+        this._super(controller, model);
+        ga('send', 'pageview', '/');
 
+        document.title = 'Kodegenet Hjem';
+    }
 });
 Kodegenet.Chapter = DS.Model.extend({
     tittel: DS.attr('string'),
-    content: DS.attr('string')
+    content: DS.attr('string'),
+    oppgaver: DS.hasMany('oppgave', {async: true})
 });
 Kodegenet.Course = DS.Model.extend({
     chapters: DS.hasMany('chapter', {async: true}),
@@ -106,11 +149,16 @@ Kodegenet.Course = DS.Model.extend({
     intro: DS.attr('string'),
     imageSrc: DS.attr('string')
 });
+Kodegenet.Oppgave = DS.Model.extend({
+    tittel: DS.attr('string'),
+    content: DS.attr('string')
+});
 Kodegenet.Router.map(function() {
     this.resource('index', {path: "/"}, function() { });
     this.resource('courses', {path: "/courses"}, function() {
         this.resource('course', {path: "/:course_id"}, function() {
             this.route('chapter', {path: "/chapter/:chapter_id"});
+            this.route('oppgave', {path: "/oppgave/:oppgave_id"});
         });
 
     });

@@ -11,8 +11,17 @@
             <div class="list-group">
                 {{#each chapter in chapters}}
                     {{#link-to "course.chapter" chapter class="list-group-item"}}
-                        {{chapter.tittel}} <span class="glyphicon glyphicon-chevron-right pull-right"></span>
+                        <span class="glyphicon glyphicon-book" style="margin-right: 5px;"></span>{{chapter.tittel}} <span class="glyphicon glyphicon-chevron-right pull-right"></span>
                     {{/link-to}}
+
+                    {{#each oppgave in chapter.oppgaver}}
+                        {{#link-to "course.oppgave" oppgave class="list-group-item"}}
+                            <span style="margin-left: 15px">
+                                <span class="glyphicon glyphicon-signal"></span> <div class="list-group-text">{{oppgave.tittel}}</div>
+                            </span>
+                            <span class="glyphicon glyphicon-chevron-right pull-right" style="margin-right: 10px;"></span>
+                        {{/link-to}}
+                    {{/each}}
                 {{/each}}
             </div>
         </div>

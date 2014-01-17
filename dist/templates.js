@@ -32,16 +32,40 @@ function program3(depth0,data) {
     'class': ("list-group-item")
   },hashTypes:{'class': "STRING"},hashContexts:{'class': depth0},inverse:self.noop,fn:self.program(4, program4, data),contexts:[depth0,depth0],types:["STRING","ID"],data:data},helper ? helper.call(depth0, "course.chapter", "chapter", options) : helperMissing.call(depth0, "link-to", "course.chapter", "chapter", options));
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("\n\n                    ");
+  stack1 = helpers.each.call(depth0, "oppgave", "in", "chapter.oppgaver", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(6, program6, data),contexts:[depth0,depth0,depth0],types:["ID","ID","ID"],data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push("\n                ");
   return buffer;
   }
 function program4(depth0,data) {
   
   var buffer = '', stack1;
-  data.buffer.push("\n                        ");
+  data.buffer.push("\n                        <span class=\"glyphicon glyphicon-book\" style=\"margin-right: 5px;\"></span>");
   stack1 = helpers._triageMustache.call(depth0, "chapter.tittel", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push(" <span class=\"glyphicon glyphicon-chevron-right pull-right\"></span>\n                    ");
+  return buffer;
+  }
+
+function program6(depth0,data) {
+  
+  var buffer = '', stack1, helper, options;
+  data.buffer.push("\n                        ");
+  stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{
+    'class': ("list-group-item")
+  },hashTypes:{'class': "STRING"},hashContexts:{'class': depth0},inverse:self.noop,fn:self.program(7, program7, data),contexts:[depth0,depth0],types:["STRING","ID"],data:data},helper ? helper.call(depth0, "course.oppgave", "oppgave", options) : helperMissing.call(depth0, "link-to", "course.oppgave", "oppgave", options));
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("\n                    ");
+  return buffer;
+  }
+function program7(depth0,data) {
+  
+  var buffer = '', stack1;
+  data.buffer.push("\n                            <span style=\"margin-left: 15px\">\n                                <span class=\"glyphicon glyphicon-signal\"></span> <div class=\"list-group-text\">");
+  stack1 = helpers._triageMustache.call(depth0, "oppgave.tittel", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("</div>\n                            </span>\n                            <span class=\"glyphicon glyphicon-chevron-right pull-right\" style=\"margin-right: 10px;\"></span>\n                        ");
   return buffer;
   }
 
@@ -84,6 +108,19 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   data.buffer.push("</h1>\n");
   stack1 = helpers._triageMustache.call(depth0, "intro", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  return buffer;
+  
+});
+
+Ember.TEMPLATES["course/oppgave"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
+  var buffer = '', helper, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
+
+
+  data.buffer.push("<div class=\"well chapter\">\n    ");
+  data.buffer.push(escapeExpression((helper = helpers.markdown || (depth0 && depth0.markdown),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data},helper ? helper.call(depth0, "content.content", options) : helperMissing.call(depth0, "markdown", "content.content", options))));
+  data.buffer.push("\n</div>");
   return buffer;
   
 });

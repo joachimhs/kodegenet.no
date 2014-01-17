@@ -139,6 +139,11 @@ h3 {
     width: 250px;
 }
 
+.list-group-text {
+    max-width: 150px;
+    display: inline-block;
+}
+
 .notat {
     min-height: 20px;
     padding: 19px;
