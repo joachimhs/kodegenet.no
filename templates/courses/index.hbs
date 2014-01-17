@@ -1,0 +1,32 @@
+<div class="pageContent">
+    {{#each course in controller}}
+        <div class="well" style="width: 100%">
+            <h1 class="text-center">{{course.title}}</h1>
+            <div class="row">
+                <div class="col-md-4">
+                    <img {{bind-attr src=course.imageSrc}} style="width: 90%;" />
+                </div>
+
+                <div class="col-md-8">
+                    <p>{{course.intro}}</p>
+                    <h1>Innhold</h1>
+
+                    <div style="margin-bottom: 10px;">
+                        {{#each chapter in course.chapters}}
+                            {{#link-to "course.chapter" course chapter class="btn btn-default btn-sm btn-wide" tagName="button"}}
+                                <span class="glyphicon glyphicon-list-alt pull-left"></span>
+                                {{chapter.tittel}}
+                            {{/link-to}}
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+
+            <div style="width: 100%; text-align: right;">
+                {{#link-to "course" course class="btn btn-primary btn-wide" style="min-width: 250px; width: 250px;" tagName="button"}}
+                    Les Mer <span class="glyphicon glyphicon-chevron-right pull-right"></span>
+                {{/link-to}}
+            </div>
+        </div>
+    {{/each}}
+</div>
