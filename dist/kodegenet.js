@@ -29,7 +29,7 @@ Kodegenet.ChapterIndexRoute = Ember.Route.extend({
     model: function() {
         return this.modelFor('chapter');
     }
-})
+});
 Kodegenet.ChapterRoute = Ember.Route.extend({
     model: function(chapter) {
         return this.store.find('chapter', chapter.chapter_id);
