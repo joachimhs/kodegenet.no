@@ -11,7 +11,10 @@ Kodegenet.Store = DS.Store.extend({
 });
 
 
-Kodegenet.CourseChapterController = Ember.ObjectController.extend({
+Kodegenet.ChapterController = Ember.ObjectController.extend({
+
+});
+Kodegenet.ChapterIndexController = Ember.ObjectController.extend({
     actions: {
         visAlleOppgaverAction: function() {
             this.set('visAlleOppgaver', true);
@@ -22,7 +25,12 @@ Kodegenet.CourseChapterController = Ember.ObjectController.extend({
         }
     }
 });
-Kodegenet.CourseChapterRoute = Ember.Route.extend({
+Kodegenet.ChapterIndexRoute = Ember.Route.extend({
+    model: function() {
+        return this.modelFor('chapter');
+    }
+})
+Kodegenet.ChapterRoute = Ember.Route.extend({
     model: function(chapter) {
         return this.store.find('chapter', chapter.chapter_id);
     },
@@ -168,10 +176,10 @@ Kodegenet.Router.map(function() {
     this.resource('index', {path: "/"}, function() { });
     this.resource('courses', {path: "/courses"}, function() {
         this.resource('course', {path: "/:course_id"}, function() {
-            this.route('chapter', {path: "/chapter/:chapter_id"});
-            this.route('oppgave', {path: "/oppgave/:oppgave_id"});
+            this.resource('chapter', {path: "/chapter/:chapter_id"}, function() {
+                this.route('oppgave', {path: "/oppgave/:oppgave_id"});
+            });
         });
-
     });
     this.route('om');
 });

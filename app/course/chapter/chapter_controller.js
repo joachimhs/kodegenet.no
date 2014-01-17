@@ -1,11 +1,3 @@
-Kodegenet.CourseChapterController = Ember.ObjectController.extend({
-    actions: {
-        visAlleOppgaverAction: function() {
-            this.set('visAlleOppgaver', true);
-        },
+Kodegenet.ChapterController = Ember.ObjectController.extend({
 
-        skjulAlleOppgaverAction: function() {
-            this.set('visAlleOppgaver', false);
-        }
-    }
 });
