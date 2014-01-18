@@ -146,7 +146,7 @@ function program6(depth0,data) {
   data.buffer.push("\n                        ");
   stack1 = (helper = helpers['link-to'] || (depth0 && depth0['link-to']),options={hash:{
     'class': ("list-group-item")
-  },hashTypes:{'class': "STRING"},hashContexts:{'class': depth0},inverse:self.noop,fn:self.program(7, program7, data),contexts:[depth0,depth0],types:["STRING","ID"],data:data},helper ? helper.call(depth0, "chapter.oppgave", "oppgave", options) : helperMissing.call(depth0, "link-to", "chapter.oppgave", "oppgave", options));
+  },hashTypes:{'class': "STRING"},hashContexts:{'class': depth0},inverse:self.noop,fn:self.program(7, program7, data),contexts:[depth0,depth0,depth0],types:["STRING","ID","ID"],data:data},helper ? helper.call(depth0, "chapter.oppgave", "chapter", "oppgave", options) : helperMissing.call(depth0, "link-to", "chapter.oppgave", "chapter", "oppgave", options));
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push("\n                    ");
   return buffer;

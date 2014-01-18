@@ -15,7 +15,7 @@
                     {{/link-to}}
 
                     {{#each oppgave in chapter.oppgaver}}
-                        {{#link-to "chapter.oppgave" oppgave class="list-group-item"}}
+                        {{#link-to "chapter.oppgave" chapter oppgave class="list-group-item"}}
                             <span style="margin-left: 15px">
                                 <span class="glyphicon glyphicon-signal"></span> <div class="list-group-text">{{oppgave.tittel}}</div>
                             </span>

@@ -1,5 +1,5 @@
 Kodegenet.OppgaveRoute = Ember.Route.extend({
-    model: function(oppgave) {
+    model: function(chapter, oppgave) {
         return this.store.find('oppgave', oppgave.oppgave_id);
     },
 

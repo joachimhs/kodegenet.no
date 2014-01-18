@@ -63,7 +63,7 @@ Kodegenet.CoursesCourseRoute = Ember.Route.extend({
     }
 });
 Kodegenet.OppgaveRoute = Ember.Route.extend({
-    model: function(oppgave) {
+    model: function(chapter, oppgave) {
         return this.store.find('oppgave', oppgave.oppgave_id);
     },
 
