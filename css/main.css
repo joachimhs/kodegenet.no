@@ -15,13 +15,20 @@
     font-style: normal;
 }
 
+@import url(https://fonts.googleapis.com/css?family=Lato:300);
+
 body {
-    font-family: Helvetica, Arial, sans-serif;
-    font-size: 14px;
+    font-family:  'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 16px;
     line-height: 18px;
     color: #333;
-    background: #EBEBEB;
+    background: #f7f7f7;
     margin: 0;
+    line-height: 25px;
+}
+
+.list-group {
+    font-size: 14px;
 }
 
 h1 {
@@ -30,6 +37,8 @@ h1 {
     position: relative;
     color: #e1a836;
     margin-left: 20px;
+    text-align: center;
+    text-transform: uppercase;
 }
 
 h2 {
@@ -49,44 +58,47 @@ h3 {
 }
 
 #topHeaderArea {
-    background: #587780;
+    background: url('/images/headerBackground2.jpg') no-repeat left top;
+    background-size: cover;
     color: #E4F0F5;
-    min-height: 26px;
+    min-height: 250px;
 }
 
 #topHeaderArea ul {
     list-style: none;
     margin: 0 auto;
     padding: 0;
-    float: right;
+    margin-top: 30px;
+    background: none;
 }
 
 #topHeaderArea ul > li {
     float: left;
-    line-height: 26px;
     width: 150px;
     min-width: 165px;
+    line-height: 26px;
     white-space:nowrap;
     text-align: center;
     cursor: pointer;
+    text-transform: uppercase;
+    font-weight: 900;
 }
 
 #topHeaderArea ul > li.active {
-    background: #7faab3;
-    line-height: 26px;
     width: 150px;
     min-width: 150px;
-    border-bottom: 2px #e1a836 solid;
+    border: 3px #fff solid;
+    border-radius: 10px;
     color: #E4F0F5;
+    text-transform: uppercase;
 }
 
 #topHeaderArea ul > li:hover {
     color: #e1a836;
-    background: #678d96;
 }
 
 #topHeaderArea ul > li.active:hover  {
-    color: #000;
+    color: #e1a836;
 }
 
 #topHeaderArea a {
@@ -112,11 +124,35 @@ h3 {
     margin-top: 15px;
 }
 
-.pageContent {
-    margin: 0 auto;
-    padding: 0;
-    width: 1050px;
+.pageContent img {
+    margin: 20px;
 }
+
+@media (min-width: 768px) {
+    .pageContent {
+        margin: 0 auto;
+        padding: 0;
+        width: 750px;
+    }
+}
+
+@media (min-width: 992px) {
+    .pageContent {
+        margin: 0 auto;
+        padding: 0;
+        width: 950px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .pageContent {
+        margin: 0 auto;
+        padding: 0;
+        width: 1100px;
+    }
+}
+
+
 
 .chapter {
     background: #fff;
@@ -140,7 +176,7 @@ h3 {
 }
 
 .list-group-text {
-    max-width: 150px;
+    max-width: 170px;
     display: inline-block;
 }
 
@@ -220,4 +256,17 @@ div.loginBox {
 div.loginBox h1 {
     margin-bottom: 20px;
     text-align: center;
+}
+
+.rightAlign {
+    text-align: right;
+}
+
+footer {
+    padding-top: 3em;
+    border-top: 1px solid #ddd;
+}
+
+footer .row {
+    padding-top: 1.5em;
 }

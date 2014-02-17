@@ -1,23 +1,20 @@
 <div id="topHeaderArea">
     <div class="pageContent">
-        <ul>
-            {{#each page in pages}}
-                {{#link-to page.route tagName="li"}}
-                    {{page.name}}
+        <div class="row">
+            <div class="col-md-4">
+                {{#link-to "index" tagName="a"}}
+                    <img src="/images/kodegenet_logo.png" style="height: 45px;" />
                 {{/link-to}}
-            {{/each}}
-        </ul>
-    </div>
-</div>
-<div id="bottomHeaderArea">
-    <div class="pageContent">
-        <div class="headerLogo">
-            {{#link-to "index"}}
-                <img src="/images/kodegenet_logo.png" style="height: 45px;" />
-            {{/link-to}}
-        </div>
-        <div class="pull-right">
-
+            </div>
+            <div class="col-md-8">
+                <ul>
+                    {{#each page in pages}}
+                        {{#link-to page.route tagName="li"}}
+                            {{page.name}}
+                        {{/link-to}}
+                    {{/each}}
+                </ul>
+            </div>
         </div>
     </div>
 </div>

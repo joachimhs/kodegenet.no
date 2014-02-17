@@ -4,13 +4,17 @@ DS.RESTAdapter.reopen({
     namespace: 'json'
 });
 
+Kodegenet.Adapter = DS.RESTAdapter.extend();
+
 Ember.Inflector.inflector.irregular('oppgave', 'oppgaver');
 
 Kodegenet.Store = DS.Store.extend({
-    adapter:  "DS.RESTAdapter"
+    adapter:  "Kodegenet.Adapter"
 });
 
-
+Kodegenet.UpdateAdapter = Kodegenet.Adapter.extend({
+    namespace: 'json/data'
+});
 Kodegenet.ChapterController = Ember.ObjectController.extend({
 
 });
@@ -22,6 +26,14 @@ Kodegenet.ChapterIndexController = Ember.ObjectController.extend({
 
         skjulAlleOppgaverAction: function() {
             this.set('visAlleOppgaver', false);
+        },
+
+        visSlidesAction: function() {
+            this.set('visSlides', true);
+        },
+
+        skjulSlidesAction: function() {
+            this.set('visSlides', false);
         }
     }
 });
@@ -114,11 +126,11 @@ Kodegenet.HeaderController = Ember.Controller.extend({
             route: 'index'
         }));
 
-        pages.pushObject(Ember.Object.create({
+        /*pages.pushObject(Ember.Object.create({
             id: 'om',
             name: "Om Kodegenet",
             route: 'om'
-        }));
+        }));*/
 
         pages.pushObject(Ember.Object.create({
             id: 'courses',
@@ -127,6 +139,22 @@ Kodegenet.HeaderController = Ember.Controller.extend({
         }));
 
         this.set('pages', pages);
+    }
+});
+Ember.Handlebars.registerBoundHelper('dmy', function(property) {
+    if (property !== null) {
+        var parsedDate = moment(property);
+        return parsedDate.format("DD-MM-YYYY");
+    }
+});
+
+
+
+
+Ember.Handlebars.registerBoundHelper('rawhtml', function(property) {
+    console.log("rawhtml: " + property);
+    if (property !== null) {
+        return new Handlebars.SafeString(property);
     }
 });
 Ember.Handlebars.registerBoundHelper('markdown', function(property) {
@@ -156,21 +184,55 @@ Kodegenet.IndexRoute = Ember.Route.extend({
         document.title = 'Kodegenet Hjem';
     }
 });
+Kodegenet.IndexController = Ember.ArrayController.extend({
+    sortProperties: ['publishedDate'],
+    sortAscending: false
+});
+Kodegenet.IndexRoute = Ember.Route.extend({
+    model: function() {
+        return this.store.find('update');
+    }
+    /*setupController: function(controller) {
+        var updates = this.store.find('update');
+        controller.set('updates', updates);
+    }*/
+
+});
 Kodegenet.Chapter = DS.Model.extend({
     tittel: DS.attr('string'),
     content: DS.attr('string'),
-    oppgaver: DS.hasMany('oppgave', {async: true})
+    oppgaver: DS.hasMany('oppgave', {async: true}),
+    slides: DS.attr('string'),
+
+    slideUrl: function() {
+        return '/reveal.html?ids%5B%5D=' + this.get('id');
+    }.property('id')
 });
 Kodegenet.Course = DS.Model.extend({
     chapters: DS.hasMany('chapter', {async: true}),
     name: DS.attr('string'),
     title: DS.attr('string'),
     intro: DS.attr('string'),
-    imageSrc: DS.attr('string')
+    imageSrc: DS.attr('string'),
+    content: DS.attr('string')
 });
 Kodegenet.Oppgave = DS.Model.extend({
     tittel: DS.attr('string'),
     content: DS.attr('string')
+});
+Kodegenet.Update = DS.Model.extend({
+    title: DS.attr('string'),
+    content: DS.attr('string'),
+    route: DS.attr('string'),
+    publishedDate: DS.attr('string'),
+    image:  DS.attr('string')
+});
+Kodegenet.RevealFrameView = Ember.View.extend({
+    tagName: "iframe",
+    content: null,
+    attributeBindings: ["width", "height", "src"],
+    width: 700,
+    height: 500
 });
 Kodegenet.Router.map(function() {
     this.resource('index', {path: "/"}, function() { });

@@ -6,12 +6,18 @@
                     Tilbake til Kursoversikten <span class="glyphicon glyphicon-chevron-up pull-right"></span>
                 </button>
             {{/link-to}}
+            {{#link-to "course" this}}
+                <button class="btn btn-default form-control">
+                    Tilbake til {{title}} <span class="glyphicon glyphicon-chevron-up pull-right"></span>
+                </button>
+            {{/link-to}}
+
 
             <h1>Kapitler:</h1>
             <div class="list-group">
                 {{#each chapter in chapters}}
                     {{#link-to "chapter" chapter class="list-group-item"}}
-                        <span class="glyphicon glyphicon-book" style="margin-right: 5px;"></span>{{chapter.tittel}} <span class="glyphicon glyphicon-chevron-right pull-right"></span>
+                        <span class="glyphicon glyphicon-book" style="margin-right: 5px;"></span><div class="list-group-text">{{chapter.tittel}}</div> <span class="glyphicon glyphicon-chevron-right pull-right"></span>
                     {{/link-to}}
 
                     {{#each oppgave in chapter.oppgaver}}

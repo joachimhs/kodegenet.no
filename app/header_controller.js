@@ -10,11 +10,11 @@ Kodegenet.HeaderController = Ember.Controller.extend({
             route: 'index'
         }));
 
-        pages.pushObject(Ember.Object.create({
+        /*pages.pushObject(Ember.Object.create({
             id: 'om',
             name: "Om Kodegenet",
             route: 'om'
-        }));
+        }));*/
 
         pages.pushObject(Ember.Object.create({
             id: 'courses',

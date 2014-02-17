@@ -4,9 +4,14 @@ DS.RESTAdapter.reopen({
     namespace: 'json'
 });
 
+Kodegenet.Adapter = DS.RESTAdapter.extend();
+
 Ember.Inflector.inflector.irregular('oppgave', 'oppgaver');
 
 Kodegenet.Store = DS.Store.extend({
-    adapter:  "DS.RESTAdapter"
+    adapter:  "Kodegenet.Adapter"
 });
 
+Kodegenet.UpdateAdapter = Kodegenet.Adapter.extend({
+    namespace: 'json/data'
+});
