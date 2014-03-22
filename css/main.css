@@ -84,7 +84,20 @@ h3 {
     font-weight: 900;
 }
 
-#topHeaderArea ul > li.active {
+#topHeaderArea ul > li {
+    width: 150px;
+    min-width: 150px;
+    text-transform: uppercase;
+}
+
+#topHeaderArea ul > li a {
+    width: 150px;
+    min-width: 150px;
+    text-transform: uppercase;
+    padding: 5px;
+}
+
+#topHeaderArea ul > li a.active {
     width: 150px;
     min-width: 150px;
     border: 3px #fff solid;

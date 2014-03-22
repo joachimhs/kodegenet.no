@@ -1,3 +1,7 @@
+Kodegenet.Router = Ember.Router.extend({
+    location: 'history'
+});
+
 Kodegenet.Router.map(function() {
     this.resource('index', {path: "/"}, function() { });
     this.resource('courses', {path: "/courses"}, function() {

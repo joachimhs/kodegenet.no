@@ -57,6 +57,6 @@ public class ChaptersHandler extends ContenticeHandler {
             jsonReturn = topLevelObject.toString();
         }
 
-        writeContentsToBuffer(channelHandlerContext, jsonReturn, "application/json; charset=UTF-8");
+        writeContentsToBuffer(channelHandlerContext, jsonReturn, "application/json");
     }
 }

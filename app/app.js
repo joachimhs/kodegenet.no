@@ -15,3 +15,7 @@ Kodegenet.Store = DS.Store.extend({
 Kodegenet.UpdateAdapter = Kodegenet.Adapter.extend({
     namespace: 'json/data'
 });
+
+Kodegenet.PageAdapter = Kodegenet.Adapter.extend({
+    namespace: 'json/data'
+});

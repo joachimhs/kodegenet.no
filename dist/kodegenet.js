@@ -15,6 +15,10 @@ Kodegenet.Store = DS.Store.extend({
 Kodegenet.UpdateAdapter = Kodegenet.Adapter.extend({
     namespace: 'json/data'
 });
+
+Kodegenet.PageAdapter = Kodegenet.Adapter.extend({
+    namespace: 'json/data'
+});
 Kodegenet.ChapterController = Ember.ObjectController.extend({
 
 });
@@ -55,7 +59,7 @@ Kodegenet.ChapterRoute = Ember.Route.extend({
     }
 });
 Kodegenet.CourseController = Ember.ObjectController.extend({
-
+    needs: ['chapter']
 });
 Kodegenet.CourseIndexRoute = Ember.Route.extend({
     model: function() {
@@ -126,11 +130,11 @@ Kodegenet.HeaderController = Ember.Controller.extend({
             route: 'index'
         }));
 
-        /*pages.pushObject(Ember.Object.create({
+        pages.pushObject(Ember.Object.create({
             id: 'om',
             name: "Om Kodegenet",
             route: 'om'
-        }));*/
+        }));
 
         pages.pushObject(Ember.Object.create({
             id: 'courses',
@@ -220,12 +224,22 @@ Kodegenet.Oppgave = DS.Model.extend({
     tittel: DS.attr('string'),
     content: DS.attr('string')
 });
+Kodegenet.Page = DS.Model.extend({
+    tittel: DS.attr('string'),
+    content: DS.attr('string'),
+    visible: DS.attr('boolean')
+});
 Kodegenet.Update = DS.Model.extend({
     title: DS.attr('string'),
     content: DS.attr('string'),
     route: DS.attr('string'),
     publishedDate: DS.attr('string'),
     image:  DS.attr('string')
+});
+Kodegenet.OmRoute = Ember.Route.extend({
+    model: function() {
+        return this.store.find('page', "om");
+    }
 });
 Kodegenet.RevealFrameView = Ember.View.extend({
     tagName: "iframe",
@@ -234,6 +248,10 @@ Kodegenet.RevealFrameView = Ember.View.extend({
     width: 700,
     height: 500
 });
+Kodegenet.Router = Ember.Router.extend({
+    location: 'history'
+});
+
 Kodegenet.Router.map(function() {
     this.resource('index', {path: "/"}, function() { });
     this.resource('courses', {path: "/courses"}, function() {
@@ -244,4 +262,11 @@ Kodegenet.Router.map(function() {
         });
     });
     this.route('om');
+});
+Kodegenet.ChapterMenuItemView = Ember.View.extend({
+    templateName: 'chapter-menu-item',
+
+    isSelected: function() {
+        return this.get('chapter.id') === this.get('controller.controllers.chapter.model.id');
+    }.property('controller.controllers.chapter.model.id', 'chapter.id')
 });
