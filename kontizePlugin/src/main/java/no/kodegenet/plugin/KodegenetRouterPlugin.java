@@ -1,6 +1,7 @@
 package no.kodegenet.plugin;
 
 import io.netty.channel.ChannelHandler;
+import no.haagensoftware.contentice.handler.FileServerHandler;
 import no.haagensoftware.contentice.spi.RouterPlugin;
 import no.kodegenet.handlers.ChaptersHandler;
 import no.kodegenet.handlers.CoursesHandler;

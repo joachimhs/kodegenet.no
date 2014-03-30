@@ -55,7 +55,7 @@ Kodegenet.ChapterRoute = Ember.Route.extend({
         this._super(controller, model);
         ga('send', 'pageview', '/chapter' + model.get('id'));
 
-        document.title = 'Kodegenet Kapittel - ' + model.get("tittel");
+        document.title = model.get("tittel") + ' - Kodegenet';
     }
 });
 Kodegenet.CourseController = Ember.ObjectController.extend({
@@ -78,8 +78,10 @@ Kodegenet.CoursesCourseRoute = Ember.Route.extend({
         document.title = 'Kodegenet Kurs - ' + model.get('title');
     }
 });
-Kodegenet.OppgaveRoute = Ember.Route.extend({
-    model: function(chapter, oppgave) {
+Kodegenet.ChapterOppgaveRoute = Ember.Route.extend({
+    model: function(oppgave) {
+        console.log('ChapterOppgaveRoute: ');
+        console.log(oppgave);
         return this.store.find('oppgave', oppgave.oppgave_id);
     },
 
@@ -87,7 +89,7 @@ Kodegenet.OppgaveRoute = Ember.Route.extend({
         this._super(controller, model);
         ga('send', 'pageview', '/oppgave' + model.get('id'));
 
-        document.title = 'Kodegenet Oppgave - ' + model.get("tittel");
+        document.title = model.get("tittel") + ' - Kodegenet';
     }
 });
 Kodegenet.CoursesIndexRoute = Ember.Route.extend({
@@ -115,7 +117,7 @@ Kodegenet.CoursesRoute = Ember.Route.extend({
         this._super(controller, model);
         ga('send', 'pageview', '/courses');
 
-        document.title = 'Kodegenet Kursoversikt';
+        document.title = 'Kursoversikt - Kodegenet';
     }
 });
 Kodegenet.HeaderController = Ember.Controller.extend({
@@ -164,6 +166,11 @@ Ember.Handlebars.registerBoundHelper('rawhtml', function(property) {
 Ember.Handlebars.registerBoundHelper('markdown', function(property) {
     var converter = new Showdown.converter();
     if (property !== null) {
+        Ember.run.schedule('afterRender', this, function(){
+            console.log('scheduling to after render');
+            Rainbow.color();
+        });
+
         return new Handlebars.SafeString(converter.makeHtml(property));
     }
 });
@@ -218,7 +225,8 @@ Kodegenet.Course = DS.Model.extend({
     title: DS.attr('string'),
     intro: DS.attr('string'),
     imageSrc: DS.attr('string'),
-    content: DS.attr('string')
+    content: DS.attr('string'),
+    submenuContent: DS.attr('string')
 });
 Kodegenet.Oppgave = DS.Model.extend({
     tittel: DS.attr('string'),

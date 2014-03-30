@@ -4,5 +4,6 @@ Kodegenet.Course = DS.Model.extend({
     title: DS.attr('string'),
     intro: DS.attr('string'),
     imageSrc: DS.attr('string'),
-    content: DS.attr('string')
+    content: DS.attr('string'),
+    submenuContent: DS.attr('string')
 });

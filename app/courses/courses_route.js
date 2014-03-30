@@ -18,6 +18,6 @@ Kodegenet.CoursesRoute = Ember.Route.extend({
         this._super(controller, model);
         ga('send', 'pageview', '/courses');
 
-        document.title = 'Kodegenet Kursoversikt';
+        document.title = 'Kursoversikt - Kodegenet';
     }
 });
