@@ -1,31 +1,71 @@
-<div class="pageContent">
-    <div class="row">
-        <div class="col-md-3">
-            {{#link-to "courses"}}
-                <button class="btn btn-default form-control">
-                    Tilbake til Kursoversikten <span class="glyphicon glyphicon-chevron-up pull-right"></span>
+<div class="submenu" id="submenu">
+    <div class="pageContent">
+        <div class="row">
+            <div class="col-md-12">
+                <button class="btn btn-default chooseCourseButton submenubutton" {{action "toggleCoursePopover"}}>
+                    <span class="glyphicon glyphicon-book"></span>
+                    {{title}}
                 </button>
-            {{/link-to}}
-            {{#link-to "course" this}}
-                <button class="btn btn-default form-control">
-                    Tilbake til {{title}} <span class="glyphicon glyphicon-chevron-up pull-right"></span>
+
+                <span class="glyphicon glyphicon-chevron-right"></span>
+
+                <button class="btn btn-default chooseChapterButton submenubutton" {{action "toggleChapterPopover"}}>
+                    <span class="glyphicon glyphicon-th-list"></span>
+                    {{#if controllers.chapter.chapterTittel}}
+                        {{controllers.chapter.chapterTittel}}
+                    {{else}}
+                        Velg Kapittel
+                    {{/if}}
+
                 </button>
-            {{/link-to}}
 
+                {{#if controllers.chapter.model}}
+                    <span class="glyphicon glyphicon-chevron-right"></span>
 
-            <h1>Kapitler:</h1>
-            <div class="list-group">
-                {{#each chapter in chapters}}
-                    {{view Kodegenet.ChapterMenuItemView chapter=chapter}}
-                {{/each}}
+                    <button class="btn btn-default chooseSubchapterButton submenubutton" {{action "toggleSubchapterPopover"}}>
+                        <span class="glyphicon glyphicon-tag"></span>
+                        {{#if selectedSubchapter.oppgaveTittel}}
+                            {{selectedSubchapter.oppgaveTittel}}
+                        {{else}}
+                            Velg Delkapittel
+                        {{/if}}
+                    </button>
+                {{/if}}
+
+                <div id="coursePopover" class="pop popnomore coursePopover">
+                    {{#each course in controllers.courses.model}}
+                        <div {{action "selectCourse" course}} class="submenuLink">
+                            <span class="glyphicon glyphicon-book"></span> {{course.title}}
+                        </div>
+                    {{/each}}
+                </div>
+
+                <div id="chapterPopover" class="pop popnomore chapterPopover">
+                    {{#each chapter in chapters}}
+                        <div {{action "selectChapter" chapter}} class="submenuLink">
+                            <span class="glyphicon glyphicon-th-list"></span> {{chapter.chapterTittel}}
+                        </div>
+                    {{/each}}
+                </div>
+
+                <div id="subchapterPopover" class="pop popnomore subchapterPopover">
+                    {{#each oppgave in controller.controllers.chapter.oppgaver}}
+                        <div {{action "scrollToSubchapter" oppgave}} class="submenuLink">
+                            <span class="glyphicon glyphicon-tag"></span> {{oppgave.oppgaveTittel}}
+                        </div>
+                    {{/each}}
+                </div>
             </div>
-
-            {{markdown submenuContent}}
         </div>
+    </div>
+</div>
 
-        <div class="col-md-9">
+
+
+<div class="pageContent courseContent">
+    <div class="row">
+        <div class="col-md-12">
             {{outlet}}
         </div>
     </div>
-
 </div>

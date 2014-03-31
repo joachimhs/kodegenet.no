@@ -1,38 +1,34 @@
-<div class="well chapter">
-    <div class="well">
-        {{#if slides}}
+<div class="kapittelHeader">
+    <div class="kapittelNummer">{{kapittel}}</div>
+    {{tittel}}
+</div>
+
+{{#if slides}}
+    {{#view Ember.View class="well slidesBox" classBinding="visSlides"}}
             <p>Dette kapittelet inneholder lysbilder. Lysbildene er ment for deg som ønsker å holde et programmeringskurs basert på dette kurset. Lysbildene gir et raskt overblikk over innholdet i kapittelet. Du kan velge å se lysbildene inkludert på denne siden, eller åpne lysbildene i et eget vindu.</p>
             {{#if visSlides}}
-                <button class="btn btn-default" {{action "skjulSlidesAction"}}>Skjul Lysbilder <span class="glyphicon glyphicon-chevron-up"></span></button>
+                <button class="btn btn-default" {{action "skjulSlidesAction"}}><span class="glyphicon glyphicon-chevron-right"></span> Skjul Lysbilder</button>
                 {{view Kodegenet.RevealFrameView src=slideUrl}}
             {{else}}
-                <button class="btn btn-default" {{action "visSlidesAction"}}>Vis Lysbilder <span class="glyphicon glyphicon-chevron-down"></span></button>
+                <button class="btn btn-default" {{action "visSlidesAction"}}><span class="glyphicon glyphicon-chevron-left"></span> Vis Lysbilder</button>
                 <a {{bind-attr href="slideUrl"}} target="_blank" class="btn btn-default">Åpne Lysbilder i eget vindu <span class="glyphicon glyphicon-chevron-right"></span></a>
             {{/if}}
-        {{/if}}
-    </div>
+    {{/view}}
+{{/if}}
 
     {{markdown content.content}}
-
-    {{#if visAlleOppgaver}}
-        <h1>Oppgaver</h1>
-        <button class="btn btn-default form-control" style="margin-bottom: 10px;" {{action "skjulAlleOppgaverAction"}}>Skul oppgaver</button>
-
         {{#each oppgave in oppgaver}}
+            <a {{bind-attr id=oppgave.id}}></a>
+
+            <div class="kapittelHeader">
+                <div class="kapittelNummer">{{kapittel}}.{{oppgave.kapittel}}</div>
+                {{oppgave.tittel}}
+            </div>
+            {{#if oppgave.screencastbox}}
+                <div class="well screencast">
+                    <p>Dette delkapittelet inneholder video. Videoene demonstrerer innholdet i delkapittelet, og vil dermed ikke gå utover delkapittelets innhold.</p>
+                    {{markdown oppgave.screencastbox}}
+                </div>
+            {{/if}}
             {{markdown oppgave.content}}
         {{/each}}
-    {{else}}
-        <h1>Oppgaver</h1>
-        <button class="btn btn-default form-control" style="margin-bottom: 10px;" {{action "visAlleOppgaverAction"}}>Vis alle oppgaver samtidig</button>
-
-        {{#each oppgave in oppgaver}}
-            {{#link-to "chapter.oppgave" oppgave class="list-group-item"}}
-                <span style="margin-left: 15px">
-                    <span class="glyphicon glyphicon-signal"></span> {{oppgave.tittel}}
-                </span>
-                <span class="glyphicon glyphicon-chevron-right pull-right" style="margin-right: 10px;"></span>
-            {{/link-to}}
-        {{/each}}
-    {{/if}}
-
-</div>

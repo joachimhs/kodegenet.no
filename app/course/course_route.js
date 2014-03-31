@@ -8,5 +8,7 @@ Kodegenet.CoursesCourseRoute = Ember.Route.extend({
         ga('send', 'pageview', '/courses' + model.get('id'));
 
         document.title = 'Kodegenet Kurs - ' + model.get('title');
+
+
     }
 });

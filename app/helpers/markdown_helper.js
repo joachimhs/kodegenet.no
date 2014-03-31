@@ -4,7 +4,7 @@ Ember.Handlebars.registerBoundHelper('markdown', function(property) {
         Ember.run.schedule('afterRender', this, function(){
             console.log('scheduling to after render');
             Rainbow.color();
-        });
+        }, 200);
 
         return new Handlebars.SafeString(converter.makeHtml(property));
     }

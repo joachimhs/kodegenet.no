@@ -59,7 +59,90 @@ Kodegenet.ChapterRoute = Ember.Route.extend({
     }
 });
 Kodegenet.CourseController = Ember.ObjectController.extend({
-    needs: ['chapter']
+    needs: ['chapter','courses','chapterOppgave'],
+    coursePopoverShowing: false,
+    chapterPopoverShowing: false,
+    subchapterPopoverShowing: false,
+
+    actions: {
+        toggleCoursePopover: function() {
+            this.set('chapterPopoverShowing', false);
+            this.set('subchapterPopoverShowing', false);
+            this.toggleProperty('coursePopoverShowing');
+        },
+
+        toggleChapterPopover: function() {
+            this.set('coursePopoverShowing', false);
+            this.set('subchapterPopoverShowing', false);
+            this.toggleProperty('chapterPopoverShowing');
+        },
+
+        toggleSubchapterPopover: function() {
+            this.set('chapterPopoverShowing', false);
+            this.set('coursePopoverShowing', false);
+            this.toggleProperty('subchapterPopoverShowing');
+        },
+
+        selectChapter: function(chapter) {
+            this.hidePopovers();
+            this.set('selectedSubchapter', null);
+            this.transitionToRoute('chapter', chapter);
+        },
+
+        selectCourse: function(course) {
+            this.hidePopovers();
+            this.set('selectedSubchapter', null);
+            this.set('controllers.chapter.model', null);
+            this.transitionToRoute('course', course);
+        },
+
+        scrollToSubchapter: function(subchapter) {
+            this.set('selectedSubchapter', subchapter);
+            this.hidePopovers();
+
+            var anchor = subchapter.get('id');
+
+            if (anchor) {
+                var elem = $('#' + anchor);
+                if (elem && elem.offset()) {
+                    $('body').scrollTop(elem.offset().top - 60);
+                }
+            }
+        }
+    },
+
+    hidePopovers: function() {
+        this.set('chapterPopoverShowing', false);
+        this.set('coursePopoverShowing', false);
+        this.set('subchapterPopoverShowing', false);
+    },
+
+    coursePopoverShowingObserver: function() {
+        if (this.get('coursePopoverShowing')) {
+            $('#coursePopover').removeClass('popnomore');
+        } else {
+            $('#coursePopover').addClass('popnomore');
+        }
+
+
+    }.observes('coursePopoverShowing'),
+
+    chapterPopoverShowingObserver: function() {
+        if (this.get('chapterPopoverShowing')) {
+            $('#chapterPopover').removeClass('popnomore');
+        } else {
+            $('#chapterPopover').addClass('popnomore');
+        }
+    }.observes('chapterPopoverShowing'),
+
+    subchapterPopoverShowingObserver: function() {
+        if (this.get('subchapterPopoverShowing')) {
+            $('#subchapterPopover').removeClass('popnomore');
+        } else {
+            $('#subchapterPopover').addClass('popnomore');
+        }
+
+    }.observes('subchapterPopoverShowing')
 });
 Kodegenet.CourseIndexRoute = Ember.Route.extend({
     model: function() {
@@ -76,7 +159,27 @@ Kodegenet.CoursesCourseRoute = Ember.Route.extend({
         ga('send', 'pageview', '/courses' + model.get('id'));
 
         document.title = 'Kodegenet Kurs - ' + model.get('title');
+
+
     }
+});
+Kodegenet.CourseView = Ember.View.extend({
+    didInsertElement: function() {
+        $(window).scroll( function() {
+            if ($(window).scrollTop() > 100) {
+                $('#submenu').addClass('floatingTop');
+                //$('#singlelogo').addClass('singlelogoimage');
+            } else {
+                $('#submenu').removeClass('floatingTop');
+                //$('#singlelogo').removeClass('singlelogoimage');
+            }
+        } );
+    }
+});
+
+
+Kodegenet.ChapterOppgaveController = Ember.ObjectController.extend({
+
 });
 Kodegenet.ChapterOppgaveRoute = Ember.Route.extend({
     model: function(oppgave) {
@@ -169,7 +272,7 @@ Ember.Handlebars.registerBoundHelper('markdown', function(property) {
         Ember.run.schedule('afterRender', this, function(){
             console.log('scheduling to after render');
             Rainbow.color();
-        });
+        }, 200);
 
         return new Handlebars.SafeString(converter.makeHtml(property));
     }
@@ -214,10 +317,15 @@ Kodegenet.Chapter = DS.Model.extend({
     content: DS.attr('string'),
     oppgaver: DS.hasMany('oppgave', {async: true}),
     slides: DS.attr('string'),
+    kapittel: DS.attr('number'),
 
     slideUrl: function() {
         return '/reveal.html?ids%5B%5D=' + this.get('id');
-    }.property('id')
+    }.property('id'),
+
+    chapterTittel: function() {
+        return this.get('kapittel') + ". " + this.get('tittel');
+    }.property('kapittel', 'tittel')
 });
 Kodegenet.Course = DS.Model.extend({
     chapters: DS.hasMany('chapter', {async: true}),
@@ -230,7 +338,17 @@ Kodegenet.Course = DS.Model.extend({
 });
 Kodegenet.Oppgave = DS.Model.extend({
     tittel: DS.attr('string'),
-    content: DS.attr('string')
+    kapittel: DS.attr('number'),
+    content: DS.attr('string'),
+    screencastbox: DS.attr('string'),
+
+    anchorid: function() {
+        return "#" + this.get('id');
+    }.property('id'),
+
+    oppgaveTittel: function() {
+        return this.get('kapittel') + ". " + this.get('tittel');
+    }.property('kapittel', 'tittel')
 });
 Kodegenet.Page = DS.Model.extend({
     tittel: DS.attr('string'),

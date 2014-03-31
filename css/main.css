@@ -22,7 +22,7 @@ body {
     font-size: 16px;
     line-height: 18px;
     color: #333;
-    background: #f7f7f7;
+    background: #fff;
     margin: 0;
     line-height: 25px;
 }
@@ -58,10 +58,10 @@ h3 {
 }
 
 #topHeaderArea {
-    background: url('/images/headerBackground2.jpg') no-repeat left top;
-    background-size: cover;
-    color: #E4F0F5;
-    min-height: 250px;
+    background: #587780;
+    color: #d6dd00;
+    min-height: 100px;
+    max-height: 100px;
 }
 
 #topHeaderArea ul {
@@ -100,10 +100,16 @@ h3 {
 #topHeaderArea ul > li a.active {
     width: 150px;
     min-width: 150px;
-    border: 3px #fff solid;
+    border-bottom: 3px #d6dd00 solid;
+    border-top: 3px #d6dd00 solid;
     border-radius: 10px;
-    color: #E4F0F5;
+    color: #d6dd00;
     text-transform: uppercase;
+}
+
+#topHeaderArea ul > li a:hover {
+    text-decoration: none;
+    color: #E4F0F5;
 }
 
 #topHeaderArea ul > li:hover {
@@ -116,6 +122,19 @@ h3 {
 
 #topHeaderArea a {
     color: #f0f0f0;
+}
+
+#singlelogo {
+    width: 65px;
+    min-width: 65px;
+    max-width: 65px;
+    height: 40px;
+    display: inline-block;
+}
+
+.singlelogoimage {
+    background: url('/images/logo_single.png') no-repeat left top;
+    height: 45px;
 }
 
 #bottomHeaderArea {
@@ -282,4 +301,175 @@ footer {
 
 footer .row {
     padding-top: 1.5em;
+}
+
+.kapittelHeader {
+    margin-top: 30px;
+    margin-bottom: 50px;
+    background: #587780;
+    color: #e1a836;
+    height: 2.5em;
+    border-radius: 10px;
+    min-height: 2.5em;
+    line-height: 2.5em;
+
+    font-size: 2em;
+
+}
+
+.kapittelNummer {
+    float: left;
+    position: relative;
+    top: -20px;
+    height: 120px;
+    width: 200px;
+    min-width: 200px;
+    max-width: 200px;
+    line-height: 120px;
+    font-size: 3.5em;
+    text-align: center;
+
+    margin-left: 25px;
+    margin-right: 20px;
+    border-radius: 10px;
+    background: #d6dd00;
+    color: #000;
+
+    display: inline-block;
+}
+
+.kapittelTittel {
+    font-size: 3em;
+
+    height: 100px;
+    line-height: 100px;
+
+    display: inline-block;
+}
+
+.slidesBox {
+    width: 400px;
+    float: right;
+    margin-left: 15px;
+}
+
+.vis-slides {
+    width: 100%;
+    float: none;
+}
+
+.screencast {
+    width: 550px;
+    float: right;
+    margin-left: 15px;
+}
+
+.submenu {
+    border-bottom: 1px solid #888;
+    background: #fff;
+    padding-bottom: 10px;
+    height: 55px;
+}
+
+.floatingTop {
+    position: fixed;
+    top: 0;
+    padding-top: 10px;
+    width: 100%;
+    z-index: 100;
+}
+
+.courseContent {
+    margin-top: 25px;
+}
+
+.coursePopover {
+    width: 250px;
+    min-width: 250px;
+}
+
+.chapterPopover {
+    width: 350px;
+    min-width: 350px;
+    margin-left: 250px;
+}
+
+.subchapterPopover {
+    width: 350px;
+    min-width: 350px;
+    margin-left: 570px;
+}
+
+
+.chooseCourseButton {
+    width: 200px;
+    min-width: 200px;
+}
+
+.chooseChapterButton {
+    width: 300px;
+    min-width: 300px;
+}
+
+.chooseSubchapterButton {
+    width: 300px;
+    min-width: 300px;
+}
+
+.submenubutton {
+    color: #e1a836;
+    font-weight: 900;
+}
+
+.submenuLink {
+    color: #000;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.submenuLink:hover {
+    color: #e1a836;
+    background: #678d96;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.popnomore{display:none;}
+.pop {
+    background: #eee;
+    border: 1px solid #678d96;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    position: absolute;
+    width: 200px;
+    top:50px;left:50px;
+    z-index: 10;
+}
+
+/* arrows - :before and :after */
+.pop:before {
+    position: absolute;
+    display: inline-block;
+
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid #678d96;
+
+    border-right-color: rgba(0.2, 0.2, 0.2, 1);
+    left: 45px;
+    top: -8px;
+    content: '';
+}
+
+.pop:after {
+    position: absolute;
+    display: inline-block;
+
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid #678d96;
+    left: 44px;
+    top: -8px;
+    content: '';
 }

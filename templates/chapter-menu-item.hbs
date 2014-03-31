@@ -9,11 +9,11 @@
 
 {{#if view.isSelected}}
     {{#each oppgave in chapter.oppgaver}}
-        {{#link-to "chapter.oppgave" chapter oppgave class="list-group-item"}}
+        <a {{bind-attr href=oppgave.anchorid}} class="list-group-item">
             <span style="margin-left: 15px">
                 <span class="glyphicon glyphicon-signal"></span> <div class="list-group-text">{{oppgave.tittel}}</div>
             </span>
             <span class="glyphicon glyphicon-chevron-right pull-right" style="margin-right: 10px;"></span>
-        {{/link-to}}
+        </a>
     {{/each}}
 {{/if}}
