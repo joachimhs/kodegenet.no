@@ -1,27 +1,28 @@
-Kodegenet.HeaderController = Ember.Controller.extend({
+Kodegenet.HeaderController = Ember.ArrayController.extend({
+    sortProperties: ['sortIndex'],
+    sortAscending: true,
+
     init: function() {
         this._super();
 
         var pages = [];
 
-        pages.pushObject(Ember.Object.create({
-            id: 'home',
-            name: "Home",
-            route: 'index'
-        }));
+        this.store.find('page').then(function(data) {
+            data.forEach(function(page) {
+                var topMenu = page.get('topMenu');
 
-        pages.pushObject(Ember.Object.create({
-            id: 'om',
-            name: "Om Kodegenet",
-            route: 'om'
-        }));
+                console.log("topMenu: " + topMenu + " :: " + page.get('id'));
+                if (topMenu) {
+                    pages.pushObject(page);
+                }
+            });
+        });
 
-        pages.pushObject(Ember.Object.create({
-            id: 'courses',
-            name: "Kurs",
-            route: 'courses'
-        }));
+        var sortedResult = Em.ArrayProxy.createWithMixins(
+            Ember.SortableMixin,
+            { content:pages, sortProperties: this.sortProperties }
+        );
 
-        this.set('pages', pages);
+        this.set('content', sortedResult);
     }
 });

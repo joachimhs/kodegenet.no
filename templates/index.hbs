@@ -2,18 +2,36 @@
 
 
     <div class="row">
-        <div class="col-md-12">
-            <h1>Velkommen til Kodegenet!</h1>
 
-            <p>Kodegenet er en nettside som er utviklet i forbindelse med Lambertseter Kodeklubb. Gjennom siden vil det tilbys kursmateriale som er benyttet i et av klubbens kurs.</p>
-            <p>Alt materialet er publisert med en Creative Commons lisens som gjør at materialet er gratis å bruke å endre på, så lenge det ikke benyttes til kommersielle formål.</p>
-            <p>Våren 2014 tilbys det kurs i {{#linkTo "course" "courses_raspi"}}Raspberry Pi og JavaScript{{/linkTo}} via <a href="http://www.deichman.no/filial/lambertseter">Deichmann Bibliotek på Lambertseter</a>. Kurset går over 8 lørdager fra januar til mai. </p>
-            <p>Alt kursmateriell publiseres {{#linkTo "courses"}}Kodegenets Kurs-sider{{/linkTo}}. </p>
-        </div>
-    </div>
-    <div class="row">
+        {{#if page}}
+            <div class="col-md-12">
+
+                <h1>{{page.tittel}}</h1>
+
+                {{markdown page.content}}
+            </div>
+        {{/if}}
+
+        {{#each course in controller.courses}}
+            {{#if course.visible}}
+                <div class="col-md-3 col-md-offset-1">
+                    <div class="courseIntroBox">
+                        <div class="courseIntroBoxHeader">
+                            <h1>{{course.title}}</h1>
+                        </div>
+                        <div class="courseIntroBoxContent">
+                            {{course.shortIntro}}
+                        </div>
+                        <div class="courseIntroBoxHeader">
+                            {{#link-to "course" course class="btn btn-default" tagName="a"}}Start{{/link-to}}
+                        </div>
+                    </div>
+                </div>
+            {{/if}}
+        {{/each}}
+
         <div class="col-md-12">
-            <h1>Oppdateringer</h1>
+            <h1>{{controller.settings.updates_header}}</h1>
             {{#each update in controller}}
                 <div>
                     <h4>{{dmy update.publishedDate}} - {{update.title}}</h4>

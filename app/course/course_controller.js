@@ -1,5 +1,6 @@
 Kodegenet.CourseController = Ember.ObjectController.extend({
     needs: ['chapter','courses','chapterOppgave'],
+
     coursePopoverShowing: false,
     chapterPopoverShowing: false,
     subchapterPopoverShowing: false,
@@ -27,6 +28,7 @@ Kodegenet.CourseController = Ember.ObjectController.extend({
             this.hidePopovers();
             this.set('selectedSubchapter', null);
             this.transitionToRoute('chapter', chapter);
+            this.scrollToTop();
         },
 
         selectCourse: function(course) {
@@ -34,6 +36,7 @@ Kodegenet.CourseController = Ember.ObjectController.extend({
             this.set('selectedSubchapter', null);
             this.set('controllers.chapter.model', null);
             this.transitionToRoute('course', course);
+            this.scrollToTop();
         },
 
         scrollToSubchapter: function(subchapter) {
@@ -45,10 +48,16 @@ Kodegenet.CourseController = Ember.ObjectController.extend({
             if (anchor) {
                 var elem = $('#' + anchor);
                 if (elem && elem.offset()) {
-                    $('body').scrollTop(elem.offset().top - 60);
+                    var body = $("html, body");
+                    body.animate({scrollTop:elem.offset().top - 60}, '500', 'swing', function() { });
                 }
             }
         }
+    },
+
+    scrollToTop: function() {
+        var body = $("html, body");
+        body.animate({scrollTop:100}, '500', 'swing', function() { });
     },
 
     hidePopovers: function() {

@@ -1,6 +1,6 @@
 Ember.Handlebars.registerBoundHelper('markdown', function(property) {
     var converter = new Showdown.converter();
-    if (property !== null) {
+    if (property) {
         Ember.run.schedule('afterRender', this, function(){
             console.log('scheduling to after render');
             Rainbow.color();

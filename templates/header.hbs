@@ -3,16 +3,23 @@
         <div class="row">
             <div class="col-md-4">
                 {{#link-to "index" tagName="a"}}
-                    <img src="/images/kodegenet_logo.png" style="height: 45px; float:left;" />
+                    <img {{bind-attr src=controller.settings.logo}} style="height: 60px; float:left;" />
                 {{/link-to}}
             </div>
             <div class="col-md-8">
                 <ul>
-                    {{#each page in pages}}
-                        <li>
-                        {{#link-to page.route tagName="a"}}
-                            {{page.name}}
-                        {{/link-to}}
+                    {{#each page in model}}
+                        <li class="headerItem">
+                            {{#if page.route}}
+                                {{#link-to page.route tagName="a"}}
+                                    {{page.tittel}}
+                                {{/link-to}}
+                            {{else}}
+                                {{#link-to "page" page.id tagName="a"}}
+                                    {{page.tittel}}
+                                {{/link-to}}
+                            {{/if}}
+
                         </li>
                     {{/each}}
                 </ul>

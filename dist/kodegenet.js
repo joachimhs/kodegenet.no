@@ -1,4 +1,10 @@
-var Kodegenet = Ember.Application.create();
+var Kodegenet = Ember.Application.create({
+    ready: function() {
+        this.register('session:setting', Kodegenet.SettingController, {singleton: true});
+        this.inject('controller', 'settings', 'session:setting');
+        this.inject('controller:setting', 'store', 'store:main');
+    }
+});
 
 DS.RESTAdapter.reopen({
     namespace: 'json'
@@ -19,8 +25,66 @@ Kodegenet.UpdateAdapter = Kodegenet.Adapter.extend({
 Kodegenet.PageAdapter = Kodegenet.Adapter.extend({
     namespace: 'json/data'
 });
-Kodegenet.ChapterController = Ember.ObjectController.extend({
 
+Kodegenet.SettingAdapter = Kodegenet.Adapter.extend({
+    namespace: 'json/data'
+});
+Kodegenet.ApplicationController = Ember.ObjectController.extend({
+    init: function() {
+        console.log('Application Controller init');
+
+        var controller = this;
+
+        this.store.find('setting').then(function(data) {
+            console.log(data.content);
+            data.content.forEach(function(setting) {
+                var id = setting.id;
+                var value = setting.get('settingsValue');
+
+                console.log(setting);
+                console.log(id + " ::: " + value);
+                controller.settings.set(setting.id,  value);
+            });
+        });
+    }
+});
+Kodegenet.ChapterController = Ember.ObjectController.extend({
+    queryParams: ['oppgave'],
+
+    oppgaveObserver: function() {
+        var oppgave = this.get('oppgave');
+
+        console.log('Oppgave: ') ;
+        console.log(this.get('oppgave'));
+
+
+        if (oppgave) {
+            var controller = this;
+            setTimeout(function() {
+                Ember.run.schedule('afterRender', this, function(){
+                    console.log('scrolling in after render');
+                    controller.scrollToSubchapter(oppgave);
+                }, 1);
+            }, 1000);
+        }
+    }.observes('oppgave'),
+
+    scrollToSubchapter: function(subchapter) {
+        this.set('selectedSubchapter', subchapter);
+        //this.hidePopovers();
+
+        var anchor = subchapter;
+
+        console.log('scrolling to subchapter: ' + subchapter);
+        console.log(anchor);
+
+        if (anchor) {
+            var elem = $('#' + anchor);
+            if (elem && elem.offset()) {
+                $('body').scrollTop(elem.offset().top - 60);
+            }
+        }
+    }
 });
 Kodegenet.ChapterIndexController = Ember.ObjectController.extend({
     actions: {
@@ -60,6 +124,7 @@ Kodegenet.ChapterRoute = Ember.Route.extend({
 });
 Kodegenet.CourseController = Ember.ObjectController.extend({
     needs: ['chapter','courses','chapterOppgave'],
+
     coursePopoverShowing: false,
     chapterPopoverShowing: false,
     subchapterPopoverShowing: false,
@@ -87,6 +152,7 @@ Kodegenet.CourseController = Ember.ObjectController.extend({
             this.hidePopovers();
             this.set('selectedSubchapter', null);
             this.transitionToRoute('chapter', chapter);
+            this.scrollToTop();
         },
 
         selectCourse: function(course) {
@@ -94,6 +160,7 @@ Kodegenet.CourseController = Ember.ObjectController.extend({
             this.set('selectedSubchapter', null);
             this.set('controllers.chapter.model', null);
             this.transitionToRoute('course', course);
+            this.scrollToTop();
         },
 
         scrollToSubchapter: function(subchapter) {
@@ -105,10 +172,16 @@ Kodegenet.CourseController = Ember.ObjectController.extend({
             if (anchor) {
                 var elem = $('#' + anchor);
                 if (elem && elem.offset()) {
-                    $('body').scrollTop(elem.offset().top - 60);
+                    var body = $("html, body");
+                    body.animate({scrollTop:elem.offset().top - 60}, '500', 'swing', function() { });
                 }
             }
         }
+    },
+
+    scrollToTop: function() {
+        var body = $("html, body");
+        body.animate({scrollTop:100}, '500', 'swing', function() { });
     },
 
     hidePopovers: function() {
@@ -143,6 +216,39 @@ Kodegenet.CourseController = Ember.ObjectController.extend({
         }
 
     }.observes('subchapterPopoverShowing')
+});
+Kodegenet.CourseIndexController = Ember.ObjectController.extend({
+    actions: {
+        navigateToSubchapter: function(chapter, subchapter) {
+            console.log('navigating to subchapter: ' + subchapter.get('id'));
+            this.transitionToRoute('chapter', chapter);
+
+            if (subchapter) {
+                var controller = this;
+                setTimeout(function() {
+                    Ember.run.schedule('afterRender', this, function(){
+                        console.log('scrolling in after render');
+                        controller.scrollToSubchapter(subchapter);
+                    }, 1);
+                }, 250);
+            }
+        }
+    },
+
+    scrollToSubchapter: function(subchapter) {
+        this.set('selectedSubchapter', subchapter);
+        //this.hidePopovers();
+
+        var anchor = subchapter.get('id');
+
+        if (anchor) {
+            var elem = $('#' + anchor);
+            if (elem && elem.offset()) {
+                var body = $("html, body");
+                body.animate({scrollTop:elem.offset().top - 100}, '500', 'swing', function() { });
+            }
+        }
+    }
 });
 Kodegenet.CourseIndexRoute = Ember.Route.extend({
     model: function() {
@@ -195,6 +301,10 @@ Kodegenet.ChapterOppgaveRoute = Ember.Route.extend({
         document.title = model.get("tittel") + ' - Kodegenet';
     }
 });
+Kodegenet.CoursesIndexController = Ember.ArrayController.extend({
+    sortProperties: ['sortIndex'],
+    sortAscending: true
+});
 Kodegenet.CoursesIndexRoute = Ember.Route.extend({
     model: function() {
         return this.modelFor('courses');
@@ -223,31 +333,32 @@ Kodegenet.CoursesRoute = Ember.Route.extend({
         document.title = 'Kursoversikt - Kodegenet';
     }
 });
-Kodegenet.HeaderController = Ember.Controller.extend({
+Kodegenet.HeaderController = Ember.ArrayController.extend({
+    sortProperties: ['sortIndex'],
+    sortAscending: true,
+
     init: function() {
         this._super();
 
         var pages = [];
 
-        pages.pushObject(Ember.Object.create({
-            id: 'home',
-            name: "Home",
-            route: 'index'
-        }));
+        this.store.find('page').then(function(data) {
+            data.forEach(function(page) {
+                var topMenu = page.get('topMenu');
 
-        pages.pushObject(Ember.Object.create({
-            id: 'om',
-            name: "Om Kodegenet",
-            route: 'om'
-        }));
+                console.log("topMenu: " + topMenu + " :: " + page.get('id'));
+                if (topMenu) {
+                    pages.pushObject(page);
+                }
+            });
+        });
 
-        pages.pushObject(Ember.Object.create({
-            id: 'courses',
-            name: "Kurs",
-            route: 'courses'
-        }));
+        var sortedResult = Em.ArrayProxy.createWithMixins(
+            Ember.SortableMixin,
+            { content:pages, sortProperties: this.sortProperties }
+        );
 
-        this.set('pages', pages);
+        this.set('content', sortedResult);
     }
 });
 Ember.Handlebars.registerBoundHelper('dmy', function(property) {
@@ -268,13 +379,20 @@ Ember.Handlebars.registerBoundHelper('rawhtml', function(property) {
 });
 Ember.Handlebars.registerBoundHelper('markdown', function(property) {
     var converter = new Showdown.converter();
-    if (property !== null) {
+    if (property) {
         Ember.run.schedule('afterRender', this, function(){
             console.log('scheduling to after render');
             Rainbow.color();
         }, 200);
 
         return new Handlebars.SafeString(converter.makeHtml(property));
+    }
+});
+Ember.Handlebars.registerBoundHelper('setting', function(property) {
+    if (property !== null) {
+        console.log('setting helper');
+        var setting = this.get('store').find('setting', property);
+        return setting.get('settingsValue');
     }
 });
 Kodegenet.IndexController = Ember.ArrayController.extend({
@@ -299,17 +417,40 @@ Kodegenet.IndexRoute = Ember.Route.extend({
     }
 });
 Kodegenet.IndexController = Ember.ArrayController.extend({
+    needs: ['courses'],
+
     sortProperties: ['publishedDate'],
-    sortAscending: false
+    sortAscending: false,
+
+    init: function() {
+        var controller = this;
+
+        this.store.find('page', 'index').then(function(data) {
+            console.log('page received');
+            console.log(data);
+            controller.set('page', data);
+        });
+
+        var courses = [];
+
+        this.store.find('course').then(function(data) {
+            data.forEach(function(course) {
+               courses.pushObject(course);
+            });
+        });
+
+        var sortedResult = Em.ArrayProxy.createWithMixins(
+            Ember.SortableMixin,
+            { content:courses, sortProperties: ['sortIndex'] }
+        );
+
+        controller.set('courses', sortedResult);
+    }
 });
 Kodegenet.IndexRoute = Ember.Route.extend({
     model: function() {
         return this.store.find('update');
     }
-    /*setupController: function(controller) {
-        var updates = this.store.find('update');
-        controller.set('updates', updates);
-    }*/
 
 });
 Kodegenet.Chapter = DS.Model.extend({
@@ -318,6 +459,7 @@ Kodegenet.Chapter = DS.Model.extend({
     oppgaver: DS.hasMany('oppgave', {async: true}),
     slides: DS.attr('string'),
     kapittel: DS.attr('number'),
+    oneliner: DS.attr('string'),
 
     slideUrl: function() {
         return '/reveal.html?ids%5B%5D=' + this.get('id');
@@ -334,13 +476,17 @@ Kodegenet.Course = DS.Model.extend({
     intro: DS.attr('string'),
     imageSrc: DS.attr('string'),
     content: DS.attr('string'),
-    submenuContent: DS.attr('string')
+    submenuContent: DS.attr('string'),
+    shortIntro: DS.attr('string'),
+    sortIndex: DS.attr('number'),
+    visible: DS.attr('boolean')
 });
 Kodegenet.Oppgave = DS.Model.extend({
     tittel: DS.attr('string'),
     kapittel: DS.attr('number'),
     content: DS.attr('string'),
     screencastbox: DS.attr('string'),
+    oneliner: DS.attr('string'),
 
     anchorid: function() {
         return "#" + this.get('id');
@@ -353,7 +499,15 @@ Kodegenet.Oppgave = DS.Model.extend({
 Kodegenet.Page = DS.Model.extend({
     tittel: DS.attr('string'),
     content: DS.attr('string'),
-    visible: DS.attr('boolean')
+    visible: DS.attr('boolean'),
+    topMenu: DS.attr('string'),
+    route: DS.attr('string'),
+    sortIndex: DS.attr('number')
+});
+Kodegenet.Setting = DS.Model.extend({
+    settingsValue: DS.attr('string'),
+    settingsKey: DS.attr('string'),
+    settingsLabel: DS.attr('string')
 });
 Kodegenet.Update = DS.Model.extend({
     title: DS.attr('string'),
@@ -365,6 +519,13 @@ Kodegenet.Update = DS.Model.extend({
 Kodegenet.OmRoute = Ember.Route.extend({
     model: function() {
         return this.store.find('page', "om");
+    }
+});
+Kodegenet.PageRoute = Ember.Route.extend({
+    model: function(page) {
+        console.log('PAGE');
+        console.log(page);
+        return this.store.find('page', page.page_id);
     }
 });
 Kodegenet.RevealFrameView = Ember.View.extend({
@@ -387,8 +548,13 @@ Kodegenet.Router.map(function() {
             });
         });
     });
+    this.resource('page', {path: '/page/:page_id'});
     this.route('om');
 });
+Kodegenet.SettingController = Ember.Controller.extend({
+
+});
+
 Kodegenet.ChapterMenuItemView = Ember.View.extend({
     templateName: 'chapter-menu-item',
 

@@ -1,4 +1,10 @@
-var Kodegenet = Ember.Application.create();
+var Kodegenet = Ember.Application.create({
+    ready: function() {
+        this.register('session:setting', Kodegenet.SettingController, {singleton: true});
+        this.inject('controller', 'settings', 'session:setting');
+        this.inject('controller:setting', 'store', 'store:main');
+    }
+});
 
 DS.RESTAdapter.reopen({
     namespace: 'json'
@@ -17,5 +23,9 @@ Kodegenet.UpdateAdapter = Kodegenet.Adapter.extend({
 });
 
 Kodegenet.PageAdapter = Kodegenet.Adapter.extend({
+    namespace: 'json/data'
+});
+
+Kodegenet.SettingAdapter = Kodegenet.Adapter.extend({
     namespace: 'json/data'
 });

@@ -1,3 +1,29 @@
-<h1>{{title}}</h1>
-{{markdown intro}}
-{{markdown content.content}}
+
+{{!markdown intro}}
+{{!markdown content.content}}
+<div class="chapterIntro">
+    {{#each chapter in chapters}}
+        <h1>{{chapter.tittel}}</h1>
+        
+
+        <table class="subchapterBox">
+        {{#each oppgave in chapter.oppgaver}}
+            <tr>
+                <td class="numberCell">
+                    <a ="#" {{action "navigateToSubchapter" chapter oppgave}}>
+                        <div class="oppgavekapittelBox">
+                            {{chapter.kapittel}}.{{oppgave.kapittel}}
+                        </div>
+                    </a>
+                </td>
+                <td>
+                    <a ="#" {{action "navigateToSubchapter" chapter oppgave}}>
+                        <h2>{{oppgave.tittel}}</h2>
+                        <div class="oneliner">{{oppgave.oneliner}}</div>
+                    </a>
+                </td>
+            </tr>
+        {{/each}}
+        </table>
+    {{/each}}
+</div>

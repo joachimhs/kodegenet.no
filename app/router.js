@@ -11,5 +11,6 @@ Kodegenet.Router.map(function() {
             });
         });
     });
+    this.resource('page', {path: '/page/:page_id'});
     this.route('om');
 });

@@ -3,6 +3,7 @@ Kodegenet.Oppgave = DS.Model.extend({
     kapittel: DS.attr('number'),
     content: DS.attr('string'),
     screencastbox: DS.attr('string'),
+    oneliner: DS.attr('string'),
 
     anchorid: function() {
         return "#" + this.get('id');
