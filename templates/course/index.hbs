@@ -3,23 +3,23 @@
 {{!markdown content.content}}
 <div class="chapterIntro">
     {{#each chapter in chapters}}
-        <h1>{{chapter.tittel}}</h1>
-        
+        <h1>{{#link-to "chapter" chapter}}{{chapter.kapittel}} - {{chapter.tittel}}{{/link-to}}</h1>
+
 
         <table class="subchapterBox">
-        {{#each oppgave in chapter.oppgaver}}
+        {{#each subchapter in chapter.sortedSubchapters}}
             <tr>
                 <td class="numberCell">
-                    <a ="#" {{action "navigateToSubchapter" chapter oppgave}}>
+                    <a ="#" {{action "navigateToSubchapter" chapter subchapter}} class="pointer">
                         <div class="oppgavekapittelBox">
-                            {{chapter.kapittel}}.{{oppgave.kapittel}}
+                            {{chapter.kapittel}}.{{subchapter.kapittel}}
                         </div>
                     </a>
                 </td>
                 <td>
-                    <a ="#" {{action "navigateToSubchapter" chapter oppgave}}>
-                        <h2>{{oppgave.tittel}}</h2>
-                        <div class="oneliner">{{oppgave.oneliner}}</div>
+                    <a ="#" {{action "navigateToSubchapter" chapter subchapter}} class="pointer">
+                        <h2>{{subchapter.tittel}}</h2>
+                        <div class="oneliner">{{subchapter.oneliner}}</div>
                     </a>
                 </td>
             </tr>

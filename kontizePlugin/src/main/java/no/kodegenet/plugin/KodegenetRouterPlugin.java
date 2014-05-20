@@ -8,7 +8,9 @@ import no.kodegenet.handlers.CoursesHandler;
 import no.kodegenet.handlers.OppgaverHandler;
 import no.kodegenet.handlers.RevealHandler;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,6 +30,10 @@ public class KodegenetRouterPlugin extends RouterPlugin {
         routeMap.put("/json/chapters/{chapter}", ChaptersHandler.class);
         routeMap.put("/json/oppgaver", OppgaverHandler.class);
         routeMap.put("/json/oppgaver/{oppgave}", OppgaverHandler.class);
+
+        routeMap.put("/json/subchapters", OppgaverHandler.class);
+        routeMap.put("/json/subchapters/{subchapter}", OppgaverHandler.class);
+
         routeMap.put("/json/updates", OppgaverHandler.class);
         routeMap.put("/json/updated/{update}", OppgaverHandler.class);
 
@@ -37,13 +43,18 @@ public class KodegenetRouterPlugin extends RouterPlugin {
     }
 
     @Override
-    public LinkedHashMap<String,Class<? extends ChannelHandler>> getRoutes() {
-        return routeMap;
+    public List<String> getPluginDependencies() {
+        return new ArrayList<>();
     }
 
     @Override
-    public Class<? extends ChannelHandler> getHandlerForRoute(String route) {
-        return routeMap.get(route);
+    public String getPluginName() {
+        return "KodegenetRouterPlugin";
+    }
+
+    @Override
+    public LinkedHashMap<String,Class<? extends ChannelHandler>> getRoutes() {
+        return routeMap;
     }
 
     @Override

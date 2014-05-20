@@ -18,7 +18,7 @@ public class CoursesHandler extends ContenticeHandler {
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, FullHttpRequest fullHttpRequest) throws Exception {
         String jsonReturn = "";
 
-        List<SubCategoryData> courses = getStorage().getSubCategories("courses");
+        List<SubCategoryData> courses = getStorage().getSubCategories(getDomain().getWebappName(), "courses");
 
         JsonArray pageArray = new JsonArray();
         for (SubCategoryData course : courses) {

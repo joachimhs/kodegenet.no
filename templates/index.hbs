@@ -14,7 +14,7 @@
 
         {{#each course in controller.courses}}
             {{#if course.visible}}
-                <div class="col-md-3 col-md-offset-1">
+                <div {{bind-attr class=controller.indexColClassName}}>
                     <div class="courseIntroBox">
                         <div class="courseIntroBoxHeader">
                             <h1>{{course.title}}</h1>

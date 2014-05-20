@@ -5,7 +5,7 @@ Kodegenet.CoursesCourseRoute = Ember.Route.extend({
 
     setupController: function(controller, model) {
         this._super(controller, model);
-        ga('send', 'pageview', '/courses' + model.get('id'));
+        if (ga) ga('send', 'pageview', '/courses' + model.get('id'));
 
         document.title = 'Kodegenet Kurs - ' + model.get('title');
 

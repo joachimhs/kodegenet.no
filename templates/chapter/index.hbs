@@ -17,18 +17,18 @@
 {{/if}}
 
     {{markdown content.content}}
-        {{#each oppgave in oppgaver}}
-            <a {{bind-attr id=oppgave.id}}></a>
+        {{#each subchapter in sortedSubchapters}}
+            <a {{bind-attr id=subchapter.id}}></a>
 
             <div class="kapittelHeader">
-                <div class="kapittelNummer">{{kapittel}}.{{oppgave.kapittel}}</div>
-                {{oppgave.tittel}}
+                <div class="kapittelNummer">{{kapittel}}.{{subchapter.kapittel}}</div>
+                {{subchapter.tittel}}
             </div>
-            {{#if oppgave.screencastbox}}
+            {{#if subchapter.screencastbox}}
                 <div class="well screencast">
                     <p>Dette delkapittelet inneholder video. Videoene demonstrerer innholdet i delkapittelet, og vil dermed ikke gå utover delkapittelets innhold.</p>
-                    {{markdown oppgave.screencastbox}}
+                    {{markdown subchapter.screencastbox}}
                 </div>
             {{/if}}
-            {{markdown oppgave.content}}
+            {{markdown subchapter.content}}
         {{/each}}

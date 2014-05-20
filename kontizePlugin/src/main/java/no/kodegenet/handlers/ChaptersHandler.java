@@ -23,7 +23,7 @@ public class ChaptersHandler extends ContenticeHandler {
         List<String> chaptersIds = getQueryStringIds();
 
         if (isGet(fullHttpRequest) && chapterId == null && chaptersIds != null && chaptersIds.size() == 0) {
-            List<SubCategoryData> chapters = getStorage().getSubCategories("chapters");
+            List<SubCategoryData> chapters = getStorage().getSubCategories(getDomain().getWebappName(), "chapters");
 
             JsonArray chaptersArray = new JsonArray();
             for (SubCategoryData chapter : chapters) {
@@ -34,7 +34,7 @@ public class ChaptersHandler extends ContenticeHandler {
             topLevelObject.add("chapters", chaptersArray);
             jsonReturn = topLevelObject.toString();
         } else if (isGet(fullHttpRequest) && chapterId != null) {
-            SubCategoryData chapter = getStorage().getSubCategory("chapters", chapterId);
+            SubCategoryData chapter = getStorage().getSubCategory(getDomain().getWebappName(), "chapters", chapterId);
             if (chapter != null) {
                 JsonObject topLevelObject = new JsonObject();
                 JsonObject chapterObject = CourseAssembler.buildPageJsonFromSubCategoryData(chapter);
@@ -45,7 +45,7 @@ public class ChaptersHandler extends ContenticeHandler {
         } else if (isGet(fullHttpRequest) && chaptersIds != null && chaptersIds.size() > 0) {
             JsonArray chaptersArray = new JsonArray();
             for (String id : chaptersIds) {
-                SubCategoryData chapter = getStorage().getSubCategory("chapters", id);
+                SubCategoryData chapter = getStorage().getSubCategory(getDomain().getWebappName(), "chapters", id);
                 if (chapter != null) {
                     JsonObject chapterObject = CourseAssembler.buildPageJsonFromSubCategoryData(chapter);
                     chaptersArray.add(chapterObject);

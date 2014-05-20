@@ -440,6 +440,10 @@ footer .row {
     cursor: pointer;
 }
 
+.pointer {
+    cursor: pointer;
+}
+
 .popnomore{display:none;}
 .pop {
     background: #eee;

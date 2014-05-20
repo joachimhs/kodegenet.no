@@ -1,7 +1,7 @@
 Kodegenet.Chapter = DS.Model.extend({
     tittel: DS.attr('string'),
     content: DS.attr('string'),
-    oppgaver: DS.hasMany('oppgave', {async: true}),
+    subchapters: DS.hasMany('subchapter', {async: true}),
     slides: DS.attr('string'),
     kapittel: DS.attr('number'),
     oneliner: DS.attr('string'),
@@ -12,5 +12,16 @@ Kodegenet.Chapter = DS.Model.extend({
 
     chapterTittel: function() {
         return this.get('kapittel') + ". " + this.get('tittel');
-    }.property('kapittel', 'tittel')
+    }.property('kapittel', 'tittel'),
+
+    sortedSubchapters: function() {
+        var subchapters = this.get('subchapters');
+
+        var sortedResult = Em.ArrayProxy.createWithMixins(
+            Ember.SortableMixin,
+            { content:subchapters, sortProperties: ['kapittel'] }
+        );
+
+        return sortedResult;
+    }.property('subchapters.length')
 });

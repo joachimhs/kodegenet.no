@@ -117,7 +117,7 @@ Kodegenet.ChapterRoute = Ember.Route.extend({
 
     setupController: function(controller, model) {
         this._super(controller, model);
-        ga('send', 'pageview', '/chapter' + model.get('id'));
+        if (ga) ga('send', 'pageview', '/chapter' + model.get('id'));
 
         document.title = model.get("tittel") + ' - Kodegenet';
     }
@@ -262,7 +262,7 @@ Kodegenet.CoursesCourseRoute = Ember.Route.extend({
 
     setupController: function(controller, model) {
         this._super(controller, model);
-        ga('send', 'pageview', '/courses' + model.get('id'));
+        if (ga) ga('send', 'pageview', '/courses' + model.get('id'));
 
         document.title = 'Kodegenet Kurs - ' + model.get('title');
 
@@ -296,7 +296,7 @@ Kodegenet.ChapterOppgaveRoute = Ember.Route.extend({
 
     setupController: function(controller, model) {
         this._super(controller, model);
-        ga('send', 'pageview', '/oppgave' + model.get('id'));
+        if (ga) ga('send', 'pageview', '/oppgave' + model.get('id'));
 
         document.title = model.get("tittel") + ' - Kodegenet';
     }
@@ -328,7 +328,7 @@ Kodegenet.CoursesRoute = Ember.Route.extend({
 
     setupController: function(controller, model) {
         this._super(controller, model);
-        ga('send', 'pageview', '/courses');
+        if (ga) ga('send', 'pageview', '/courses');
 
         document.title = 'Kursoversikt - Kodegenet';
     }
@@ -411,7 +411,7 @@ Kodegenet.IndexController = Ember.ArrayController.extend({
 Kodegenet.IndexRoute = Ember.Route.extend({
     setupController: function(controller, model) {
         this._super(controller, model);
-        ga('send', 'pageview', '/');
+        if (ga) ga('send', 'pageview', '/');
 
         document.title = 'Kodegenet Hjem';
     }
@@ -421,6 +421,8 @@ Kodegenet.IndexController = Ember.ArrayController.extend({
 
     sortProperties: ['publishedDate'],
     sortAscending: false,
+
+    numVisibleCourses: 0,
 
     init: function() {
         var controller = this;
@@ -436,6 +438,9 @@ Kodegenet.IndexController = Ember.ArrayController.extend({
         this.store.find('course').then(function(data) {
             data.forEach(function(course) {
                courses.pushObject(course);
+                if (course.get('visible')) {
+                    controller.set('numVisibleCourses', controller.get('numVisibleCourses') + 1);
+                }
             });
         });
 
@@ -445,7 +450,17 @@ Kodegenet.IndexController = Ember.ArrayController.extend({
         );
 
         controller.set('courses', sortedResult);
-    }
+    },
+
+    indexColClassName: function() {
+        if (this.get('numVisibleCourses') === 1) {
+            return "col-md-5 col-md-offset-4";
+        } else if (this.get('numVisibleCourses') === 2) {
+            return "col-md-5 col-md-offset-1";
+        } else {
+            return "col-md-4";
+        }
+    }.property('numVisibleCourses')
 });
 Kodegenet.IndexRoute = Ember.Route.extend({
     model: function() {
@@ -456,7 +471,7 @@ Kodegenet.IndexRoute = Ember.Route.extend({
 Kodegenet.Chapter = DS.Model.extend({
     tittel: DS.attr('string'),
     content: DS.attr('string'),
-    oppgaver: DS.hasMany('oppgave', {async: true}),
+    subchapters: DS.hasMany('subchapter', {async: true}),
     slides: DS.attr('string'),
     kapittel: DS.attr('number'),
     oneliner: DS.attr('string'),
@@ -467,7 +482,18 @@ Kodegenet.Chapter = DS.Model.extend({
 
     chapterTittel: function() {
         return this.get('kapittel') + ". " + this.get('tittel');
-    }.property('kapittel', 'tittel')
+    }.property('kapittel', 'tittel'),
+
+    sortedSubchapters: function() {
+        var subchapters = this.get('subchapters');
+
+        var sortedResult = Em.ArrayProxy.createWithMixins(
+            Ember.SortableMixin,
+            { content:subchapters, sortProperties: ['kapittel'] }
+        );
+
+        return sortedResult;
+    }.property('subchapters.length')
 });
 Kodegenet.Course = DS.Model.extend({
     chapters: DS.hasMany('chapter', {async: true}),
@@ -481,7 +507,20 @@ Kodegenet.Course = DS.Model.extend({
     sortIndex: DS.attr('number'),
     visible: DS.attr('boolean')
 });
-Kodegenet.Oppgave = DS.Model.extend({
+Kodegenet.Page = DS.Model.extend({
+    tittel: DS.attr('string'),
+    content: DS.attr('string'),
+    visible: DS.attr('boolean'),
+    topMenu: DS.attr('string'),
+    route: DS.attr('string'),
+    sortIndex: DS.attr('number')
+});
+Kodegenet.Setting = DS.Model.extend({
+    settingsValue: DS.attr('string'),
+    settingsKey: DS.attr('string'),
+    settingsLabel: DS.attr('string')
+});
+Kodegenet.Subchapter = DS.Model.extend({
     tittel: DS.attr('string'),
     kapittel: DS.attr('number'),
     content: DS.attr('string'),
@@ -495,19 +534,6 @@ Kodegenet.Oppgave = DS.Model.extend({
     oppgaveTittel: function() {
         return this.get('kapittel') + ". " + this.get('tittel');
     }.property('kapittel', 'tittel')
-});
-Kodegenet.Page = DS.Model.extend({
-    tittel: DS.attr('string'),
-    content: DS.attr('string'),
-    visible: DS.attr('boolean'),
-    topMenu: DS.attr('string'),
-    route: DS.attr('string'),
-    sortIndex: DS.attr('number')
-});
-Kodegenet.Setting = DS.Model.extend({
-    settingsValue: DS.attr('string'),
-    settingsKey: DS.attr('string'),
-    settingsLabel: DS.attr('string')
 });
 Kodegenet.Update = DS.Model.extend({
     title: DS.attr('string'),

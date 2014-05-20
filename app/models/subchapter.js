@@ -1,4 +1,4 @@
-Kodegenet.Oppgave = DS.Model.extend({
+Kodegenet.Subchapter = DS.Model.extend({
     tittel: DS.attr('string'),
     kapittel: DS.attr('number'),
     content: DS.attr('string'),

@@ -34,9 +34,11 @@
 
                 <div id="coursePopover" class="pop popnomore coursePopover">
                     {{#each course in controllers.courses.model}}
-                        <div {{action "selectCourse" course}} class="submenuLink">
-                            <span class="glyphicon glyphicon-book"></span> {{course.title}}
-                        </div>
+                        {{#if course.visible}}
+                            <div {{action "selectCourse" course}} class="submenuLink">
+                                <span class="glyphicon glyphicon-book"></span> {{course.title}}
+                            </div>
+                        {{/if}}
                     {{/each}}
                 </div>
 
@@ -49,9 +51,9 @@
                 </div>
 
                 <div id="subchapterPopover" class="pop popnomore subchapterPopover">
-                    {{#each oppgave in controller.controllers.chapter.oppgaver}}
-                        <div {{action "scrollToSubchapter" oppgave}} class="submenuLink">
-                            <span class="glyphicon glyphicon-tag"></span> {{oppgave.oppgaveTittel}}
+                    {{#each subchapter in controller.controllers.chapter.subchapters}}
+                        <div {{action "scrollToSubchapter" subchapter}} class="submenuLink">
+                            <span class="glyphicon glyphicon-tag"></span> {{subchapter.oppgaveTittel}}
                         </div>
                     {{/each}}
                 </div>

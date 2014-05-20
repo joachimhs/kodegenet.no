@@ -8,7 +8,7 @@
 {{/link-to}}
 
 {{#if view.isSelected}}
-    {{#each oppgave in chapter.oppgaver}}
+    {{#each oppgave in chapter.subchapters}}
         <a {{bind-attr href=oppgave.anchorid}} class="list-group-item">
             <span style="margin-left: 15px">
                 <span class="glyphicon glyphicon-signal"></span> <div class="list-group-text">{{oppgave.tittel}}</div>

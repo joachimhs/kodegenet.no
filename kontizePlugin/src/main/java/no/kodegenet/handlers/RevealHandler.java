@@ -35,13 +35,13 @@ public class RevealHandler extends ContenticeHandler {
 
         if (slideIds != null && slideIds.size() > 0) {
             String slideID = slideIds.get(0);
-            SubCategoryData chapter = getStorage().getSubCategory("chapters", slideID);
+            SubCategoryData chapter = getStorage().getSubCategory(getDomain().getWebappName(), "chapters", slideID);
             if (chapter != null && chapter.getKeyMap().get("slides") != null) {
                 slides = chapter.getKeyMap().get("slides").getAsString();
             }
         }
 
-        htmlReturn = getFileContents(rootPath + "/reveal.html");
+        htmlReturn = getFileContents(rootPath + "/" + getDomain().getWebappName() + "/reveal.html");
 
         if (htmlReturn != null && slides != null) {
             htmlReturn = htmlReturn.replace("{{Reveal-slides}}", slides);
