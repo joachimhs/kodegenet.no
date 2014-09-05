@@ -2,9 +2,9 @@
 {{!markdown intro}}
 {{!markdown content.content}}
 <div class="chapterIntro">
-    {{#each chapter in chapters}}
-        <h1>{{#link-to "chapter" chapter}}{{chapter.kapittel}} - {{chapter.tittel}}{{/link-to}}</h1>
 
+    {{#each chapter in sortedChapters}}
+        <h1>{{#link-to "chapter" chapter}}{{chapter.kapittel}} - {{chapter.tittel}}{{/link-to}}</h1>
 
         <table class="subchapterBox">
         {{#each subchapter in chapter.sortedSubchapters}}

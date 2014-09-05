@@ -14,7 +14,7 @@
                     {{#if controllers.chapter.chapterTittel}}
                         {{controllers.chapter.chapterTittel}}
                     {{else}}
-                        Velg Kapittel
+                        {{controller.settings.chooseChapter}}
                     {{/if}}
 
                 </button>
@@ -27,7 +27,7 @@
                         {{#if selectedSubchapter.oppgaveTittel}}
                             {{selectedSubchapter.oppgaveTittel}}
                         {{else}}
-                            Velg Delkapittel
+                            {{controller.settings.chooseSubchapter}}
                         {{/if}}
                     </button>
                 {{/if}}
@@ -43,7 +43,7 @@
                 </div>
 
                 <div id="chapterPopover" class="pop popnomore chapterPopover">
-                    {{#each chapter in chapters}}
+                    {{#each chapter in sortedChapters}}
                         <div {{action "selectChapter" chapter}} class="submenuLink">
                             <span class="glyphicon glyphicon-th-list"></span> {{chapter.chapterTittel}}
                         </div>
@@ -73,6 +73,17 @@
                 </div>
             {{/if}}
         </div>
+
+        {{#if controller.settings.adsenseLeaderboard}}
+            <div align="center">
+                {{markdown controller.settings.adsenseLeaderboard}}
+            </div>
+        {{/if}}
+
+        {{#if largeImage}}
+            <img {{bind-attr src=largeImage}} />
+        {{/if}}
+
         <div class="col-md-12">
             {{outlet}}
         </div>

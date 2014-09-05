@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>no.haagensoftware</groupId>
-		<artifactId>kontize-parent</artifactId>
+		<artifactId>conticious-parent</artifactId>
 		<version>0.1</version>
 	</parent>
-	<artifactId>kontize-kodegenet-plugin</artifactId>
-	<name>Kontize Kodegenet Plugin</name>
+	<artifactId>conticious-kodegenet-plugin</artifactId>
+	<name>Conticious Kodegenet Plugin</name>
     <version>1.0</version>
 	<packaging>jar</packaging>
 

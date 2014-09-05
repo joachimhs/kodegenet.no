@@ -15,6 +15,10 @@ Kodegenet.IndexController = Ember.ArrayController.extend({
             controller.set('page', data);
         });
 
+        this.store.find('page', 'epostlister').then(function(data) {
+            controller.set('epostliste', data);
+        });
+
         var courses = [];
 
         this.store.find('course').then(function(data) {
@@ -36,11 +40,11 @@ Kodegenet.IndexController = Ember.ArrayController.extend({
 
     indexColClassName: function() {
         if (this.get('numVisibleCourses') === 1) {
-            return "col-md-5 col-md-offset-4";
+            return "col-sm-5 col-sm-offset-4 col-md-5 col-md-offset-4";
         } else if (this.get('numVisibleCourses') === 2) {
-            return "col-md-5 col-md-offset-1";
+            return "col-sm-5 col-sm-offset-4 col-md-5 col-md-offset-1";
         } else {
-            return "col-md-4";
+            return "col-xs-12 col-sm-6 col-md-4 col-lg-4";
         }
     }.property('numVisibleCourses')
 });

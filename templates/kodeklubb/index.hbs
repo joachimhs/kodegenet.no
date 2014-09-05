@@ -1,0 +1,55 @@
+<div class="pageContent">
+    <h1>{{page.tittel}}</h1>
+    {{markdown page.content}}
+
+    <h2>Kommende Kurs</h2>
+    <table class="table">
+        <tr>
+            <th>Dato</th>
+            <th>Tittel</th>
+            <th>Anbefalt aldersgruppe</th>
+            <th></th>
+        </tr>
+
+        {{#each event in sortedEvents}}
+            {{#if event.isVisible}}
+                {{#if event.isInFuture}}
+                    <tr>
+                        <td>{{dmy_no event.date}}</td>
+                        <td>{{event.name}}</td>
+                        <td>{{event.ageGroup}}r</td>
+                        <td>{{link-to "Mer Info" "kodeklubb.event" event}}</td>
+                    </tr>
+                {{/if}}
+            {{/if}}
+        {{/each}}
+    </table>
+
+    <h2>Tidligere Kurs</h2>
+    <table class="table">
+        <tr>
+            <th>Dato</th>
+            <th>Tittel</th>
+            <th>Anbefalt aldersgruppe</th>
+            <th></th>
+        </tr>
+
+        {{#each event in sortedEvents}}
+            {{#if event.isVisible}}
+                {{#if event.isInPast}}
+                    <tr>
+                        <td>{{dmy_no event.date}}</td>
+                        <td>{{event.name}}</td>
+                        <td>{{event.ageGroup}}r</td>
+                        <td>{{link-to "Mer Info" "kodeklubb.event" event}}</td>
+                    </tr>
+                {{/if}}
+            {{/if}}
+        {{/each}}
+    </table>
+
+
+    <p>Om du vil bli varslet angående arrangementene til Lambertseter Kodeklubb, eller oppdateringer til innholdet på Kodegenet.no, meld deg på epostlisten under!</p>
+
+    {{render "epostliste"}}
+</div>

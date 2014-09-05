@@ -13,4 +13,8 @@ Kodegenet.Router.map(function() {
     });
     this.resource('page', {path: '/page/:page_id'});
     this.route('om');
+    this.resource('kodeklubb', {path: "/kodeklubb"}, function() {
+        this.route('event', {path: "/event/:event_id"});
+    });
+    this.route('epostliste');
 });

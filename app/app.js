@@ -29,3 +29,7 @@ Kodegenet.PageAdapter = Kodegenet.Adapter.extend({
 Kodegenet.SettingAdapter = Kodegenet.Adapter.extend({
     namespace: 'json/data'
 });
+
+Kodegenet.EventAdapter = Kodegenet.Adapter.extend({
+    namespace: 'json/data'
+});

@@ -1,6 +1,4 @@
 <div class="pageContent">
-
-
     <div class="row">
 
         {{#if page}}
@@ -15,22 +13,24 @@
         {{#each course in controller.courses}}
             {{#if course.visible}}
                 <div {{bind-attr class=controller.indexColClassName}}>
-                    <div class="courseIntroBox">
-                        <div class="courseIntroBoxHeader">
-                            <h1>{{course.title}}</h1>
+                    {{#link-to "course" course tagName="a" class="boxlink"}}
+                        <div class="courseIntroBox">
+                            <div class="imageOverlay">
+                                <img {{bind-attr src=course.imageSrc}} class="imgSlider" />
+                                <div class="overlay">
+                                    {{course.title}}
+                                </div>
+                            </div>
+                            <div class="text">
+                                <p>{{course.shortIntro}}</p>
+                            </div>
                         </div>
-                        <div class="courseIntroBoxContent">
-                            {{course.shortIntro}}
-                        </div>
-                        <div class="courseIntroBoxHeader">
-                            {{#link-to "course" course class="btn btn-default" tagName="a"}}Start{{/link-to}}
-                        </div>
-                    </div>
+                    {{/link-to}}
                 </div>
             {{/if}}
         {{/each}}
 
-        <div class="col-md-12">
+        <div class="col-sm-12 col-md-5">
             <h1>{{controller.settings.updates_header}}</h1>
             {{#each update in controller}}
                 <div>
@@ -44,6 +44,20 @@
 
             {{/each}}
         </div>
+
+        {{#if controller.epostliste.content}}
+        <div class="col-sm-12 col-md-7">
+            <h1>{{controller.settings.mailinglistHeader}}</h1>
+
+            {{markdown controller.epostliste.content}}
+        </div>
+        {{/if}}
+
+        {{#if controller.settings.adsenseLeaderboard}}
+            <div align="center">
+                {{markdown controller.settings.adsenseLeaderboard}}
+            </div>
+        {{/if}}
     </div>
 
 </div>

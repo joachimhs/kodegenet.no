@@ -29,6 +29,10 @@ Kodegenet.PageAdapter = Kodegenet.Adapter.extend({
 Kodegenet.SettingAdapter = Kodegenet.Adapter.extend({
     namespace: 'json/data'
 });
+
+Kodegenet.EventAdapter = Kodegenet.Adapter.extend({
+    namespace: 'json/data'
+});
 Kodegenet.ApplicationController = Ember.ObjectController.extend({
     init: function() {
         console.log('Application Controller init');
@@ -117,7 +121,7 @@ Kodegenet.ChapterRoute = Ember.Route.extend({
 
     setupController: function(controller, model) {
         this._super(controller, model);
-        if (ga) ga('send', 'pageview', '/chapter' + model.get('id'));
+        if (ga) ga('send', 'pageview', '/chapter/' + model.get('id'));
 
         document.title = model.get("tittel") + ' - Kodegenet';
     }
@@ -262,7 +266,7 @@ Kodegenet.CoursesCourseRoute = Ember.Route.extend({
 
     setupController: function(controller, model) {
         this._super(controller, model);
-        if (ga) ga('send', 'pageview', '/courses' + model.get('id'));
+        if (ga) ga('send', 'pageview', '/courses/' + model.get('id'));
 
         document.title = 'Kodegenet Kurs - ' + model.get('title');
 
@@ -333,6 +337,23 @@ Kodegenet.CoursesRoute = Ember.Route.extend({
         document.title = 'Kursoversikt - Kodegenet';
     }
 });
+Kodegenet.EpostlisteController = Ember.ObjectController.extend({
+    init: function() {
+        this.set('model', this.store.find('page', 'epostlister'));
+    }
+});
+Kodegenet.EpostlisteRoute = Ember.Route.extend({
+    model: function() {
+        return this.store.find('page', "epostlister");
+    },
+
+    setupController: function(controller) {
+        this._super(controller);
+        if (ga) ga('send', 'pageview', '/epostlister');
+
+        document.title = 'Epostlister - Kodegenet';
+    }
+});
 Kodegenet.HeaderController = Ember.ArrayController.extend({
     sortProperties: ['sortIndex'],
     sortAscending: true,
@@ -368,9 +389,12 @@ Ember.Handlebars.registerBoundHelper('dmy', function(property) {
     }
 });
 
-
-
-
+Ember.Handlebars.registerBoundHelper('dmy_no', function(property) {
+    if (property !== null) {
+        var parsedDate = moment(property);
+        return parsedDate.format("DD/MM/YYYY");
+    }
+});
 Ember.Handlebars.registerBoundHelper('rawhtml', function(property) {
     console.log("rawhtml: " + property);
     if (property !== null) {
@@ -433,6 +457,10 @@ Kodegenet.IndexController = Ember.ArrayController.extend({
             controller.set('page', data);
         });
 
+        this.store.find('page', 'epostlister').then(function(data) {
+            controller.set('epostliste', data);
+        });
+
         var courses = [];
 
         this.store.find('course').then(function(data) {
@@ -454,19 +482,64 @@ Kodegenet.IndexController = Ember.ArrayController.extend({
 
     indexColClassName: function() {
         if (this.get('numVisibleCourses') === 1) {
-            return "col-md-5 col-md-offset-4";
+            return "col-sm-5 col-sm-offset-4 col-md-5 col-md-offset-4";
         } else if (this.get('numVisibleCourses') === 2) {
-            return "col-md-5 col-md-offset-1";
+            return "col-sm-5 col-sm-offset-4 col-md-5 col-md-offset-1";
         } else {
-            return "col-md-4";
+            return "col-xs-12 col-sm-6 col-md-4 col-lg-4";
         }
     }.property('numVisibleCourses')
 });
 Kodegenet.IndexRoute = Ember.Route.extend({
     model: function() {
         return this.store.find('update');
+    },
+
+    setupController: function(controller, model) {
+        this._super(controller, model);
+        if (ga) ga('send', 'pageview', '/');
+
+        document.title = 'Velkommen! - Kodegenet';
     }
 
+});
+Kodegenet.KodeklubbEventRoute = Ember.Route.extend({
+    setupController: function(controller, model) {
+        this._super(controller, model);
+        if (ga) ga('send', 'pageview', '/kodeklubb/event/' + model.get('id'));
+
+        document.title = "Event - " + model.get('name') + ' - Kodegenet';
+    }
+});
+Kodegenet.KodeklubbIndexController = Ember.ObjectController.extend({
+    sortProperties: ['date'],
+    sortAscending: true,
+
+    sortedEvents: function() {
+        var events = this.get('events');
+
+        var sortedResult = Em.ArrayProxy.createWithMixins(
+            Ember.SortableMixin,
+            { content:events, sortProperties: ['date'] }
+        );
+
+        return sortedResult;
+    }.property('events.@each.date')
+});
+Kodegenet.KodeklubbRoute = Ember.Route.extend({
+    model: function() {
+        return Ember.RSVP.hash({
+            page: this.store.find('page', "lambertseter_kodeklubb"),
+            events: this.store.find('event')
+        })
+    },
+
+    setupController: function(controller, model) {
+        this._super(controller, model);
+        if (ga) ga('send', 'pageview', '/kodeklubb');
+
+        document.title = 'Lambertseter Kodeklubb - Kodegenet';
+    }
 });
 Kodegenet.Chapter = DS.Model.extend({
     tittel: DS.attr('string'),
@@ -505,7 +578,42 @@ Kodegenet.Course = DS.Model.extend({
     submenuContent: DS.attr('string'),
     shortIntro: DS.attr('string'),
     sortIndex: DS.attr('number'),
-    visible: DS.attr('boolean')
+    visible: DS.attr('boolean'),
+    largeImage: DS.attr('string'),
+
+    sortedChapters: function() {
+        var chapters = this.get('chapters');
+
+        var sortedResult = Em.ArrayProxy.createWithMixins(
+            Ember.SortableMixin,
+            { content:chapters, sortProperties: ['kapittel'] }
+        );
+
+        return sortedResult;
+    }.property('chapters.length')
+});
+Kodegenet.Event = DS.Model.extend({
+    name: DS.attr('string'),
+    content: DS.attr('string'),
+    date: DS.attr('date'),
+    ageGroup: DS.attr('string'),
+    intro:  DS.attr('string'),
+    isVisible: DS.attr('boolean'),
+
+    isInFuture: function() {
+        var future = false;
+        var date = this.get('date');
+
+        if (date) {
+            var m = moment();
+            var d = moment(date);
+            future = d.diff(m) > 0;
+        }
+
+        return future;
+    }.property('date'),
+
+    isInPast: Ember.computed.not('isInFuture')
 });
 Kodegenet.Page = DS.Model.extend({
     tittel: DS.attr('string'),
@@ -545,6 +653,13 @@ Kodegenet.Update = DS.Model.extend({
 Kodegenet.OmRoute = Ember.Route.extend({
     model: function() {
         return this.store.find('page', "om");
+    },
+
+    setupController: function(controller, model) {
+        this._super(controller, model);
+        if (ga) ga('send', 'pageview', '/om' + model.get('id'));
+
+        document.title = 'Om Oss - Kodegenet';
     }
 });
 Kodegenet.PageRoute = Ember.Route.extend({
@@ -552,6 +667,13 @@ Kodegenet.PageRoute = Ember.Route.extend({
         console.log('PAGE');
         console.log(page);
         return this.store.find('page', page.page_id);
+    },
+
+    setupController: function(controller, model) {
+        this._super(controller, model);
+        if (ga) ga('send', 'pageview', '/page/' + model.get('id'));
+
+        document.title = model.get("tittel") + ' - Kodegenet';
     }
 });
 Kodegenet.RevealFrameView = Ember.View.extend({
@@ -576,6 +698,10 @@ Kodegenet.Router.map(function() {
     });
     this.resource('page', {path: '/page/:page_id'});
     this.route('om');
+    this.resource('kodeklubb', {path: "/kodeklubb"}, function() {
+        this.route('event', {path: "/event/:event_id"});
+    });
+    this.route('epostliste');
 });
 Kodegenet.SettingController = Ember.Controller.extend({
 

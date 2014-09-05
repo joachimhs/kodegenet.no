@@ -5,5 +5,9 @@ Ember.Handlebars.registerBoundHelper('dmy', function(property) {
     }
 });
 
-
-
+Ember.Handlebars.registerBoundHelper('dmy_no', function(property) {
+    if (property !== null) {
+        var parsedDate = moment(property);
+        return parsedDate.format("DD/MM/YYYY");
+    }
+});

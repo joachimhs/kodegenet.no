@@ -62,45 +62,18 @@ h3 {
     background: #587780;
     color: #d6dd00;
     min-height: 100px;
-    max-height: 100px;
 }
-
-#topHeaderArea ul {
-    list-style: none;
-    margin: 0 auto;
-    padding: 0;
-    margin-top: 30px;
-    background: none;
-}
-
 #topHeaderArea ul > li {
-    float: left;
-    width: 150px;
-    min-width: 165px;
-    line-height: 26px;
-    white-space:nowrap;
+    text-transform: uppercase;
     text-align: center;
-    cursor: pointer;
-    text-transform: uppercase;
-    font-weight: 900;
-}
-
-#topHeaderArea ul > li {
-    width: 150px;
-    min-width: 150px;
-    text-transform: uppercase;
 }
 
 #topHeaderArea ul > li a {
-    width: 150px;
-    min-width: 150px;
     text-transform: uppercase;
     padding: 5px;
 }
 
 #topHeaderArea ul > li a.active {
-    width: 150px;
-    min-width: 150px;
     border-bottom: 3px #d6dd00 solid;
     border-top: 3px #d6dd00 solid;
     border-radius: 10px;
@@ -121,13 +94,88 @@ h3 {
     color: #e1a836;
 }
 
+.navbar-toggle {
+    margin-top: 30px;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: #e1a836;
+}
+
 #topHeaderArea a {
     color: #f0f0f0;
 }
 
-.headerItem {
-    max-width: 150px;
-    text-wrap: none;
+@media only screen and (max-width: 1200px) {
+    .headerItem {
+        max-width: 140px;
+        min-width: 140px;
+        line-height: 100px;
+        padding-top: 30px;
+        font-size: 13px;
+    }
+
+    .navbar-header {
+        max-width: 200px;
+    }
+
+    .navbar-header img {
+        width: 180px;
+        padding-top: 10px;
+        float: left;
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    .headerItem {
+        max-width: 110px;
+        min-width: 110px;
+        line-height: 100px;
+        padding-top: 30px;
+        font-size: 12px;
+    }
+
+    .navbar-header {
+        max-width: 150px;
+    }
+
+    .navbar-header img {
+        width: 130px;
+        padding-top: 10px;
+        float: left;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .headerItem {
+        max-width: 70px;
+        min-width: 70px;
+        line-height: 100px;
+        padding-top: 30px;
+    }
+
+    .navbar-header {
+        max-width: 100%;
+    }
+
+    .navbar-header button {
+        float: right;
+    }
+
+    .navbar-header img {
+        float: left;
+        width: 200px;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    .headerItem {
+        max-width: 140px;
+        min-width: 140px;
+        line-height: 100px;
+        padding-top: 30px;
+        font-size: 15px;
+    }
 }
 
 #singlelogo {
@@ -142,6 +190,14 @@ h3 {
     background: url('/images/logo_single.png') no-repeat left top;
     height: 45px;
 }
+
+
+
+a.boxlink {
+    color: #000;
+    text-decoration: none;
+}
+
 
 #bottomHeaderArea {
     background: #7faab3;
@@ -492,25 +548,37 @@ footer .row {
 .courseIntroBox {
     border: 1px solid #afc7dd;
     border-radius: 15px;
-    background: #f9fafd;
-    text-align: center;
     margin-top: 5px;
     margin-bottom: 20px;
+    padding: 0px;
+    max-width: 315px;
+    min-width: 315px;
+    text-align: center;
+}
+
+.courseIntroBox a {
+    color: #000;
+    text-decoration: none;
+}
+
+.navbar {
+    background: none;
+    border: none;
+
+}
+.courseIntroBox img {
+    padding: 0px;
+    margin: 0px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    max-width: 100%;
+    width: 100%;
+    max-height: 215px;
+    height: 215px;
 }
 
 .courseIntroBoxHeader {
-    text-align: center;
-
-    padding: 3px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-
-.courseIntroBoxHeader h1 {
-    color: #678d96;
-    font-size: 18px;
-    font-weight: 900;
-    text-align: center;
+    padding: 0px;
 }
 
 .courseIntroBoxContent {
@@ -518,17 +586,40 @@ footer .row {
     padding-bottom: 15px;
     padding-left: 15px;
     padding-right: 15px;
-    text-align: center;
     background: #fff;
-    border-bottom: 1px solid #d4e3ed;
-    border-top: 1px solid #d4e3ed;
+    border: 1px solid #d4e3ed;
+    border-radius: 15px;
 }
 
 .courseIntroBoxContent h1 {
     color: #678d96;
     font-size: 18px;
-    font-weight: 900;
-    text-align: center;
+}
+
+.imageOverlay {
+    position: relative;
+}
+
+.imageOverlay div.overlay {
+    position: absolute;
+    bottom: 0px;
+    background-color: rgba(88, 119, 128, 0.85);
+    padding-left: 40px;
+    color: #fff;
+    font-weight: 300;
+    width: 100%;
+    min-height: 100px;
+    line-height: 100px;
+    font-size: 26px;
+}
+
+.courseIntroBox div.text {
+    background: #fff;
+    color: #000;
+    padding: 15px;
+    margin: 15px;
+    min-height: 140px;
+    max-height: 140px;
 }
 
 .subchapterBox {

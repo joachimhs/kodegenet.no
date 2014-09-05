@@ -1,29 +1,39 @@
 <div id="topHeaderArea">
     <div class="pageContent">
-        <div class="row">
-            <div class="col-md-4">
-                {{#link-to "index" tagName="a"}}
-                    <img {{bind-attr src=controller.settings.logo}} style="height: 60px; float:left;" />
-                {{/link-to}}
-            </div>
-            <div class="col-md-8">
-                <ul>
-                    {{#each page in model}}
-                        <li class="headerItem">
-                            {{#if page.route}}
-                                {{#link-to page.route tagName="a"}}
-                                    {{page.tittel}}
-                                {{/link-to}}
-                            {{else}}
-                                {{#link-to "page" page.id tagName="a"}}
-                                    {{page.tittel}}
-                                {{/link-to}}
-                            {{/if}}
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    {{#link-to "index" tagName="a"}}
+                        <img {{bind-attr src=controller.settings.logo}} />
+                    {{/link-to}}
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
 
-                        </li>
-                    {{/each}}
-                </ul>
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        {{#each page in model}}
+                            <li class="headerItem">
+                                {{#if page.route}}
+                                    {{#link-to page.route tagName="a"}}
+                                        {{page.tittel}}
+                                    {{/link-to}}
+                                {{else}}
+                                    {{#link-to "page" page.id tagName="a"}}
+                                        {{page.tittel}}
+                                    {{/link-to}}
+                                {{/if}}
+
+                            </li>
+                        {{/each}}
+                    </ul>
+                </div>
             </div>
-        </div>
+        </nav>
     </div>
 </div>

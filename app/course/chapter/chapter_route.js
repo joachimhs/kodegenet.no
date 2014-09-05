@@ -5,7 +5,7 @@ Kodegenet.ChapterRoute = Ember.Route.extend({
 
     setupController: function(controller, model) {
         this._super(controller, model);
-        if (ga) ga('send', 'pageview', '/chapter' + model.get('id'));
+        if (ga) ga('send', 'pageview', '/chapter/' + model.get('id'));
 
         document.title = model.get("tittel") + ' - Kodegenet';
     }
