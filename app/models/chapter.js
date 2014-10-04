@@ -5,6 +5,7 @@ Kodegenet.Chapter = DS.Model.extend({
     slides: DS.attr('string'),
     kapittel: DS.attr('number'),
     oneliner: DS.attr('string'),
+    intro: DS.attr('string'),
 
     slideUrl: function() {
         return '/reveal.html?ids%5B%5D=' + this.get('id');

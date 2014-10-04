@@ -1,4 +1,4 @@
-Kodegenet.IndexController = Ember.ArrayController.extend({
+Kodegenet.IndexController = Ember.ObjectController.extend({
     needs: ['courses'],
 
     sortProperties: ['publishedDate'],
@@ -9,15 +9,6 @@ Kodegenet.IndexController = Ember.ArrayController.extend({
     init: function() {
         var controller = this;
 
-        this.store.find('page', 'index').then(function(data) {
-            console.log('page received');
-            console.log(data);
-            controller.set('page', data);
-        });
-
-        this.store.find('page', 'epostlister').then(function(data) {
-            controller.set('epostliste', data);
-        });
 
         var courses = [];
 
@@ -46,5 +37,16 @@ Kodegenet.IndexController = Ember.ArrayController.extend({
         } else {
             return "col-xs-12 col-sm-6 col-md-4 col-lg-4";
         }
-    }.property('numVisibleCourses')
+    }.property('numVisibleCourses'),
+
+    sortedEvents: function() {
+        var events = this.get('events');
+
+        var sortedResult = Em.ArrayProxy.createWithMixins(
+            Ember.SortableMixin,
+            { content:events, sortProperties: ['date'] }
+        );
+
+        return sortedResult;
+    }.property('events.@each.date')
 });

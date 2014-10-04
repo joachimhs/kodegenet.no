@@ -7,6 +7,7 @@
         <h1>{{#link-to "chapter" chapter}}{{chapter.kapittel}} - {{chapter.tittel}}{{/link-to}}</h1>
 
         <table class="subchapterBox">
+        <tbody>
         {{#each subchapter in chapter.sortedSubchapters}}
             <tr>
                 <td class="numberCell">
@@ -24,6 +25,7 @@
                 </td>
             </tr>
         {{/each}}
+        </tbody>
         </table>
     {{/each}}
 </div>

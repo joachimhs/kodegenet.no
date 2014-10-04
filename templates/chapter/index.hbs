@@ -16,19 +16,8 @@
     {{/view}}
 {{/if}}
 
-    {{markdown content.content}}
-        {{#each subchapter in sortedSubchapters}}
-            <a {{bind-attr id=subchapter.id}}></a>
+{{markdown content.content}}
 
-            <div class="kapittelHeader">
-                <div class="kapittelNummer">{{kapittel}}.{{subchapter.kapittel}}</div>
-                {{subchapter.tittel}}
-            </div>
-            {{#if subchapter.screencastbox}}
-                <div class="well screencast">
-                    <p>Dette delkapittelet inneholder video. Videoene demonstrerer innholdet i delkapittelet, og vil dermed ikke gå utover delkapittelets innhold.</p>
-                    {{markdown subchapter.screencastbox}}
-                </div>
-            {{/if}}
-            {{markdown subchapter.content}}
-        {{/each}}
+{{#each subchapter in sortedSubchapters}}
+    {{render-subchapter subchapter=subchapter kapittel=kapittel}}
+{{/each}}

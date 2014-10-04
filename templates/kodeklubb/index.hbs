@@ -1,5 +1,9 @@
-<div class="pageContent">
+<div class="headerIntroArea">
     <h1>{{page.tittel}}</h1>
+</div>
+
+
+<div class="pageContent">
     {{markdown page.content}}
 
     <h2>Kommende Kurs</h2>
@@ -17,7 +21,7 @@
                     <tr>
                         <td>{{dmy_no event.date}}</td>
                         <td>{{event.name}}</td>
-                        <td>{{event.ageGroup}}r</td>
+                        <td>{{event.ageGroup}}</td>
                         <td>{{link-to "Mer Info" "kodeklubb.event" event}}</td>
                     </tr>
                 {{/if}}

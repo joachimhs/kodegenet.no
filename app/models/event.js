@@ -5,6 +5,7 @@ Kodegenet.Event = DS.Model.extend({
     ageGroup: DS.attr('string'),
     intro:  DS.attr('string'),
     isVisible: DS.attr('boolean'),
+    sted: DS.attr('string'),
 
     isInFuture: function() {
         var future = false;

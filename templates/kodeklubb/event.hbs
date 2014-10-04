@@ -1,6 +1,16 @@
-<div class="pageContent">
+<div class="headerIntroArea">
     <h1>{{dmy_no date}} - {{name}}</h1>
-    <p style="font-weight: 900;">Anbefalt aldersgrense: {{ageGroup}}</p>
+
+    <div class="introText">
+        Anbefalt aldersgrense: {{ageGroup}}<br />
+        {{#if sted}}
+            Sted: {{sted}}
+        {{/if}}
+    </div>
+</div>
+
+<div class="pageContent">
+    <div class="tenMarginGap"></div>
     {{markdown content.intro}}
     {{markdown content.content}}
 

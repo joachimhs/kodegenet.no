@@ -4,10 +4,17 @@
     {{outlet}}
 </div>
 
-<footer class="pageContent">
-    <div class="row">
-        <div class="col-md-5 col-md-offset-7" style="text-align: right;">
-            Designet og utviklet av <a href="http://haagen-software.no">Haagen Software AS</a>
+<footer>
+    <div class="pageContent">
+        <div class="row">
+            <div class="col-md-2 col-md-offset-4">
+                {{#link-to "index" tagName="a"}}
+                    <img {{bind-attr src=controller.settings.logo}} />
+                {{/link-to}}
+            </div>
+            <div class="col-md-4 col-md-offset-1 footerText" style="text-align: right;">
+                Copyright 2014 <a href="http://haagen-software.no">Haagen Software AS</a>
+            </div>
         </div>
     </div>
 </footer>

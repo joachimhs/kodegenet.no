@@ -3,7 +3,7 @@ Kodegenet.KodeklubbRoute = Ember.Route.extend({
         return Ember.RSVP.hash({
             page: this.store.find('page', "lambertseter_kodeklubb"),
             events: this.store.find('event')
-        })
+        });
     },
 
     setupController: function(controller, model) {
