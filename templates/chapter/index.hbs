@@ -1,22 +1,26 @@
 <div class="kapittelHeader">
-    <div class="kapittelNummer">{{kapittel}}</div>
-    {{tittel}}
+    <div class="pageContent">
+        <div class="kapittelNummer">{{kapittel}}</div>
+        {{tittel}}
+    </div>
 </div>
 
-{{#if slides}}
-    {{#view Ember.View class="well slidesBox" classBinding="visSlides"}}
-            <p>Dette kapittelet inneholder lysbilder. Lysbildene er ment for deg som ønsker å holde et programmeringskurs basert på dette kurset. Lysbildene gir et raskt overblikk over innholdet i kapittelet. Du kan velge å se lysbildene inkludert på denne siden, eller åpne lysbildene i et eget vindu.</p>
-            {{#if visSlides}}
-                <button class="btn btn-default" {{action "skjulSlidesAction"}}><span class="glyphicon glyphicon-chevron-right"></span> Skjul Lysbilder</button>
-                {{view Kodegenet.RevealFrameView src=slideUrl}}
-            {{else}}
-                <button class="btn btn-default" {{action "visSlidesAction"}}><span class="glyphicon glyphicon-chevron-left"></span> Vis Lysbilder</button>
-                <a {{bind-attr href="slideUrl"}} target="_blank" class="btn btn-default">Åpne Lysbilder i eget vindu <span class="glyphicon glyphicon-chevron-right"></span></a>
-            {{/if}}
-    {{/view}}
-{{/if}}
+<div class="pageContent">
+    {{#if slides}}
+        {{#view Ember.View class="well slidesBox" classBinding="visSlides"}}
+                <p>Dette kapittelet inneholder lysbilder. Lysbildene er ment for deg som ønsker å holde et programmeringskurs basert på dette kurset. Lysbildene gir et raskt overblikk over innholdet i kapittelet. Du kan velge å se lysbildene inkludert på denne siden, eller åpne lysbildene i et eget vindu.</p>
+                {{#if visSlides}}
+                    <button class="btn btn-default" {{action "skjulSlidesAction"}}><span class="glyphicon glyphicon-chevron-right"></span> Skjul Lysbilder</button>
+                    {{view Kodegenet.RevealFrameView src=slideUrl}}
+                {{else}}
+                    <button class="btn btn-default" {{action "visSlidesAction"}}><span class="glyphicon glyphicon-chevron-left"></span> Vis Lysbilder</button>
+                    <a {{bind-attr href="slideUrl"}} target="_blank" class="btn btn-default">Åpne Lysbilder i eget vindu <span class="glyphicon glyphicon-chevron-right"></span></a>
+                {{/if}}
+        {{/view}}
+    {{/if}}
 
-{{markdown content.content}}
+    {{markdown content.content}}
+</div>
 
 {{#each subchapter in sortedSubchapters}}
     {{render-subchapter subchapter=subchapter kapittel=kapittel}}

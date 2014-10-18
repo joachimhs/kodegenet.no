@@ -1,14 +1,19 @@
 <a {{bind-attr id=subchapter.id}}></a>
 
 <div class="kapittelHeader">
-    <div class="kapittelNummer">{{kapittel}}.{{subchapter.kapittel}}</div>
-    {{subchapter.tittel}}
-</div>
-{{#if subchapter.screencastbox}}
-    <div class="well screencast">
-        <p>Dette delkapittelet inneholder video. Videoene demonstrerer innholdet i delkapittelet, og vil dermed ikke gå utover delkapittelets innhold.</p>
-        {{markdown subchapter.screencastbox}}
+    <div class="pageContent">
+        <div class="kapittelNummer">{{kapittel}}.{{subchapter.kapittel}}</div>
+        {{subchapter.tittel}}
     </div>
-{{/if}}
+</div>
 
-{{markdown subchapter.content}}
+<div class="pageContent">
+    {{#if subchapter.screencastbox}}
+        <div class="well screencast">
+            <p>Dette delkapittelet inneholder video. Videoene demonstrerer innholdet i delkapittelet, og vil dermed ikke gå utover delkapittelets innhold.</p>
+            {{markdown subchapter.screencastbox}}
+        </div>
+    {{/if}}
+
+    {{markdown subchapter.content}}
+</div>

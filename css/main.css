@@ -228,106 +228,6 @@ a {
     color: #f0f0f0;
 }
 
-@media only screen and (max-width: 1200px) {
-    .headerItem {
-        max-width: 140px;
-        min-width: 140px;
-        line-height: 100px;
-        padding-top: 30px;
-        font-size: 13px;
-    }
-
-    .navbar-header {
-        max-width: 200px;
-    }
-
-    .navbar-header img {
-        width: 180px;
-        padding-top: 10px;
-        float: left;
-    }
-
-    .large_course_img {
-        max-width: 950px;
-    }
-}
-
-@media only screen and (max-width: 991px) {
-    .headerItem {
-        max-width: 110px;
-        min-width: 110px;
-        line-height: 100px;
-        padding-top: 30px;
-        font-size: 12px;
-    }
-
-    .navbar-header {
-        max-width: 150px;
-    }
-
-    .navbar-header img {
-        width: 130px;
-        padding-top: 10px;
-        float: left;
-    }
-
-    .large_course_img {
-        max-width: 730px;
-    }
-}
-
-@media only screen and (max-width: 767px) {
-    .headerItem {
-        max-width: 767px;
-        min-width: 400px;
-        line-height: 100px;
-        padding-top: 30px;
-    }
-
-    .courseBox {
-        background: #fff;
-        height: 92px;
-        min-height: 120px;
-        max-height: 120px;
-        width: 100%;
-        margin-right: 5px;
-        padding-top: 15px;
-        padding-bottom: 5px;
-        color: #2fb0a8;
-    }
-
-    .navbar-header {
-        max-width: 100%;
-    }
-
-    .navbar-header button {
-        float: right;
-    }
-
-    .navbar-header img {
-        float: left;
-        width: 200px;
-    }
-
-    .large_course_img {
-        max-width: 85%;
-    }
-}
-
-@media only screen and (min-width: 1200px) {
-    .headerItem {
-        max-width: 140px;
-        min-width: 140px;
-        line-height: 100px;
-        padding-top: 30px;
-        font-size: 15px;
-    }
-
-    .large_course_img {
-        max-width: 1100px;
-    }
-}
-
 #singlelogo {
     width: 65px;
     min-width: 65px;
@@ -364,6 +264,15 @@ a.boxlink {
     padding-top: 15px;
 }
 
+#logoImageSmall {
+    height: 40px;
+    max-height: 40px;
+    margin-left: 25px;
+    margin-top: -100px;
+    z-index: 100;
+    float: left;
+}
+
 #mainArea {
     margin-top: 0px;
     background-color: #ecf0f1;
@@ -373,29 +282,6 @@ a.boxlink {
     margin: 20px;
 }
 
-@media (min-width: 768px) {
-    .pageContent {
-        margin: 0 auto;
-        padding: 0;
-        width: 750px;
-    }
-}
-
-@media (min-width: 992px) {
-    .pageContent {
-        margin: 0 auto;
-        padding: 0;
-        width: 950px;
-    }
-}
-
-@media (min-width: 1200px) {
-    .pageContent {
-        margin: 0 auto;
-        padding: 0;
-        width: 1100px;
-    }
-}
 
 .chapter {
     background: #fff;
@@ -410,7 +296,8 @@ a.boxlink {
 
 .figure {
     text-align: center;
-    margin: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .btn-wide {
@@ -542,17 +429,13 @@ footer .footerText {
 
 .kapittelHeader {
     margin-top: 50px;
-    margin-bottom: 90px;
-    margin-right: -600px;
-    margin-left: -600px;
+    margin-bottom: 80px;
+    width: 100%;
     background: #17a78b;
     color: #fff;
-    height: 2.5em;
-    border-radius: 10px;
     min-height: 2em;
     height: 2em;
     line-height: 2em;
-
     font-size: 1.5em;
 
 }
@@ -563,7 +446,6 @@ footer .footerText {
     top: -40px;
     height: 120px;
     width: 200px;
-    margin-left: 625px;
     min-width: 200px;
     max-width: 300px;
     line-height: 120px;
@@ -644,22 +526,6 @@ footer .footerText {
     margin-left: 570px;
 }
 
-
-.chooseCourseButton {
-    width: 200px;
-    min-width: 200px;
-}
-
-.chooseChapterButton {
-    width: 300px;
-    min-width: 300px;
-}
-
-.chooseSubchapterButton {
-    width: 300px;
-    min-width: 300px;
-}
-
 .submenubutton {
     color: #fff;
     background-color: #1f7870;
@@ -693,7 +559,7 @@ footer .footerText {
 }
 
 .popnomore{display:none;}
-.pop {
+.coursePopover {
     text-align: left;
     color: #fff;
     background: #1f7870;
@@ -701,9 +567,37 @@ footer .footerText {
     padding: 10px;
     border-radius: 8px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-    position: absolute;
+    position: relative;
     width: 200px;
-    top:50px;left:140px;
+    top:10px;left:0px;
+    z-index: 10;
+}
+
+.chapterPopover {
+    text-align: left;
+    color: #fff;
+    background: #1f7870;
+    border: 1px solid #678d96;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+    width: 200px;
+    top:10px;left:-75px;
+    z-index: 10;
+}
+
+.subchapterPopover {
+    text-align: left;
+    color: #fff;
+    background: #1f7870;
+    border: 1px solid #678d96;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+    width: 200px;
+    top:10px;left:-140px;
     z-index: 10;
 }
 
@@ -722,14 +616,16 @@ footer .footerText {
     content: '';
 }
 
-.pop:after {
+#subchapterPopover.pop:before {
     position: absolute;
     display: inline-block;
 
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
-    border-bottom: 6px solid #678d96;
-    left: 44px;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid #678d96;
+
+    border-right-color: rgba(0.2, 0.2, 0.2, 1);
+    left: 180px;
     top: -8px;
     content: '';
 }
@@ -875,3 +771,319 @@ footer .footerText {
     line-height:100%;
 }
 
+
+@media only screen and (max-width: 1300px) {
+    .headerItem {
+        max-width: 140px;
+        min-width: 140px;
+        line-height: 100px;
+        padding-top: 30px;
+        font-size: 13px;
+    }
+
+    .navbar-header {
+        max-width: 200px;
+    }
+
+    .pageContent {
+        margin: 0 auto;
+        padding: 0;
+        width: 950px;
+    }
+
+    .figure-xl img {
+        width: 950px;
+    }
+
+    .figure-lg img {
+        width: 700px;
+    }
+
+    .figure-md img {
+        width: 500px;
+    }
+
+    .figure-sm img {
+        width: 400px;
+    }
+
+    .navbar-header img {
+        width: 180px;
+        padding-top: 10px;
+        float: left;
+    }
+
+    .large_course_img {
+        max-width: 950px;
+    }
+
+    .chooseCourseButton {
+        width: 175px;
+        min-width: 175px;
+    }
+
+    .chooseChapterButton {
+        width: 250px;
+        min-width: 250px;
+    }
+
+    .chooseSubchapterButton {
+        width: 250px;
+        min-width: 250px;
+    }
+
+    .coursePopover {
+        position: relative;
+        width: 200px;
+        top:10px;left:125px;
+    }
+
+    .chapterPopover {
+        position: relative;
+        width: 300px;
+        top:10px;left:55px;
+    }
+
+    .subchapterPopover {
+        position: relative;
+        width: 300px;
+        top:10px;left:-100px;
+    }
+
+    #logoImageSmall {
+        height: 25px;
+        max-height: 25px;
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    .headerItem {
+        max-width: 110px;
+        min-width: 110px;
+        line-height: 100px;
+        padding-top: 30px;
+        font-size: 12px;
+    }
+
+    .navbar-header {
+        max-width: 150px;
+    }
+
+    .navbar-header img {
+        width: 130px;
+        padding-top: 10px;
+        float: left;
+    }
+
+    .large_course_img {
+        max-width: 730px;
+    }
+
+    .pageContent {
+        margin: 0 auto;
+        padding: 0;
+        width: 750px;
+    }
+
+    .figure-xl img {
+        width: 750px;
+    }
+
+    .figure-lg img {
+        width: 600px;
+    }
+
+    .figure-md img {
+        width: 450px;
+    }
+
+    .figure-sm img {
+        width: 400px;
+    }
+
+    .chooseCourseButton {
+        width: 135px;
+        min-width: 135px;
+    }
+
+    .chooseChapterButton {
+        width: 185px;
+        min-width: 185px;
+    }
+
+    .chooseSubchapterButton {
+        width: 185px;
+        min-width: 185px;
+    }
+
+    .coursePopover {
+        position: relative;
+        width: 200px;
+        top:10px;left:125px;
+    }
+
+    .chapterPopover {
+        position: relative;
+        width: 300px;
+        top:10px;left:40px;
+    }
+
+    .subchapterPopover {
+        position: relative;
+        width: 300px;
+        top:10px;left:-200px;
+    }
+
+    #logoImageSmall {
+        height: 25px;
+        max-height: 25px;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .headerItem {
+        max-width: 767px;
+        min-width: 400px;
+        line-height: 100px;
+        padding-top: 30px;
+    }
+
+    .courseBox {
+        background: #fff;
+        height: 92px;
+        min-height: 120px;
+        max-height: 120px;
+        width: 100%;
+        margin-right: 5px;
+        padding-top: 15px;
+        padding-bottom: 5px;
+        color: #2fb0a8;
+    }
+
+    .navbar-header {
+        max-width: 100%;
+    }
+
+    .navbar-header button {
+        float: right;
+    }
+
+    .navbar-header img {
+        float: left;
+        width: 200px;
+    }
+
+    .large_course_img {
+        max-width: 85%;
+    }
+
+    .coursePopover {
+        position: relative;
+        width: 200px;
+        top:10px;left:125px;
+    }
+
+    .chapterPopover {
+        position: relative;
+        width: 300px;
+        top:10px;left:40px;
+    }
+
+    .subchapterPopover {
+        position: relative;
+        width: 300px;
+        top:10px;left:-200px;
+    }
+
+    .pageContent {
+        margin: 0 auto;
+        padding: 0;
+        width: 750px;
+    }
+
+    .figure-xl img {
+        width: 750px;
+    }
+
+    .figure-lg img {
+        width: 600px;
+    }
+
+    .figure-md img {
+        width: 450px;
+    }
+
+    .figure-sm img {
+        width: 400px;
+    }
+}
+
+@media only screen and (min-width: 1300px) {
+    .headerItem {
+        max-width: 140px;
+        min-width: 140px;
+        line-height: 100px;
+        padding-top: 30px;
+        font-size: 15px;
+    }
+
+    .large_course_img {
+        max-width: 1100px;
+    }
+
+    .figure-xl img {
+        width: 1100px;
+    }
+
+    .figure-lg img {
+        width: 900px;
+    }
+
+    .figure-md img {
+        width: 500px;
+    }
+
+    .figure-sm img {
+        width: 400px;
+    }
+
+    .pageContent {
+        margin: 0 auto;
+        padding: 0;
+        width: 1100px;
+    }
+
+
+    .chooseCourseButton {
+        width: 200px;
+        min-width: 200px;
+    }
+
+    .chooseChapterButton {
+        width: 300px;
+        min-width: 300px;
+    }
+
+    .chooseSubchapterButton {
+        width: 300px;
+        min-width: 300px;
+    }
+
+    .coursePopover {
+        position: relative;
+        width: 200px;
+        top:10px;left:40px;
+    }
+
+    .chapterPopover {
+        position: relative;
+        width: 300px;
+        top:10px;left:40px;
+    }
+
+    .subchapterPopover {
+        position: relative;
+        width: 300px;
+        top:10px;left:-120px;
+    }
+}

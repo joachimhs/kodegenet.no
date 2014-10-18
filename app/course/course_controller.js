@@ -1,5 +1,5 @@
 Kodegenet.CourseController = Ember.ObjectController.extend({
-    needs: ['chapter','courses','chapterOppgave'],
+    needs: ['chapter','courses','chapterOppgave', 'application'],
 
     coursePopoverShowing: false,
     chapterPopoverShowing: false,
@@ -91,5 +91,33 @@ Kodegenet.CourseController = Ember.ObjectController.extend({
             $('#subchapterPopover').addClass('popnomore');
         }
 
-    }.observes('subchapterPopoverShowing')
+    }.observes('subchapterPopoverShowing'),
+
+    nextChapter: function() {
+        var next = null;
+
+        if (this.get('controllers.chapter.model')) {
+            var chapterIndex = this.get('sortedChapters').indexOf(this.get('controllers.chapter.model'));
+            if (chapterIndex >= 0) {
+                next = this.get('sortedChapters').objectAt(chapterIndex + 1);
+            }
+        }
+
+
+        return next;
+    }.property('controllers.chapter.id', 'chapters.@each.id'),
+
+    prevChapter: function() {
+        var next = null;
+
+        if (this.get('controllers.chapter.model')) {
+            var chapterIndex = this.get('sortedChapters').indexOf(this.get('controllers.chapter.model'));
+            if (chapterIndex >= 0) {
+                next = this.get('sortedChapters').objectAt(chapterIndex - 1);
+            }
+        }
+
+
+        return next;
+    }.property('controllers.chapter.id', 'chapters.@each.id')
 });

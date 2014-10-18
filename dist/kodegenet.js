@@ -55,6 +55,45 @@ Kodegenet.ApplicationController = Ember.ObjectController.extend({
 Kodegenet.RenderSubchapterComponent = Ember.Component.extend({
 
 });
+Kodegenet.SocialButtonsComponent = Ember.Component.extend({
+    classNames: ['fb-like'],
+    attributeBindings: ['dataHref:data-href', "dataLayout:data-layout", "dataAction:data-action", "dataShowFaces:data-show-faces", "dataShare:data-share"],
+    dataHref: window.location.href,
+    dataLayout: 'button',
+    dataAction: 'like',
+    dataShowFaces: 'true',
+    dataShare: 'true',
+
+    didInsertElement: function() {
+        var self = this;
+
+        console.log('didInsertElement: Social Buttons:' + this.get('currentPath'));
+        //Ember.run.schedule('afterRender', this.rerender());
+
+
+    },
+
+    willDestroyElement: function() {
+
+    },
+
+    setupFbLike: function(){
+        FB.XFBML.parse();
+    }.on('didInsertElement'),
+
+    currentPathObserver: function() {
+        var self  = this;
+
+        Ember.run.later(function() {
+            console.log('New URL: ' + window.location.href);
+            self.set('dataHref', window.location.href);
+            self.rerender();
+        }, 500);
+    }.observes('model')
+
+    //<div class="fb-like" data-href="/" data-layout="button" data-action="" data-show-faces="" data-share="true"></div>
+});
+
 Kodegenet.ChapterController = Ember.ObjectController.extend({
     queryParams: ['oppgave'],
 
@@ -147,7 +186,7 @@ Kodegenet.ChapterOppgaveRoute = Ember.Route.extend({
     }
 });
 Kodegenet.CourseController = Ember.ObjectController.extend({
-    needs: ['chapter','courses','chapterOppgave'],
+    needs: ['chapter','courses','chapterOppgave', 'application'],
 
     coursePopoverShowing: false,
     chapterPopoverShowing: false,
@@ -239,7 +278,35 @@ Kodegenet.CourseController = Ember.ObjectController.extend({
             $('#subchapterPopover').addClass('popnomore');
         }
 
-    }.observes('subchapterPopoverShowing')
+    }.observes('subchapterPopoverShowing'),
+
+    nextChapter: function() {
+        var next = null;
+
+        if (this.get('controllers.chapter.model')) {
+            var chapterIndex = this.get('sortedChapters').indexOf(this.get('controllers.chapter.model'));
+            if (chapterIndex >= 0) {
+                next = this.get('sortedChapters').objectAt(chapterIndex + 1);
+            }
+        }
+
+
+        return next;
+    }.property('controllers.chapter.id', 'chapters.@each.id'),
+
+    prevChapter: function() {
+        var next = null;
+
+        if (this.get('controllers.chapter.model')) {
+            var chapterIndex = this.get('sortedChapters').indexOf(this.get('controllers.chapter.model'));
+            if (chapterIndex >= 0) {
+                next = this.get('sortedChapters').objectAt(chapterIndex - 1);
+            }
+        }
+
+
+        return next;
+    }.property('controllers.chapter.id', 'chapters.@each.id')
 });
 Kodegenet.CourseIndexController = Ember.ObjectController.extend({
     actions: {
@@ -295,16 +362,50 @@ Kodegenet.CoursesCourseRoute = Ember.Route.extend({
 });
 Kodegenet.CourseView = Ember.View.extend({
     didInsertElement: function() {
-        Ember.$(window).scroll(function () {
-            if (Ember.$(window).scrollTop() > 568) {
+        var view = this;
+
+        var onScroll = function() {
+            view.detectScroll();
+        };
+
+        var timeout = setTimeout(function() {
+            view.detectScroll();
+
+            Ember.$(window).scroll(onScroll);
+        }, 1000);
+
+        this.set('onScroll', onScroll);
+    },
+
+    willDestroyElement: function() {
+        if (this.get('onScroll')) {
+            Ember.$(window).off("scroll", this.get('onScroll'));
+        }
+    },
+
+    detectScroll: function() {
+        if (Ember.$(window).scrollTop() > 568) {
+            this.set('isFloating', true);
+        } else {
+            this.set('isFloating', false);
+        }
+    },
+
+    isFloatingObserver: function() {
+        var view = this;
+        Ember.run.scheduleOnce('afterRender', function () {
+            if (view.get('isFloating')) {
                 Ember.$('#submenu').addClass('floatingTop');
-                //$('#singlelogo').addClass('singlelogoimage');
+                Ember.$('#logoImageSmall').removeClass('hidden');
+                Ember.$('#logoImageSmall').animate({'margin-top': '0px'}, 500);
             } else {
                 Ember.$('#submenu').removeClass('floatingTop');
-                //$('#singlelogo').removeClass('singlelogoimage');
+                Ember.$('#logoImageSmall').animate({'margin-top': '-100px'}, 0);
+                Ember.$('#logoImageSmall').addClass('hidden');
             }
         });
-    }
+
+    }.observes('isFloating')
 });
 
 
