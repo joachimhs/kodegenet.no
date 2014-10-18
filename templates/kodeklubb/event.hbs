@@ -1,11 +1,30 @@
 <div class="headerIntroArea">
-    <h1>{{dmy_no date}} - {{name}}</h1>
+    <h1>{{dmy_no date}}</h1>
+    <h2>{{name}}</h2>
 
     <div class="introText">
-        Anbefalt aldersgrense: {{ageGroup}}<br />
-        {{#if sted}}
-            Sted: {{sted}}
-        {{/if}}
+        <table class="text-left table">
+            <tbody>
+            <tr>
+                <td class="strong">Anbefalt aldersgrense:</td>
+                <td>{{ageGroup}}</td>
+            </tr>
+
+            {{#if sted}}
+                <tr>
+                    <td class="strong">Sted:</td>
+                    <td>{{sted}}</td>
+                </tr>
+            {{/if}}
+
+            {{#if timeslot}}
+                <tr>
+                    <td class="strong">Tidspunkt:</td>
+                    <td>{{timeslot}}</td>
+                </tr>
+            {{/if}}
+            </tbody>
+        </table>
     </div>
 </div>
 

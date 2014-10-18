@@ -57,24 +57,20 @@ Kodegenet.RenderSubchapterComponent = Ember.Component.extend({
 });
 Kodegenet.SocialButtonsComponent = Ember.Component.extend({
     classNames: ['fb-like'],
-    attributeBindings: ['dataHref:data-href', "dataLayout:data-layout", "dataAction:data-action", "dataShowFaces:data-show-faces", "dataShare:data-share"],
+    attributeBindings: ['dataHref:data-href', "dataLayout:data-layout", "dataAction:data-action", "dataShowFaces:data-show-faces", "dataShare:data-share", "dataKidDirectedSite:data-kid-directed-site", "dataRef:data-ref"],
     dataHref: window.location.href,
     dataLayout: 'button',
     dataAction: 'like',
     dataShowFaces: 'true',
     dataShare: 'true',
+    dataKidDirectedSite: "true",
+    dataRef: "kodegenet_fb_referral",
 
     didInsertElement: function() {
         var self = this;
 
         console.log('didInsertElement: Social Buttons:' + this.get('currentPath'));
         //Ember.run.schedule('afterRender', this.rerender());
-
-
-    },
-
-    willDestroyElement: function() {
-
     },
 
     setupFbLike: function(){
@@ -594,7 +590,19 @@ Kodegenet.IndexController = Ember.ObjectController.extend({
         );
 
         return sortedResult;
-    }.property('events.@each.date')
+    }.property('events.@each.date'),
+
+    sortedUpdates: function() {
+        console.log("SORTING UPDATED");
+        var updates = this.get('updates');
+
+        var sortedResult = Em.ArrayProxy.createWithMixins(
+            Ember.SortableMixin,
+            { content:updates, sortProperties: ['publishedDate'], sortAscending: false }
+        );
+
+        return sortedResult;
+    }.property('updates.@each.publishedDate')
 });
 Kodegenet.IndexRoute = Ember.Route.extend({
     model: function() {
@@ -632,6 +640,17 @@ Kodegenet.KodeklubbIndexController = Ember.ObjectController.extend({
         var sortedResult = Em.ArrayProxy.createWithMixins(
             Ember.SortableMixin,
             { content:events, sortProperties: ['date'] }
+        );
+
+        return sortedResult;
+    }.property('events.@each.date'),
+
+    reverseSortedEvents: function() {
+        var events = this.get('events');
+
+        var sortedResult = Em.ArrayProxy.createWithMixins(
+            Ember.SortableMixin,
+            { content:events, sortProperties: ['date'], sortAscending: false }
         );
 
         return sortedResult;
@@ -712,6 +731,7 @@ Kodegenet.Event = DS.Model.extend({
     intro:  DS.attr('string'),
     isVisible: DS.attr('boolean'),
     sted: DS.attr('string'),
+    timeslot: DS.attr('string'),
 
     isInFuture: function() {
         var future = false;

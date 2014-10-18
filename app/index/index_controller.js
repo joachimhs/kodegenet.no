@@ -48,5 +48,17 @@ Kodegenet.IndexController = Ember.ObjectController.extend({
         );
 
         return sortedResult;
-    }.property('events.@each.date')
+    }.property('events.@each.date'),
+
+    sortedUpdates: function() {
+        console.log("SORTING UPDATED");
+        var updates = this.get('updates');
+
+        var sortedResult = Em.ArrayProxy.createWithMixins(
+            Ember.SortableMixin,
+            { content:updates, sortProperties: ['publishedDate'], sortAscending: false }
+        );
+
+        return sortedResult;
+    }.property('updates.@each.publishedDate')
 });

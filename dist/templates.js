@@ -948,7 +948,7 @@ function program16(depth0,data) {
   stack1 = helpers._triageMustache.call(depth0, "controller.settings.updates_header", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push("</h1>\n                ");
-  stack1 = helpers.each.call(depth0, "update", "in", "updates", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(13, program13, data),contexts:[depth0,depth0,depth0],types:["ID","ID","ID"],data:data});
+  stack1 = helpers.each.call(depth0, "update", "in", "sortedUpdates", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(13, program13, data),contexts:[depth0,depth0,depth0],types:["ID","ID","ID"],data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push("\n            </div>\n\n\n            ");
   stack1 = helpers['if'].call(depth0, "controller.settings.adsenseLeaderboard", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(16, program16, data),contexts:[depth0],types:["ID"],data:data});
@@ -979,25 +979,38 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = '', stack1;
-  data.buffer.push("\n            Sted: ");
+  data.buffer.push("\n                <tr>\n                    <td class=\"strong\">Sted:</td>\n                    <td>");
   stack1 = helpers._triageMustache.call(depth0, "sted", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n        ");
+  data.buffer.push("</td>\n                </tr>\n            ");
+  return buffer;
+  }
+
+function program3(depth0,data) {
+  
+  var buffer = '', stack1;
+  data.buffer.push("\n                <tr>\n                    <td class=\"strong\">Tidspunkt:</td>\n                    <td>");
+  stack1 = helpers._triageMustache.call(depth0, "timeslot", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("</td>\n                </tr>\n            ");
   return buffer;
   }
 
   data.buffer.push("<div class=\"headerIntroArea\">\n    <h1>");
   data.buffer.push(escapeExpression((helper = helpers.dmy_no || (depth0 && depth0.dmy_no),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data},helper ? helper.call(depth0, "date", options) : helperMissing.call(depth0, "dmy_no", "date", options))));
-  data.buffer.push(" - ");
+  data.buffer.push("</h1>\n    <h2>");
   stack1 = helpers._triageMustache.call(depth0, "name", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("</h1>\n\n    <div class=\"introText\">\n        Anbefalt aldersgrense: ");
+  data.buffer.push("</h2>\n\n    <div class=\"introText\">\n        <table class=\"text-left table\">\n            <tbody>\n            <tr>\n                <td class=\"strong\">Anbefalt aldersgrense:</td>\n                <td>");
   stack1 = helpers._triageMustache.call(depth0, "ageGroup", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("<br />\n        ");
+  data.buffer.push("</td>\n            </tr>\n\n            ");
   stack1 = helpers['if'].call(depth0, "sted", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n    </div>\n</div>\n\n<div class=\"pageContent\">\n    <div class=\"tenMarginGap\"></div>\n    ");
+  data.buffer.push("\n\n            ");
+  stack1 = helpers['if'].call(depth0, "timeslot", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(3, program3, data),contexts:[depth0],types:["ID"],data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("\n            </tbody>\n        </table>\n    </div>\n</div>\n\n<div class=\"pageContent\">\n    <div class=\"tenMarginGap\"></div>\n    ");
   data.buffer.push(escapeExpression((helper = helpers.markdown || (depth0 && depth0.markdown),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data},helper ? helper.call(depth0, "content.intro", options) : helperMissing.call(depth0, "markdown", "content.intro", options))));
   data.buffer.push("\n    ");
   data.buffer.push(escapeExpression((helper = helpers.markdown || (depth0 && depth0.markdown),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data},helper ? helper.call(depth0, "content.content", options) : helperMissing.call(depth0, "markdown", "content.content", options))));
@@ -1092,7 +1105,7 @@ function program7(depth0,data) {
   stack1 = helpers.each.call(depth0, "event", "in", "sortedEvents", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0,depth0,depth0],types:["ID","ID","ID"],data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push("\n    </table>\n\n    <h2>Tidligere Kurs</h2>\n    <table class=\"table\">\n        <tr>\n            <th>Dato</th>\n            <th>Tittel</th>\n            <th>Anbefalt aldersgruppe</th>\n            <th></th>\n        </tr>\n\n        ");
-  stack1 = helpers.each.call(depth0, "event", "in", "sortedEvents", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(5, program5, data),contexts:[depth0,depth0,depth0],types:["ID","ID","ID"],data:data});
+  stack1 = helpers.each.call(depth0, "event", "in", "reverseSortedEvents", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(5, program5, data),contexts:[depth0,depth0,depth0],types:["ID","ID","ID"],data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push("\n    </table>\n\n\n    <p>Om du vil bli varslet angående arrangementene til Lambertseter Kodeklubb, eller oppdateringer til innholdet på Kodegenet.no, meld deg på epostlisten under!</p>\n\n    ");
   data.buffer.push(escapeExpression((helper = helpers.render || (depth0 && depth0.render),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "epostliste", options) : helperMissing.call(depth0, "render", "epostliste", options))));

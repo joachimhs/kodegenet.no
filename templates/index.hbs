@@ -62,7 +62,7 @@
 
             <div class="col-sm-12 col-md-5 col-md-offset-1 greenBorderLeft">
                 <h1>{{controller.settings.updates_header}}</h1>
-                {{#each update in updates}}
+                {{#each update in sortedUpdates}}
                     <div>
                         <h4>{{dmy update.publishedDate}} - {{update.title}}</h4>
                         {{markdown update.content}}

@@ -82,15 +82,6 @@ a {
     min-height: 100px;
 }
 
-.headerIntroArea h1 {
-    font-size: 32px;
-    position: relative;
-    color: #fff;
-    margin-left: 20px;
-    text-align: center;
-    text-transform: uppercase;
-}
-
 #topHeaderArea ul > li {
     color: #1f7870;
     text-transform: uppercase;
@@ -141,13 +132,27 @@ a {
     background-size: cover;
     min-height: 468px;
     color: #fff;
+    padding-left: 40px;
 }
 
 .headerIntroArea h1 {
+    color: #fff;
     margin-top: 0px;
     padding-top: 100px;
     margin-bottom: 10px;
     font-size: 48px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.headerIntroArea h2 {
+    color: #fff;
+    margin-top: 0px;
+    padding-top: 20px;
+    margin-bottom: 10px;
+    font-size: 48px;
+    text-align: center;
+    text-transform: uppercase;
 }
 
 .headerIntroArea .introText {
@@ -156,6 +161,10 @@ a {
     font-size: 14px;
     text-align: center;
     margin-top: 15px;
+}
+
+.strong {
+    font-weight: 900;
 }
 
 .transparentInput {
@@ -216,12 +225,21 @@ a {
     color: #2fb0a8;
 }
 
+.courseBox:hover {
+    background-color: rgb(228, 252, 255);
+    color: #000;
+}
+
 .courseImageDiv {
     min-height: 45px;
 }
 
 .courseHeader {
     color: #2fb0a8;
+}
+
+.courseBox:hover .courseHeader {
+    color: #000;
 }
 
 #topHeaderArea a {
