@@ -50,6 +50,18 @@ Kodegenet.IndexController = Ember.ObjectController.extend({
         return sortedResult;
     }.property('events.@each.date'),
 
+    futureEvents: function() {
+        var events = [];
+
+        this.get('sortedEvents').forEach(function(event) {
+            if (event.get('isInFuture') && event.get('isVisible')) {
+                events.pushObject(event);
+            }
+        });
+
+        return events;
+    }.property('sortedEvents'),
+
     sortedUpdates: function() {
         console.log("SORTING UPDATED");
         var updates = this.get('updates');
@@ -60,5 +72,13 @@ Kodegenet.IndexController = Ember.ObjectController.extend({
         );
 
         return sortedResult;
-    }.property('updates.@each.publishedDate')
+    }.property('updates.@each.publishedDate'),
+
+    sortedUpdatesLimited: function() {
+        var limited = [];
+        if (this.get("sortedUpdates")) {
+            limited = this.get('sortedUpdates').toArray().splice(0, 5);
+        }
+        return limited;
+    }.property('sortedUpdates')
 });

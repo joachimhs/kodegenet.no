@@ -135,6 +135,14 @@ a {
     padding-left: 40px;
 }
 
+.headerIntroArea-small{
+    background: url('/images/header_background.jpg') no-repeat top left;
+    background-size: cover;
+    min-height: 240px;
+    color: #fff;
+    padding-left: 40px;
+}
+
 .headerIntroArea h1 {
     color: #fff;
     margin-top: 0px;
@@ -789,6 +797,53 @@ footer .footerText {
     line-height:100%;
 }
 
+.updateContent {
+    margin-left: 25px;
+    margin-top: 15px;
+}
+
+.updateContent ul {
+    margin-left: 25px;
+    list-style: none;
+}
+
+.updateImage {
+    float: left;
+    max-width: 100px;
+    max-height: 100px;
+}
+
+h4 {
+    color: #1f7870;
+    font-weight: 900;
+    font-size: 18px;
+}
+
+.facebook-logo {
+    position: absolute;
+    z-index: 100;
+    top: 75px;
+    right: 50px;
+    height: 50px;
+    width: 50px;
+}
+
+.facebook-logo img {
+    width: 50px;
+}
+
+.floatingTop-submenu {
+    position: fixed;
+    z-index: 100;
+    top: -75px;
+    right: 50px;
+    height: 50px;
+    width: 50px;
+}
+
+.floatingTop-submenu img {
+    width: 50px;
+}
 
 @media only screen and (max-width: 1300px) {
     .headerItem {

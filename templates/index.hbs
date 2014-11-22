@@ -26,62 +26,76 @@
     </div>
 </div>
 
-<div class="indexInfoArea">
-    <div class="pageContent">
-        <div class="row">
-            <div class="col-sm-12 col-md-6">
-                <h1>{{controller.settings.upcoming_courses}}</h1>
-                <table class="table">
+
+<div class="pageContent">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            {{#each update in sortedUpdatesLimited}}
+                <div>
+                    <h4>{{dmy_no update.publishedDate}} - {{update.title}}</h4>
+                    <div class="updateContent">
+                        {{#if update.image}}
+                            <img {{bind-attr src=update.image}} class="updateImage" />
+                        {{/if}}
+                        {{markdown update.updateIntro}}
+                    </div>
+
+                    {{#if update.content}}
+                        <div>{{#link-to "news" update}}
+                            Les mer <span class="glyphicon glyphicon-chevron-right"></span>
+                        {{/link-to}}</div>
+                    {{/if}}
+
+                    {{#if update.route}}
+                        <div><a {{bind-attr href=update.route}}>Les Mer <span class="glyphicon glyphicon-chevron-right"></span></a></div>
+                    {{/if}}
+
+                    {{#if update.event}}
+                        <div>{{#link-to "kodeklubb.event" update.event}}
+                            Mer informasjon og påmelding <span class="glyphicon glyphicon-chevron-right"></span>
+                        {{/link-to}}</div>
+                    {{/if}}
+                </div>
+                <hr width="25%" />
+
+            {{/each}}
+        </div>
+
+        <div class="col-sm-12 col-md-12">
+            <h1>{{controller.settings.upcoming_courses}}</h1>
+            <table class="table">
+                <tr>
+                    <th>Dato</th>
+                    <th>Tittel</th>
+                    <th>Anbefalt aldersgruppe</th>
+                    <th style="min-width: 100px;"></th>
+                </tr>
+
+                {{#each event in futureEvents}}
                     <tr>
-                        <th>Dato</th>
-                        <th>Tittel</th>
-                        <th>Anbefalt aldersgruppe</th>
-                        <th style="min-width: 100px;"></th>
+                        <td>{{dmy_no event.date}}</td>
+                        <td>{{event.name}}</td>
+                        <td>{{event.ageGroup}}</td>
+                        <td>{{link-to "Mer Info" "kodeklubb.event" event}}</td>
                     </tr>
 
-                    {{#each event in sortedEvents}}
-                        {{#if event.isVisible}}
-                            {{#if event.isInFuture}}
-                                <tr>
-                                    <td>{{dmy_no event.date}}</td>
-                                    <td>{{event.name}}</td>
-                                    <td>{{event.ageGroup}}</td>
-                                    <td>{{link-to "Mer Info" "kodeklubb.event" event}}</td>
-                                </tr>
-                            {{/if}}
-                        {{/if}}
-                    {{/each}}
-                </table>
-
-                {{#if controller.epostliste.content}}
-                    <h1>{{controller.settings.mailinglistHeader}}</h1>
-
-                    {{markdown controller.epostliste.content}}
-                {{/if}}
-            </div>
-
-            <div class="col-sm-12 col-md-5 col-md-offset-1 greenBorderLeft">
-                <h1>{{controller.settings.updates_header}}</h1>
-                {{#each update in sortedUpdates}}
-                    <div>
-                        <h4>{{dmy update.publishedDate}} - {{update.title}}</h4>
-                        {{markdown update.content}}
-                        {{#if update.route}}
-                            <div><a {{bind-attr href=update.route}}>Les Mer <span class="glyphicon glyphicon-chevron-right"></span></a></div>
-                        {{/if}}
-                    </div>
-                    <hr width="25%" />
-
+                    {{else}}
+                        <tr><td colspan="4">Nye kodekvelder blir annonsert snart!</td></tr>
                 {{/each}}
-            </div>
+            </table>
 
+            {{#if controller.epostliste.content}}
+                <h1>{{controller.settings.mailinglistHeader}}</h1>
 
-            {{#if controller.settings.adsenseLeaderboard}}
-                <div align="center">
-                    {{markdown controller.settings.adsenseLeaderboard}}
-                </div>
+                {{markdown controller.epostliste.content}}
             {{/if}}
         </div>
 
+        {{#if controller.settings.adsenseLeaderboard}}
+            <div align="center">
+                {{markdown controller.settings.adsenseLeaderboard}}
+            </div>
+        {{/if}}
     </div>
+
 </div>

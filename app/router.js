@@ -16,5 +16,8 @@ Kodegenet.Router.map(function() {
     this.resource('kodeklubb', {path: "/kodeklubb"}, function() {
         this.route('event', {path: "/event/:event_id"});
     });
+
+    this.route("news", {path: "/news/:update_id"});
+
     this.route('epostliste');
 });

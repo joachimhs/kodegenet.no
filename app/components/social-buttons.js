@@ -32,3 +32,4 @@ Kodegenet.SocialButtonsComponent = Ember.Component.extend({
 
     //<div class="fb-like" data-href="/" data-layout="button" data-action="" data-show-faces="" data-share="true"></div>
 });
+

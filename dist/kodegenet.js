@@ -52,6 +52,29 @@ Kodegenet.ApplicationController = Ember.ObjectController.extend({
         });
     }
 });
+Kodegenet.FacebookFollowComponent = Ember.Component.extend({
+    /*classNames: ['fb-follow', 'pull-right'],
+    attributeBindings: ['dataHref:data-href', "dataLayout:data-layout", "dataColorscheme:data-colorscheme", "dataShowFaces:data-show-faces"],
+    dataHref: "https://www.facebook.com/LambertseterKodeklubb",
+    dataColorscheme: "light",
+    dataLayout: 'standard',
+    dataShowFaces: 'true',
+    dataKidDirectedSite: "true",
+
+    didInsertElement: function() {
+        var self = this;
+
+        console.log('didInsertElement: Like Buttons:' + this.get('currentPath'));
+        //Ember.run.schedule('afterRender', this.rerender());
+    },
+
+    setupFbLike: function(){
+        FB.XFBML.parse();
+    }.on('didInsertElement')
+
+    //<div class="fb-follow"  data-colorscheme="light" data-layout="standard" data-show-faces="true"></div>
+    */
+});
 Kodegenet.RenderSubchapterComponent = Ember.Component.extend({
 
 });
@@ -89,6 +112,7 @@ Kodegenet.SocialButtonsComponent = Ember.Component.extend({
 
     //<div class="fb-like" data-href="/" data-layout="button" data-action="" data-show-faces="" data-share="true"></div>
 });
+
 
 Kodegenet.ChapterController = Ember.ObjectController.extend({
     queryParams: ['oppgave'],
@@ -391,12 +415,16 @@ Kodegenet.CourseView = Ember.View.extend({
         var view = this;
         Ember.run.scheduleOnce('afterRender', function () {
             if (view.get('isFloating')) {
+                Ember.$("#facebook-logo-submenu").addClass('floatingTop-submenu');
                 Ember.$('#submenu').addClass('floatingTop');
                 Ember.$('#logoImageSmall').removeClass('hidden');
                 Ember.$('#logoImageSmall').animate({'margin-top': '0px'}, 500);
+                Ember.$("#facebook-logo-submenu").animate({"top": "25px"}, 500);
             } else {
+                Ember.$("#facebook-logo-submenu").removeClass('floatingTop-submenu');
                 Ember.$('#submenu').removeClass('floatingTop');
                 Ember.$('#logoImageSmall').animate({'margin-top': '-100px'}, 0);
+                Ember.$("#facebook-logo-submenu").animate({"top": "-75px"}, 500);
                 Ember.$('#logoImageSmall').addClass('hidden');
             }
         });
@@ -592,6 +620,18 @@ Kodegenet.IndexController = Ember.ObjectController.extend({
         return sortedResult;
     }.property('events.@each.date'),
 
+    futureEvents: function() {
+        var events = [];
+
+        this.get('sortedEvents').forEach(function(event) {
+            if (event.get('isInFuture') && event.get('isVisible')) {
+                events.pushObject(event);
+            }
+        });
+
+        return events;
+    }.property('sortedEvents'),
+
     sortedUpdates: function() {
         console.log("SORTING UPDATED");
         var updates = this.get('updates');
@@ -602,7 +642,15 @@ Kodegenet.IndexController = Ember.ObjectController.extend({
         );
 
         return sortedResult;
-    }.property('updates.@each.publishedDate')
+    }.property('updates.@each.publishedDate'),
+
+    sortedUpdatesLimited: function() {
+        var limited = [];
+        if (this.get("sortedUpdates")) {
+            limited = this.get('sortedUpdates').toArray().splice(0, 5);
+        }
+        return limited;
+    }.property('sortedUpdates')
 });
 Kodegenet.IndexRoute = Ember.Route.extend({
     model: function() {
@@ -779,9 +827,23 @@ Kodegenet.Subchapter = DS.Model.extend({
 Kodegenet.Update = DS.Model.extend({
     title: DS.attr('string'),
     content: DS.attr('string'),
+    updateIntro: DS.attr('string'),
     route: DS.attr('string'),
-    publishedDate: DS.attr('string'),
-    image:  DS.attr('string')
+    publishedDate: DS.attr('date'),
+    image:  DS.attr('string'),
+    event: DS.belongsTo('event', {async: true})
+});
+Kodegenet.NewsRoute = Ember.Route.extend({
+    model: function(params) {
+        return this.store.find('update', params.update_id);
+    },
+
+    setupController: function(controller, model) {
+        this._super(controller, model);
+        if (ga) ga('send', 'pageview', '/news/' + model.get('id'));
+
+        document.title = model.get("title") + ' - Kodegenet';
+    }
 });
 Kodegenet.OmRoute = Ember.Route.extend({
     model: function() {
@@ -834,6 +896,9 @@ Kodegenet.Router.map(function() {
     this.resource('kodeklubb', {path: "/kodeklubb"}, function() {
         this.route('event', {path: "/event/:event_id"});
     });
+
+    this.route("news", {path: "/news/:update_id"});
+
     this.route('epostliste');
 });
 Kodegenet.SettingController = Ember.Controller.extend({
