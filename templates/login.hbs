@@ -1,0 +1,50 @@
+<div class="pageContent">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Logg Inn</h1>
+
+            {{#if stormpathLoginError}}
+                <div class="alert alert-danger">
+                   Innlogging feilet. Brukernavn eller passord er ikke korrekt, vennligst prøv igjen
+                </div>
+            {{/if}}
+            <div class="cart-shipping-details">
+                <form>
+                    <div class="section label-placeholder">
+                        <div class="input-set">
+                            <fieldset>
+                                {{input elementId="emailAddress" type="text" name="emailAddress" value=loginEmailAddress classNames="input-placeholder" focus-out="emailFocusOut" required=""}}
+                                <label for="emailAddress">Epost addresse</label>
+                                {{#if emailAddressIsInvalid}}
+                                    <div class="input-form-validation input-form-validation-error">* Epost addressen er ikke gyldig
+                                    </div>
+                                {{/if}}
+                            </fieldset>
+                            <fieldset>
+                                {{input elementId="password" type="password" name="password" value=loginPassword classNames="input-placeholder" required=""}}
+                                <label for="password">Passord</label>
+                            </fieldset>
+                        </div>
+                    </div>
+
+
+                    <div class="clearfix"></div>
+
+                    <div class="text-left">
+                        <button class="btn btn-primary" {{action "triggerLogin"}}>
+                            <i class="fa fa-lock"></i> Logg Inn
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        <div class="col-md-12">
+            <h1>
+                Registrer Ny Konto
+            </h1>
+
+            {{bruker-info registrerKonto="registrerKonto"}}
+        </div>
+    </div>
+</div>

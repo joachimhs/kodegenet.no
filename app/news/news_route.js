@@ -7,6 +7,6 @@ Kodegenet.NewsRoute = Ember.Route.extend({
         this._super(controller, model);
         if (ga) ga('send', 'pageview', '/news/' + model.get('id'));
 
-        document.title = model.get("title") + ' - Kodegenet';
+        document.title = controller.get("model.title") + ' - Kodegenet';
     }
 });

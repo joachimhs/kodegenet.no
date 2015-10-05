@@ -1,6 +1,6 @@
-<div class="headerIntroArea">
-    <h1>{{dmy_no date}}</h1>
-    <h2>{{name}}</h2>
+<div class="pageContent">
+    <h1>{{dmy_no content.date}}</h1>
+    <h2>{{content.name}}</h2>
 
     <div class="introText">
         <table class="text-left table">
@@ -30,8 +30,54 @@
 
 <div class="pageContent">
     <div class="tenMarginGap"></div>
-    {{markdown content.intro}}
-    {{markdown content.content}}
 
-    {{link-to "Tilbake til Lambertseter Kodeklubb" "kodeklubb"}}
+    <div class="row">
+        <div class="col-md-8">
+            {{markdown content.intro}}
+            {{markdown content.content}}
+        </div>
+
+        <div class="col-md-4">
+            {{#if content.capacity}}
+                <h2>Påmeldinger</h2>
+                <table class="table">
+                    <tr>
+                        <th>Fornavn</th>
+                        <th>Alder</th>
+                    </tr>
+
+
+                    {{#each participant in content.eventParticipants}}
+                        <tr>
+                            <td>
+                                {{#if participant.givenName}}
+                                    {{participant.givenName}}
+                                {{else}}
+                                    -
+                                {{/if}}
+                            </td>
+                            <td>{{participant.age}}</td>
+                        </tr>
+                    {{/each}}
+                    <tr>
+                        <td colspan="2">
+                            {{#if content.remainingSpots}}
+                                {{#link-to "event.paamelding" content.id classNames="btn btn-primary form-control"}}
+                                    Meld deg på! ({{content.remainingSpots}} plasser igjen)
+                                {{/link-to}}
+                            {{else}}
+                                <button class="btn btn-primary form-control" disabled>
+                                    Kurset er fullt. ({{content.remainingSpots}} plasser igjen)
+                                </button>
+                            {{/if}}
+
+                        </td>
+                    </tr>
+                </table>
+            {{/if}}
+        </div>
+    </div>
+
+
+    {{link-to "Tilbake til Kodegnet Kodeklubb" "kodeklubb"}}
 </div>

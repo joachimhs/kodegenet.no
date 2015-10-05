@@ -2,9 +2,10 @@ Kodegenet.IndexRoute = Ember.Route.extend({
     model: function() {
         return Ember.RSVP.hash({
             page: this.store.find('page', 'index'),
+            indexKurs: this.store.find('page', 'indexKurs'),
             epostliste: this.store.find('page', "epostlister"),
             updates: this.store.find('update'),
-            events: this.store.find('event')
+            instagramPhotos: this.store.find('instagramPhoto')
         });
     },
 

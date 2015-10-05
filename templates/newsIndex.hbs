@@ -1,0 +1,35 @@
+<div class="row pageContent">
+    <div class="col-sm-12 col-md-12">
+        <h1>Siste Nytt</h1>
+        {{#each update in sortedUpdates}}
+            <div>
+                <h4>{{dmy_no update.publishedDate}} - {{update.title}}</h4>
+                <div class="updateContent">
+                    {{#if update.image}}
+                        <img {{bind-attr src=update.image}} class="updateImage" />
+                    {{/if}}
+
+                    {{markdown update.updateIntro}}
+                </div>
+
+                {{#if update.content}}
+                    <div>{{#link-to "news" update}}
+                        Les mer <span class="glyphicon glyphicon-chevron-right"></span>
+                    {{/link-to}}</div>
+                {{/if}}
+
+                {{#if update.route}}
+                    <div><a {{bind-attr href=update.route}}>Les Mer <span class="glyphicon glyphicon-chevron-right"></span></a></div>
+                {{/if}}
+
+                {{#if update.event}}
+                    <div>{{#link-to "kodeklubb.event" update.event}}
+                        Mer informasjon og påmelding <span class="glyphicon glyphicon-chevron-right"></span>
+                    {{/link-to}}</div>
+                {{/if}}
+            </div>
+            <hr width="25%" />
+
+        {{/each}}
+    </div>
+</div>

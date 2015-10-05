@@ -1,0 +1,54 @@
+<div class="pageContent">
+    <div class="product-image">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="product-main-image">
+                    <img class="product-image-lightboard" {{bind-attr src=controller.currentPhoto.href}} />
+                </div>
+
+                <div class="product-main-thumbnails">
+                    <div class="row">
+                        {{#each picture in pictures}}
+                            <div class="col-md-3">
+                                <img class="product-image-thumbnail" {{bind-attr src=picture.href}} {{action "selectPhoto" picture}}/>
+                            </div>
+                        {{/each}}
+
+                    </div>
+
+                </div>
+
+                <a id="productDescription"></a>
+                <div class="product-description">
+                    <h1>Beskrivelse</h1>
+                    {{model.content}}
+                </div>
+
+                <a id="productLearn"></a>
+                <div class="product-learn">
+                    <h1>Lær å bruke</h1>
+                    {{#each learn in model.learn}}
+                        <div class="clearfix">
+                            <h2>{{link-to learn.title "course" learn}}</h2>
+                            <img {{bind-attr src="learn.imageSrc"}} class="pull-left"/>
+                            <div>{{learn.intro}}</div>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <h2>{{name}}</h2>
+                <div class="product-price">Pris: NOK {{price}},-</div>
+
+                <div class="product-buttons">
+                    <button class="btn btn-primary" {{action "addToCart" model}}><i class="glyphicon glyphicon-shopping-cart"></i> Legg i Handlekurven</button>
+                </div>
+
+                <hr>
+
+                <div {{action "scrollToDescription"}}>Beskrivelse</div>
+                <div {{action "scrollToLearn"}}>Lær å bruke</div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,12 +1,10 @@
 package no.kodegenet.plugin;
 
+import com.stripe.Stripe;
 import io.netty.channel.ChannelHandler;
-import no.haagensoftware.contentice.handler.FileServerHandler;
 import no.haagensoftware.contentice.spi.RouterPlugin;
-import no.kodegenet.handlers.ChaptersHandler;
-import no.kodegenet.handlers.CoursesHandler;
-import no.kodegenet.handlers.OppgaverHandler;
-import no.kodegenet.handlers.RevealHandler;
+import no.kodegenet.handlers.*;
+import no.kodegenet.instagram.InstagramPlugin;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -37,9 +35,42 @@ public class KodegenetRouterPlugin extends RouterPlugin {
         routeMap.put("/json/updates", OppgaverHandler.class);
         routeMap.put("/json/updated/{update}", OppgaverHandler.class);
 
+        routeMap.put("/kodegenet/stripePayment", StripePaymentHandler.class);
+        routeMap.put("/kodegenet/stripeToken", StripeTokenHandler.class);
+
+        routeMap.put("/kodegenet/createSession", CreateSessionHandler.class);
+        routeMap.put("/kodegenet/acceptCookies", AcceptCookiesHandler.class);
+        routeMap.put("/kodegenet/shoppingCarts/{cartId}", CartHandler.class);
+        routeMap.put("/kodegenet/cartProducts", CartProductHandler.class);
+        routeMap.put("/kodegenet/cartProducts/{productId}", CartProductHandler.class);
+
+        routeMap.put("/kodegenet/auth/login", KodegenetLoginHandler.class);
+        routeMap.put("/kodegenet/auth/register", KodegenetRegisterUserHandler.class);
+        routeMap.put("/kodegenet/auth/logout", KodegenetLogoutHandler.class);
+        routeMap.put("/json/emailVerificationTokens", KodegenetVerifyEmailHandler.class);
+
+        routeMap.put("/kodegenet/users", KodegenetUserHandler.class);
+        routeMap.put("/kodegenet/users/{userId}", KodegenetUserHandler.class);
+
+        routeMap.put("/kodegenet/events", EventHandler.class);
+        routeMap.put("/kodegenet/events/{eventId}", EventHandler.class);
+
+        routeMap.put("/kodegenet/eventParticipants", EventParticipantHandler.class);
+        routeMap.put("/kodegenet/eventParticipants/{eventParticipantId}", EventParticipantHandler.class);
+
+        routeMap.put("/kodegenet/orders", KodegenetOrderHandler.class);
+        routeMap.put("/kodegenet/orders/{orderId}", KodegenetOrderHandler.class);
+
+        routeMap.put("/kodegenet/instagramPhotos", KodegenetInstagramHandler.class);
+
         routeMap.put("/reveal.html", RevealHandler.class);
 
         plurals.put("oppgave", "oppgaver");
+
+        Stripe.apiKey = System.getProperty("no.kodegenet.stripeKey");
+
+        //Prefetch Instagram photos
+        InstagramPlugin.getInstance().getInstagramPhotos();
     }
 
     @Override

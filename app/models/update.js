@@ -5,5 +5,6 @@ Kodegenet.Update = DS.Model.extend({
     route: DS.attr('string'),
     publishedDate: DS.attr('date'),
     image:  DS.attr('string'),
+    vimeoid: DS.attr('string'),
     event: DS.belongsTo('event', {async: true})
 });

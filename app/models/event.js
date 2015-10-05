@@ -7,6 +7,10 @@ Kodegenet.Event = DS.Model.extend({
     isVisible: DS.attr('boolean'),
     sted: DS.attr('string'),
     timeslot: DS.attr('string'),
+    type: DS.attr('string'),
+    capacity: DS.attr('number'),
+    remainingSpots: DS.attr('number'),
+    eventParticipants: DS.hasMany('eventParticipant', {async: true}),
 
     isInFuture: function() {
         var future = false;
@@ -14,12 +18,20 @@ Kodegenet.Event = DS.Model.extend({
 
         if (date) {
             var m = moment();
-            var d = moment(date);
+            var d = moment(date).add(1, 'days');
             future = d.diff(m) > 0;
         }
 
         return future;
     }.property('date'),
 
-    isInPast: Ember.computed.not('isInFuture')
+    isInPast: Ember.computed.not('isInFuture'),
+
+    isKodeklubb: function() {
+        return this.get('type') === 'kodeklubb';
+    }.property('type'),
+
+    isMakerspace: function() {
+        return this.get('type') === 'makerspace';
+    }.property('type')
 });

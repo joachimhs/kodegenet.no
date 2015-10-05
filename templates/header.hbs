@@ -1,43 +1,125 @@
 <div id="topHeaderArea">
-    <div class="pageContent">
-        <nav class="navbar navbar-default" role="navigation">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    {{#link-to "index" tagName="a"}}
-                        <img {{bind-attr src=controller.settings.logo}} />
-                    {{/link-to}}
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-
-
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        {{#each page in model}}
-                            <li class="headerItem">
-                                {{#if page.route}}
-                                    {{#link-to page.route tagName="a"}}
-                                        {{page.tittel}}
-                                    {{/link-to}}
-                                {{else}}
-                                    {{#link-to "page" page.id tagName="a"}}
-                                        {{page.tittel}}
-                                    {{/link-to}}
-                                {{/if}}
-
-                            </li>
-                        {{/each}}
-                    </ul>
-                </div>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                {{#link-to "index" tagName="a"}}
+                    <img {{bind-attr src=controller.settings.logo}} />
+                {{/link-to}}
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
             </div>
-        </nav>
-    </div>
+
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    {{#each page in model}}
+                        <li class="headerItem" {{bind-attr style=page.underlineStyle}}>
+                            {{#if page.route}}
+                                {{#link-to page.route tagName="a"}}
+                                    {{page.tittel}}
+                                {{/link-to}}
+                            {{else}}
+                                {{#link-to "page" page.id tagName="a"}}
+                                    {{page.tittel}}
+                                {{/link-to}}
+                            {{/if}}
+                        </li>
+                    {{/each}}
+
+                    <li class="headerItem" style="border-bottom: 2px solid #fff">
+                        {{#if session.session.authenticated}}
+                            <a href="#" {{action "doLogOut"}}>Logg ut</a>
+                        {{else}}
+                            {{#link-to "login" tagName="a"}}
+                                Login / Register
+                            {{/link-to}}
+                        {{/if}}
+                    </li>
+
+                    {{#if session.session.authenticated}}
+                        <li class="headerItem" style="border-bottom: 2px solid #fff">
+                            {{#link-to "mypage" tagName="a"}}
+                                Min Side
+                            {{/link-to}}
+                        </li>
+                    {{/if}}
+                </ul>
+            </div>
+        </div>
+    </nav>
 </div>
 
 <div class="facebook-logo">
     <a href="https://www.facebook.com/LambertseterKodeklubb"><img src="/figurer/facebook_logo.png"/></a>
 </div>
+
+{{#if controller.showTracks}}
+    <div class="headerIntroArea">
+        <div class="introCourses pageContent">
+            {{#each track in controllers.application.sortedTracks}}
+                {{#if track.isVisible}}
+                    <div class="courseBox">
+                        {{#link-to "track" track tagName="a" class="boxlink"}}
+                            <div class="courseImageDiv">
+                                <img {{bind-attr src=track.smallImg.href}} />
+                            </div>
+
+                            <div class="courseHeader">
+                                {{track.name}}
+                            </div>
+                        {{/link-to}}
+                    </div>
+                {{/if}}
+            {{/each}}
+        </div>
+    </div>
+{{/if}}
+
+{{#if controller.showShoppingCart}}
+    <div class="shopping-cart-header">
+            <div class="row text-left">
+                <div class="col-md-2 text-right">
+                    <span class="fa-stack fa-5x">
+                      <i class="fa fa-circle fa-stack-2x"></i>
+                      <i class="fa fa-shopping-cart fa-stack-1x fa-inverse"></i>
+                    </span>
+                </div>
+                <div class="col-md-4 cart-summary">
+                    <h4>{{session.shoppingCart.numProducts}} {{numProductsHeader}}</h4>
+                    <h4>Kr: {{session.shoppingCart.subtotal}}</h4>
+                </div>
+
+
+                {{#if showExtendedShoppingCart}}
+                    <div class="col-md-6 cart-toggle">
+                        <span {{action "doHideExtendedShoppingCart"}}>Skjul Handlekurven <i class="fa fa-caret-square-o-up"></i></span>
+                    </div>
+                {{else}}
+                    <div class="col-md-6 cart-toggle">
+                        <span {{action "doShowExtendedShoppingCart"}}>Vis Handlekurven <i class="fa fa-caret-square-o-down"></i></span>
+                    </div>
+                {{/if}}
+            </div>
+
+            {{#if showExtendedShoppingCart}}
+                <div class="shopping-cart-items">
+                    {{shopping-cart cart=session.shoppingCart orderSuccess="orderSuccess"}}
+                </div>
+            {{/if}}
+        </div>
+{{/if}}
+
+{{#if controller.showShoppingCartIcon}}
+    <div class="shopping-cart-icon-only">
+        {{#link-to "shop"}}
+            <span class="fa-stack fa-3x">
+              <i class="fa fa-circle fa-stack-2x"></i>
+              <i class="fa fa-shopping-cart fa-stack-1x fa-inverse"></i>
+            </span>
+        {{/link-to}}
+    </div>
+{{/if}}

@@ -1,59 +1,15 @@
-<div class="headerIntroArea">
-    <h1>{{page.tittel}}</h1>
-</div>
+<div class="tenMarginGap">&nbsp;</div>
 
+<div class="pageContent tenMarginGap">
+    <h1 class="text-center">Kommende Kodeklubber</h1>
+    {{event-table events=futureEvents}}
 
-<div class="pageContent">
     {{markdown page.content}}
 
-    <h2>Kommende Kurs</h2>
-    <table class="table">
-        <tr>
-            <th>Dato</th>
-            <th>Tittel</th>
-            <th>Anbefalt aldersgruppe</th>
-            <th></th>
-        </tr>
-
-        {{#each event in sortedEvents}}
-            {{#if event.isVisible}}
-                {{#if event.isInFuture}}
-                    <tr>
-                        <td>{{dmy_no event.date}}</td>
-                        <td>{{event.name}}</td>
-                        <td>{{event.ageGroup}}</td>
-                        <td>{{link-to "Mer Info" "kodeklubb.event" event}}</td>
-                    </tr>
-                {{/if}}
-            {{/if}}
-        {{/each}}
-    </table>
-
     <h2>Tidligere Kurs</h2>
-    <table class="table">
-        <tr>
-            <th>Dato</th>
-            <th>Tittel</th>
-            <th>Anbefalt aldersgruppe</th>
-            <th></th>
-        </tr>
+    {{event-table events=pastEvents}}
 
-        {{#each event in reverseSortedEvents}}
-            {{#if event.isVisible}}
-                {{#if event.isInPast}}
-                    <tr>
-                        <td>{{dmy_no event.date}}</td>
-                        <td>{{event.name}}</td>
-                        <td>{{event.ageGroup}}r</td>
-                        <td>{{link-to "Mer Info" "kodeklubb.event" event}}</td>
-                    </tr>
-                {{/if}}
-            {{/if}}
-        {{/each}}
-    </table>
-
-
-    <p>Om du vil bli varslet angående arrangementene til Lambertseter Kodeklubb, eller oppdateringer til innholdet på Kodegenet.no, meld deg på epostlisten under!</p>
+    <p>Om du vil bli varslet angående arrangementene til vår Kodeklubb eller Makerspace, eller oppdateringer til innholdet på Kodegenet.no, meld deg på epostlisten under!</p>
 
     {{render "epostliste"}}
 </div>

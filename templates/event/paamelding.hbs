@@ -1,0 +1,134 @@
+<div class="pageContent">
+    <h1>Påmelding til {{event.name}} - {{dmy_no event.date}}</h1>
+
+    {{markdown event.intro}}
+
+    {{#if session.session.authenticated}}
+
+        {{#if eventLagret}}
+            <div class="event-lagret">
+                <h1>Takk for din påmelding!</h1>
+                <div class="event-lagret-name">
+                    {{controller.givenName}} {{controller.surname}} er nå påmeldt til:
+                </div>
+
+                <div>
+                    <ul>
+                        {{#each event in controllers.event.futureEvents}}
+                            {{#if event.meldPaa}}
+                                <li>{{event.name}} - {{dmy_no event.date}}</li>
+                            {{/if}}
+                        {{/each}}
+                    </ul>
+
+                </div>
+                <div class="event-lagret-knapper">
+                    {{#if event.isKodeklubb}}
+                        {{link-to "Gå til Kodeklubben" "kodeklubb.event" event classNames="btn btn-primary form-control"}}
+                    {{/if}}
+
+                    {{#if event.isMakerspace}}
+                        {{link-to "Gå til Markespace" "makerspace.event" event classNames="btn btn-primary form-control "}}
+                    {{/if}}
+
+                    <button class="btn btn-primary form-control tenMarginGap" {{action "registrerNyDeltaker"}}>Registrer flere deltakere</button>
+                </div>
+            </div>
+        {{/if}}
+
+        {{#if controller.errorMessage}}
+            <div class="alert alert-danger" role="alert">{{markdown controller.errorMessage}}</div>
+        {{/if}}
+
+        {{#if session.session.user.eventParticipants}}
+            <h2>Dine tidligere registrerte deltakere</h2>
+            <table class="table" style="max-width: 300px;">
+                {{#each ep in session.session.user.eventParticipants}}
+                    <tr>
+                        <td>{{ep.givenName}} {{ep.surname}} ({{ep.age}})</td>
+                        <td><div class="label label-primary pointer" {{action "velgDeltaker" ep}}>Velg</div></td>
+                    </tr>
+                {{/each}}
+            </table>
+        {{/if}}
+
+        <form class="form">
+            <div class="section label-placeholder">
+                <div class="input-set">
+                    <fieldset>
+                        {{validating-textfield type="text" name="givenName" value=controller.givenName classNames="input-placeholder" minLength=2 valueValid=givenNameValid required=""}}
+                        <label for="firstName">Fornavn</label>
+                        {{#unless givenNameValid}}
+                            <div class="input-form-validation input-form-validation-error">* Fornavnet må inneholde minst 2 tegn</div>
+                        {{/unless}}
+                    </fieldset>
+
+                    <fieldset>
+                        {{validating-textfield type="text" name="surname" value=controller.surname classNames="input-placeholder" minLength=3 valueValid=surnameValid required=""}}
+                        <label for="firstName">Etternavn</label>
+                        {{#unless givenNameValid}}
+                            <div class="input-form-validation input-form-validation-error">* Etternavnet må inneholde minst 3 tegn</div>
+                        {{/unless}}
+                    </fieldset>
+
+                    <fieldset>
+                        {{validating-textfield type="text" name="age" value=controller.age classNames="input-placeholder" minLength=1 valueValid=ageValid required=""}}
+                        <label for="firstName">Alder</label>
+                        {{#unless givenNameValid}}
+                            <div class="input-form-validation input-form-validation-error">* Alder må inneholde minst 1 tegn</div>
+                        {{/unless}}
+                    </fieldset>
+
+                    <fieldset>
+                        {{validating-textfield type="email" name="email" value=controller.email classNames="input-placeholder" required=""}}
+                        <label for="firstName">Deltakers epost</label>
+                        <div class="input-form-validation input-form-validation-error">* Oppsummeringsepost vil sendes hit</div>
+                    </fieldset>
+                </div>
+            </div>
+
+            <div class="checkout-checkbox-input">
+                <fieldset>
+                    {{input id="inputPublishInfo" type="checkbox" name="inputPublishInfo" checked=controller.publishInfo}}
+                    <label for="inputPublishInfo">Publiser fornavn og alder på Kodegenet.no?</label>
+                </fieldset>
+                {{#if publishInfo}}
+                    <div class="input-form-validation input-form-validation-error"> * Fornavn og alder vil vises på kodegenet.no.</div>
+                {{/if}}
+            </div>
+
+            <div class="clearfix"></div>
+
+            <h2>Meld deltaker på følgende kodeklubber/makerspaces:</h2>
+
+            <table class="table">
+                <tr>
+                    <th>Påmelding</th>
+                    <th>Dato</th>
+                    <th>Type</th>
+                    <th>Tittel</th>
+                    <th>Ledige Plasser</th>
+                    <th>Anbefalt aldersgruppe</th>
+                </tr>
+
+                {{#each event in controllers.event.futureEvents}}
+                    <tr>
+                        <td>{{input type="checkbox" checked=event.meldPaa}}</td>
+                        <td>{{dmy_no event.date}}</td>
+                        <td class="capitalize">{{event.type}}</td>
+                        <td>{{event.name}}</td>
+                        <td>{{event.remainingSpots}} ledige / {{event.capacity}} totalt</td>
+                        <td>{{event.ageGroup}}</td>
+                    </tr>
+                {{/each}}
+            </table>
+
+
+            <div class="btn btn-primary mediumBottomMargin form-control" {{action "registerParticipant"}}>
+                <i class="fa fa-check"></i> Meld på!
+            </div>
+        </form>
+    {{else}}
+        <div>Du må være logget inn for å melde deg på!</div>
+    {{/if}}
+</div>

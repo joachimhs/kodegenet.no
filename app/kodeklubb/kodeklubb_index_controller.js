@@ -1,4 +1,5 @@
 Kodegenet.KodeklubbIndexController = Ember.ObjectController.extend({
+    needs: ['courses'],
     sortProperties: ['date'],
     sortAscending: true,
 
@@ -22,5 +23,31 @@ Kodegenet.KodeklubbIndexController = Ember.ObjectController.extend({
         );
 
         return sortedResult;
-    }.property('events.@each.date')
+    }.property('events.@each.date'),
+
+    futureEvents: function() {
+        var limited = [];
+        if (this.get("sortedEvents")) {
+            this.get('sortedEvents').forEach(function(event) {
+                if (event.get('isInFuture')) {
+                    limited.pushObject(event);
+                }
+            });
+        }
+
+        return limited;
+    }.property('sortedEvents'),
+
+    pastEvents: function() {
+        var limited = [];
+        if (this.get("reverseSortedEvents")) {
+            this.get('reverseSortedEvents').forEach(function(event) {
+                if (event.get('isInPast')) {
+                    limited.pushObject(event);
+                }
+            });
+        }
+
+        return limited;
+    }.property('reverseSortedEvents')
 });

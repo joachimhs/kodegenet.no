@@ -1,0 +1,52 @@
+<div class="pageContent">
+    <h1>{{name}}</h1>
+
+    <div class="introText">
+        {{model.content}}
+    </div>
+</div>
+
+<div class="pageContent">
+    <div class="row">
+        {{#each course in courses}}
+            {{#if course.visible}}
+                <div {{bind-attr class=colClass}}>
+                    <div>
+                        <h1>
+                            {{#link-to "course" course}}{{course.title}}{{/link-to}}
+                        </h1>
+                    </div>
+                    <div class="courseIntroBoxContent">
+                        <div class="chapterIntro">
+                            {{#link-to "course" course}}<img {{bind-attr src=course.imageSrc}} class="pull-left" />{{/link-to}}
+                            {{markdown course.intro}}
+
+                            <table class="subchapterBox">
+                                <tbody>
+                                {{#each chapter in course.chapters}}
+                                    <tr>
+                                        <td class="numberCell">
+                                            {{#link-to "chapter" course chapter}}
+                                                <div class="oppgavekapittelBox">
+                                                    {{chapter.kapittel}}
+                                                </div>
+                                            {{/link-to}}
+
+                                        </td>
+                                        <td>
+                                            {{#link-to "chapter" course chapter}}
+                                                <h2>{{chapter.tittel}}</h2>
+                                                <div class="oneliner">{{chapter.oneliner}}</div>
+                                            {{/link-to}}
+                                        </td>
+                                    </tr>
+                                {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            {{/if}}
+        {{/each}}
+    </div>
+</div>

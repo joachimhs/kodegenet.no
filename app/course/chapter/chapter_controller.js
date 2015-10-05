@@ -1,5 +1,5 @@
 Kodegenet.ChapterController = Ember.ObjectController.extend({
-    queryParams: ['oppgave'],
+    /*queryParams: ['oppgave'],
 
     oppgaveObserver: function() {
         var oppgave = this.get('oppgave');
@@ -34,5 +34,5 @@ Kodegenet.ChapterController = Ember.ObjectController.extend({
                 $('body').scrollTop(elem.offset().top - 60);
             }
         }
-    }
+    }*/
 });

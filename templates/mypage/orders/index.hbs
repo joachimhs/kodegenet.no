@@ -1,0 +1,22 @@
+<h2>Ordrebekreftelser</h2>
+
+<table class="table tabl-striped">
+    <tr>
+        <th>Ordrenummer</th>
+        <th>Status</th>
+        <th>Bestiller</th>
+        <th>Ordrelinjer</th>
+        <th></th>
+    </tr>
+    <tbody>
+        {{#each order in controller.session.session.user.orders}}
+            <tr>
+                <td>{{order.id}}</td>
+                <td>{{order.status}}</td>
+                <td>{{order.givenName}} {{order.surname}}</td>
+                <td>{{order.orderLines.length}}</td>
+                <td>{{link-to "Vis" "mypage.orders.order" order classNames="btn btn-primary"}}</td>
+            </tr>
+        {{/each}}
+    </tbody>
+</table>

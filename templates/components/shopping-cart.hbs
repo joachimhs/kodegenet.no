@@ -1,0 +1,114 @@
+<div class="pageContent">
+    <div class="row">
+
+        {{#each cartProduct in cart.cartProducts}}
+            <div class="col-md-6 text-left">
+                <img class="cart-item-thumbnail pull-left" {{bind-attr src=cartProduct.product.thumbnail.href}} />
+                <h4>{{cartProduct.product.name}}</h4>
+                <h4>Enhetspris {{cartProduct.product.price}},-</h4>
+                <h4>Antall
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon pointer"{{action "decreaseAmount" cartProduct}}>-</div>
+                            {{input type="text" value=cartProduct.orderedProductNumber classNames="form-control" placeholder="Antall"}}
+                            <div class="input-group-addon pointer" {{action "increaseAmount" cartProduct}}>+</div>
+                        </div>
+                    </div>
+                </h4>
+            </div>
+    {{/each}}
+    </div>
+
+    {{#unless showShippingDetails}}
+        <div class="text-right">
+            <div class="btn btn-primary" {{action "doShowCollectShippingDetails"}}>
+                Kjøp {{cart.numProducts}} produkt{{#unless cart.isSingular}}er{{/unless}} for kr. {{cart.subtotal}},-
+            </div>
+        </div>
+    {{/unless}}
+
+    {{#if showShippingDetails}}
+        <h4>Leveringsinformasjon</h4>
+
+        <div class="cart-shipping-details">
+            <div class="section label-placeholder">
+                <div class="input-set">
+                    <fieldset>
+                        {{input elementId="emailAddress" type="text" name="emailAddress" value=emailAddress classNames="input-placeholder" focus-out="emailFocusOut" key-down="emailKeyDown" required=""}}
+                        <label for="emailAddress">Epost addresse</label>
+                        {{#if emailAddressIsInvalid}}
+                            <div class="input-form-validation input-form-validation-error">* Epost addressen er ikke gyldig</div>
+                        {{/if}}
+                    </fieldset>
+                    <fieldset>
+                        {{validating-textfield type="text" name="givenName" value=givenName classNames="input-placeholder" minLength=5 valueValid=givenNameValid required=""}}
+                        <label for="firstName">Fornavn</label>
+                        {{#unless givenNameValid}}
+                            <div class="input-form-validation input-form-validation-error">* Fornavnet må inneholde minst 1 tegn</div>
+                        {{/unless}}
+                    </fieldset>
+                    <fieldset>
+                        {{validating-textfield type="text" name="surname" value=surname classNames="input-placeholder" minLength=5 valueValid=surnameValid required=""}}
+                        <label for="firstName">Etternavn</label>
+                        {{#unless surnameValid}}
+                            <div class="input-form-validation input-form-validation-error">* Etternavnet må inneholde minst 1 tegn</div>
+                        {{/unless}}
+                    </fieldset>
+                    <fieldset>
+                        {{validating-textfield type="text" name="address" value=address classNames="input-placeholder" minLength=4 valueValid=addressValid required=""}}
+                        <label for="address">Addresse</label>
+                        {{#unless addressValid}}
+                            <div class="input-form-validation input-form-validation-error">* Addressen må inneholde minst 4 tegn</div>
+                        {{/unless}}
+                    </fieldset>
+                    <fieldset>
+                        {{validating-textfield value=postalCode type="text" value=postalCode name="inputPostalcode" classNames="input-placeholder" minLength=4 valueValid=postcodeValid required=""}}
+                        <label for="inputPostalcode">Postnummer</label>
+                        {{#unless postcodeValid}}
+                            <div class="input-form-validation input-form-validation-error">* Postnummer må inneholde 4 tegn</div>
+                        {{/unless}}
+                    </fieldset>
+                    <fieldset>
+                        {{validating-textfield value=postalCode type="text" value=phone name="inputPhone" classNames="input-placeholder" minLength=4 valueValid=phoneValid required=""}}
+                        <label for="inputPostalcode">Telefonnummer</label>
+                        {{#unless phoneValid}}
+                            <div class="input-form-validation input-form-validation-error">* Telefonnummer må inneholde 4 tegn</div>
+                        {{/unless}}
+                    </fieldset>
+                    <fieldset>
+                        {{validating-textfield value=postalCode value=city type="text" name="inputPostalcity" classNames="input-placeholder" minLength=2 valueValid=cityValid required=""}}
+                        <label for="inputPostalcity">Poststed</label>
+                        {{#unless cityValid}}
+                            <div class="input-form-validation input-form-validation-error">* Poststed må inneholde minst 2 tegn</div>
+                        {{/unless}}
+                    </fieldset>
+                </div>
+            </div>
+
+            <div class="checkout-checkbox-input">
+                <fieldset>
+                    {{input id="inputCreateAccount" type="checkbox" name="inputCreateAccount" checked=createAccount}}
+                    <label for="inputCreateAccount">Opprett ny konto?</label>
+                </fieldset>
+                {{#if createAccount}}
+                    <div class="input-form-validation input-form-validation-error"> * vi vil sende deg en passord-reset pr. epost</div>
+                {{/if}}
+
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="text-left">
+                {{#if shippingDetailsCollected}}
+                    <div class="btn btn-primary" {{action "triggerStripePurchase"}}>
+                        <i class="fa fa-credit-card"></i> Betal for {{cart.numProducts}} produkt{{#unless cart.isSingular}}er{{/unless}} for kr. {{cart.subtotal}},-
+                    </div>
+                {{else}}
+                    <div class="btn btn-primary disabled">
+                        <i class="fa fa-times"></i> Leveringsinformasjon mangler
+                    </div>
+                {{/if}}
+            </div>
+        </div>
+    {{/if}}
+</div>

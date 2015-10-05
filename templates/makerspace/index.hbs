@@ -1,0 +1,17 @@
+<div class="tenMarginGap">&nbsp;</div>
+
+<div class="pageContent tenMarginGap">
+    <h1 class="text-center">Kommende Makerspaces</h1>
+    {{event-table events=futureEvents}}
+
+    {{#if makerspace.content}}
+        {{markdown makerspace.content}}
+    {{/if}}
+
+    <h2>Tidligere Makerspaces</h2>
+    {{event-table events=pastEvents}}
+
+    <p>Om du vil bli varslet angående arrangementene til vår Kodeklubb eller Makerspace, eller oppdateringer til innholdet på Kodegenet.no, meld deg på epostlisten under!</p>
+
+    {{render "epostliste"}}
+</div>

@@ -1,14 +1,38 @@
 Kodegenet.IndexController = Ember.ObjectController.extend({
-    needs: ['courses'],
+    needs: ['courses', 'application'],
 
     sortProperties: ['publishedDate'],
     sortAscending: false,
 
     numVisibleCourses: 0,
 
+    currPhoto: 1,
+
+    actions: {
+        scrollToContent: function() {
+            var targetOffset= $('#indexContent').offset().top;
+            $('html,body').animate({
+                scrollTop: targetOffset
+            }, 750);
+        },
+
+        scrollToKurs: function() {
+            var targetOffset= $('#indexKurs').offset().top;
+            $('html,body').animate({
+                scrollTop: targetOffset
+            }, 750);
+        },
+
+        scrollToEpostlister: function() {
+            var targetOffset= $('#indexEpostliste').offset().top;
+            $('html,body').animate({
+                scrollTop: targetOffset
+            }, 750);
+        }
+    },
+
     init: function() {
         var controller = this;
-
 
         var courses = [];
 
@@ -27,7 +51,48 @@ Kodegenet.IndexController = Ember.ObjectController.extend({
         );
 
         controller.set('courses', sortedResult);
+
+        (new Image()).src = '/figurer/forside_karusell1.jpg';
+        (new Image()).src = '/figurer/forside_karusell2.jpg';
+        (new Image()).src = '/figurer/forside_karusell3.jpg';
+        (new Image()).src = '/figurer/forside_karusell4.jpg';
+        (new Image()).src = '/figurer/forside_karusell5.jpg';
+        (new Image()).src = '/figurer/forside_karusell6.jpg';
+        Ember.run.later(function() {
+            controller.nextPhoto();
+        }, 15000);
     },
+
+    nextPhoto: function() {
+        console.log('nextPhoto');
+        var controller = this;
+
+        var currPhoto = this.get('currPhoto');
+
+        if (!currPhoto || currPhoto >= 6) {
+            currPhoto = 1;
+        } else {
+            currPhoto++;
+        }
+
+        this.set('currPhoto', currPhoto);
+
+        Ember.run.later(function() {
+            controller.nextPhoto();
+        }, 15000);
+    },
+
+    updateBackground: function() {
+        console.log('currPhotoObserver');
+        var currentPhoto = '/figurer/forside_karusell' + this.get('currPhoto') + '.jpg';
+
+        $('#indexCarousel').fadeOut(450, function() {
+            $('#indexCarousel').css('background', 'url("' + currentPhoto + '") 0% 50% no-repeat').css('background-size', 'cover');
+            $('#indexCarousel').fadeIn(450);
+        });
+
+        //component.set('shortDescription', component.currentPhotoDescription());
+    }.observes('currPhoto').on('init'),
 
     indexColClassName: function() {
         if (this.get('numVisibleCourses') === 1) {
@@ -38,29 +103,6 @@ Kodegenet.IndexController = Ember.ObjectController.extend({
             return "col-xs-12 col-sm-6 col-md-4 col-lg-4";
         }
     }.property('numVisibleCourses'),
-
-    sortedEvents: function() {
-        var events = this.get('events');
-
-        var sortedResult = Em.ArrayProxy.createWithMixins(
-            Ember.SortableMixin,
-            { content:events, sortProperties: ['date'] }
-        );
-
-        return sortedResult;
-    }.property('events.@each.date'),
-
-    futureEvents: function() {
-        var events = [];
-
-        this.get('sortedEvents').forEach(function(event) {
-            if (event.get('isInFuture') && event.get('isVisible')) {
-                events.pushObject(event);
-            }
-        });
-
-        return events;
-    }.property('sortedEvents'),
 
     sortedUpdates: function() {
         console.log("SORTING UPDATED");
@@ -80,5 +122,25 @@ Kodegenet.IndexController = Ember.ObjectController.extend({
             limited = this.get('sortedUpdates').toArray().splice(0, 5);
         }
         return limited;
-    }.property('sortedUpdates')
+    }.property('sortedUpdates'),
+
+    sortedInstagrams: function() {
+        console.log("SORTING Instagram");
+        var instagrams = this.get('instagramPhotos');
+
+        var sortedResult = Em.ArrayProxy.createWithMixins(
+            Ember.SortableMixin,
+            { content:instagrams, sortProperties: ['createdTime'], sortAscending: false }
+        );
+
+        return sortedResult;
+    }.property('updates.@each.publishedDate'),
+
+    sortedInstagramsLimited: function() {
+        var limited = [];
+        if (this.get("sortedInstagrams")) {
+            limited = this.get('sortedInstagrams').toArray().splice(0, 10);
+        }
+        return limited;
+    }.property('sortedInstagrams')
 });

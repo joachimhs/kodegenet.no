@@ -1,0 +1,37 @@
+<table class="table">
+    <tr>
+        <th>Dato</th>
+        <th>Type</th>
+        <th>Tittel</th>
+        <th>Ledige Plasser</th>
+        <th>Anbefalt aldersgruppe</th>
+        <th style="min-width: 100px;"></th>
+    </tr>
+
+    {{#each event in events}}
+        <tr>
+            <td>{{dmy_no event.date}}</td>
+            <td class="capitalize">{{event.type}}</td>
+            <td>{{event.name}}</td>
+            <td>{{event.remainingSpots}} ledige / {{event.capacity}} totalt</td>
+            <td>{{event.ageGroup}}</td>
+            <td>
+                {{#if event.isKodeklubb}}
+                    {{link-to "Mer Info" "kodeklubb.event" event classNames="label label-primary"}}
+
+                {{/if}}
+
+                {{#if event.isMakerspace}}
+                    {{link-to "Mer Info" "makerspace.event" event classNames="label label-primary"}}
+                {{/if}}
+
+                {{#if event.isInFuture}}
+                    {{link-to "Påmelding" "event.paamelding" event.id classNames="label label-primary"}}
+                {{/if}}
+            </td>
+        </tr>
+
+    {{else}}
+        <tr><td colspan="4">Nye kodekvelder blir annonsert snart!</td></tr>
+    {{/each}}
+</table>

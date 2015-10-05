@@ -1,0 +1,32 @@
+<div class="shopIndex">
+
+    {{#each category in controller}}
+        <div class="row shop-index-category">
+            <div class="pageContent">
+                <div class="col-sm-12 col-md-7 col-md-offset-2 shop-index-category-thumb">
+                    <div class="shop-index-category-text">
+                        <div class="shop-index-category-title">{{category.name}}</div>
+                        <div class="shop-index-category-subtitle">
+                            {{category.subtitle}}
+                        </div>
+                    </div>
+                    <img class="shop-index-category-thumbnail" {{bind-attr src=category.thumbnail.href}} />
+                </div>
+
+                <div class="col-sm-12 col-md-2 shop-index-category-products">
+                    {{#each product in category.products}}
+                        {{#link-to "shop.product" product class="shop-index-category-product" tagName="div"}}
+                            <img class="shop-index-category-product-thumbnail" {{bind-attr src=product.thumbnail.href}} />
+                            <div class="shop-index-category-product-name">{{product.name}}</div>
+                        {{/link-to}}
+                    {{/each}}
+
+                    <div class="shop-index-category-button">
+                        <button class="btn btn-primary">Flere Produkter <span class="glyphicon glyphicon-chevron-right"></span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{/each}}
+
+</div>

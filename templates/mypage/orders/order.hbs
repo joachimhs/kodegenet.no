@@ -1,0 +1,28 @@
+<h1>Ordrebekreftelse: {{id}}</h1>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Produkt</th>
+        <th>Antall</th>
+        <th>Pris</th>
+        <th>Rabatt</th>
+    </tr>
+    </thead>
+    <tbody>
+        {{#each orderLine in orderLines}}
+            <tr>
+                <td>{{orderLine.product.name}}</td>
+                <td>{{orderLine.orderedProductNumber}}</td>
+                <td>Kr. {{currencyFormat orderLine.totalAmount}}</td>
+                <td>
+                    Kr. {{#if orderLine.discountAmount}}
+                        {{currencyFormat orderLine.discountAmount}}
+                    {{else}}
+                        0,-
+                    {{/if}}
+                </td>
+            </tr>
+        {{/each}}
+    </tbody>
+</table>
