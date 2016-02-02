@@ -430,7 +430,6 @@ a {
     height: 92px;
     min-height: 120px;
     max-height: 120px;
-    width: 158px;
     float: left;
     margin-right: 5px;
     padding-top: 15px;
@@ -1151,12 +1150,12 @@ h4 {
 }
 
 .shop-index-category {
-    min-height: 350px;
+    min-height: 800px;
     border-bottom: 1px solid #919191;
 }
 
 .shop-index-category:nth-of-type(even) {
-    min-height: 350px;
+    min-height: 800px;
     background-color: #fff;
 }
 
@@ -1196,12 +1195,19 @@ h4 {
 .shop-index-category-products {
     margin-top: 30px;
     text-align: center;
+    min-height: 200px;
+    max-height: 200px;
+    max-width: 200px;
+    min-width: 200px;
 }
 
 .shop-index-category-products img{
     margin-right: 15px;
     margin-left: 0px;
     max-width: 150px;
+    min-width: 150px;
+    max-height: 100px;
+    min-height: 100px;
 }
 
 .shop-index-category-product-name {
@@ -1210,6 +1216,9 @@ h4 {
     color: #fff;
     max-width: 150px;
     text-align: center;
+    min-height: 100px;
+    max-height: 100px;
+    overflow: hidden;
 }
 
 .product-image-lightboard {
@@ -1348,7 +1357,7 @@ a.mypage-list-group-item.active, a.mypage-list-group-item.active:hover, a.mypage
 
 @media only screen and (max-width: 1300px) {
     .headerItem {
-        margin-right: 45px;
+        margin-right: 25px;
         line-height: 100px;
         padding-top: 30px;
         font-size: 13px;
@@ -1404,8 +1413,8 @@ a.mypage-list-group-item.active, a.mypage-list-group-item.active:hover, a.mypage
     }
 
     .courseBox {
-        min-width: 148px;
-        max-width: 148px;
+        min-width: 110px;
+        max-width: 110px;
     }
 
     .figure-xl img {
@@ -1469,11 +1478,19 @@ a.mypage-list-group-item.active, a.mypage-list-group-item.active:hover, a.mypage
         height: 25px;
         max-height: 25px;
     }
+
+    .product-image-lightboard {
+        min-height: 100%;
+        max-height: 100%;
+        max-width: 100%;
+        margin: 0px;
+        min-width: 100%;
+    }
 }
 
 @media only screen and (max-width: 991px) {
     .headerItem {
-        margin-right: 35px;
+        margin-right: 14px;
         line-height: 100px;
         padding-top: 30px;
         font-size: 12px;
@@ -1594,6 +1611,14 @@ a.mypage-list-group-item.active, a.mypage-list-group-item.active:hover, a.mypage
     #logoImageSmall {
         height: 25px;
         max-height: 25px;
+    }
+
+    .product-image-lightboard {
+        min-width: 100%;
+        min-height: 100%;
+        max-height: 100%;
+        max-width: 100%;
+        margin: 0px;
     }
 }
 
@@ -1719,7 +1744,7 @@ a.mypage-list-group-item.active, a.mypage-list-group-item.active:hover, a.mypage
 
 @media only screen and (min-width: 1300px) {
     .headerItem {
-        margin-right: 45px;
+        margin-right: 35px;
         line-height: 100px;
         padding-top: 30px;
         font-size: 15px;
@@ -1768,7 +1793,7 @@ a.mypage-list-group-item.active, a.mypage-list-group-item.active:hover, a.mypage
     }
 
     .courseBox {
-        min-width: 170px;
+        min-width: 150px;
     }
 
     .chooseCourseButton {
@@ -1891,6 +1916,60 @@ and (orientation: portrait) {
         padding: 5px;
         font-size: 10px;
     }
+
+    .shop-index-category-products {
+        margin-top: 30px;
+        text-align: center;
+        min-height: 200px;
+        max-height: 200px;
+        max-width: 700px;
+        min-width: 200px;
+    }
+
+    .shop-index-category-product {
+        margin-right: 15px;
+        margin-left: 0px;
+        max-width: 150px;
+        margin: 0 auto;
+        float: left;
+        display: inline;
+        margin-right: 15px;
+    }
+
+    .shop-index-category:nth-of-type(odd) {
+        min-height: 1000px;
+        background-color: #fff;
+    }
+
+    .shop-index-category:nth-of-type(even) {
+        min-height: 1000px;
+        background-color: #fff;
+    }
+
+    .shop-index-category-subtitle {
+        font-size: 14px;
+        font-weight: 300;
+        margin-top: 15px;
+        max-width: 400px;
+        margin-left: 20px;
+    }
+
+    .shop-index-category-text {
+        margin-top: 50px;
+        margin-left: -100px;
+    }
+
+    .shop-index-category-thumbnail {
+        max-height: 250px;
+    }
+
+    .shop-index-category-subtitle {
+        font-size: 16px;
+        font-weight: 300;
+        margin-top: 15px;
+        max-width: 800px;
+        margin-left: 0px;
+    }
 }
 
 /* iphone 6 Portrait */
@@ -1934,6 +2013,60 @@ and (orientation: portrait) {
         text-transform: uppercase;
         padding: 5px;
         font-size: 10px;
+    }
+
+    .shop-index-category-products {
+        margin-top: 30px;
+        text-align: center;
+        min-height: 200px;
+        max-height: 200px;
+        max-width: 700px;
+        min-width: 200px;
+    }
+
+    .shop-index-category-product {
+        margin-right: 15px;
+        margin-left: 0px;
+        max-width: 150px;
+        margin: 0 auto;
+        float: left;
+        display: inline;
+        margin-right: 15px;
+    }
+
+    .shop-index-category:nth-of-type(odd) {
+        min-height: 1000px;
+        background-color: #fff;
+    }
+
+    .shop-index-category:nth-of-type(even) {
+        min-height: 1000px;
+        background-color: #fff;
+    }
+
+    .shop-index-category-subtitle {
+        font-size: 18px;
+        font-weight: 300;
+        margin-top: 15px;
+        max-width: 400px;
+        margin-left: 20px;
+    }
+
+    .shop-index-category-text {
+        margin-top: 50px;
+        margin-left: -100px;
+    }
+
+    .shop-index-category-thumbnail {
+        max-height: 300px;
+    }
+
+    .shop-index-category-subtitle {
+        font-size: 16px;
+        font-weight: 300;
+        margin-top: 15px;
+        max-width: 800px;
+        margin-left: 0px;
     }
 }
 
@@ -1979,6 +2112,345 @@ and (orientation: landscape) {
         padding: 5px;
         font-size: 10px;
     }
+
+    .shop-index-category-products {
+        margin-top: 30px;
+        text-align: center;
+        min-height: 200px;
+        max-height: 200px;
+        max-width: 700px;
+        min-width: 200px;
+    }
+
+    .shop-index-category-product {
+        margin-right: 15px;
+        margin-left: 0px;
+        max-width: 150px;
+        margin: 0 auto;
+        float: left;
+        display: inline;
+        margin-right: 15px;
+    }
+
+    .shop-index-category:nth-of-type(odd) {
+        min-height: 800px;
+        background-color: #fff;
+    }
+
+    .shop-index-category:nth-of-type(even) {
+        min-height: 800px;
+        background-color: #fff;
+    }
+
+    .shop-index-category-subtitle {
+        font-size: 18px;
+        font-weight: 300;
+        margin-top: 15px;
+        max-width: 400px;
+        margin-left: 20px;
+    }
+
+    .shop-index-category-text {
+        margin-top: 50px;
+        margin-left: -100px;
+    }
+
+    .shop-index-category-thumbnail {
+        max-height: 300px;
+    }
+
+    .shop-index-category-subtitle {
+        font-size: 16px;
+        font-weight: 300;
+        margin-top: 15px;
+        max-width: 800px;
+        margin-left: 0px;
+    }
 }
 
+/* iPhone 6 Plus landscape */
+@media only screen
+and (min-device-width: 414px)
+and (max-device-width: 736px)
+and (-webkit-min-device-pixel-ratio: 3)
+and (orientation: landscape) {
+    .next-page {
+        margin-top: 35vh;
+        text-align: center;
+    }
+
+    .index-intro-page .pageContent {
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 10px;
+        margin-left: 15vw;
+        float: left;
+        min-height: 150px;
+        margin-bottom: 25px;
+        display: none;
+    }
+
+    .index-intro-page .introText {
+        font-size: 13px;
+        font-weight: 300;
+        line-height: 25px;
+        color: #000;
+        text-align: center;
+    }
+
+    .index-intro-page .pageContent h1 {
+        color: #000;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        font-size: 17px;
+    }
+
+    #topHeaderArea ul > li a {
+        color: #1f7870;
+        text-transform: uppercase;
+        padding: 5px;
+        font-size: 10px;
+    }
+
+    .shop-index-category-products {
+        margin-top: 30px;
+        text-align: center;
+        min-height: 200px;
+        max-height: 200px;
+        max-width: 700px;
+        min-width: 200px;
+    }
+
+    .shop-index-category-product {
+        margin-right: 15px;
+        margin-left: 0px;
+        max-width: 150px;
+        margin: 0 auto;
+        float: left;
+        display: inline;
+        margin-right: 15px;
+    }
+
+    .shop-index-category:nth-of-type(odd) {
+        min-height: 800px;
+        background-color: #fff;
+    }
+
+    .shop-index-category:nth-of-type(even) {
+        min-height: 800px;
+        background-color: #fff;
+    }
+
+    .shop-index-category-subtitle {
+        font-size: 18px;
+        font-weight: 300;
+        margin-top: 15px;
+        max-width: 400px;
+        margin-left: 20px;
+    }
+
+    .shop-index-category-text {
+        margin-top: 50px;
+        margin-left: -100px;
+    }
+
+    .shop-index-category-thumbnail {
+        max-height: 300px;
+    }
+
+    .shop-index-category-subtitle {
+        font-size: 16px;
+        font-weight: 300;
+        margin-top: 15px;
+        max-width: 800px;
+        margin-left: 0px;
+    }
+}
+
+/* Nexus 7 landscape */
+@media only screen
+and (min-device-width: 600px)
+and (max-device-width: 960px)
+and (-webkit-min-device-pixel-ratio: 2)
+and (orientation: landscape) {
+    .next-page {
+        margin-top: 35vh;
+        text-align: center;
+    }
+
+    .index-intro-page .pageContent {
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 10px;
+        margin-left: 15vw;
+        float: left;
+        min-height: 150px;
+        margin-bottom: 25px;
+        display: none;
+    }
+
+    .index-intro-page .introText {
+        font-size: 13px;
+        font-weight: 300;
+        line-height: 25px;
+        color: #000;
+        text-align: center;
+    }
+
+    .index-intro-page .pageContent h1 {
+        color: #000;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        font-size: 17px;
+    }
+
+    #topHeaderArea ul > li a {
+        color: #1f7870;
+        text-transform: uppercase;
+        padding: 5px;
+        font-size: 10px;
+    }
+
+    .shop-index-category-products {
+        margin-top: 30px;
+        text-align: center;
+        min-height: 200px;
+        max-height: 200px;
+        max-width: 700px;
+        min-width: 200px;
+    }
+
+    .shop-index-category-product {
+        margin-right: 15px;
+        margin-left: 0px;
+        max-width: 150px;
+        margin: 0 auto;
+        float: left;
+        display: inline;
+        margin-right: 15px;
+    }
+
+    .shop-index-category:nth-of-type(odd) {
+        min-height: 800px;
+        background-color: #fff;
+    }
+
+    .shop-index-category:nth-of-type(even) {
+        min-height: 800px;
+        background-color: #fff;
+    }
+
+    .shop-index-category-subtitle {
+        font-size: 18px;
+        font-weight: 300;
+        margin-top: 15px;
+        max-width: 400px;
+        margin-left: 20px;
+    }
+
+    .shop-index-category-text {
+        margin-top: 50px;
+        margin-left: -100px;
+    }
+
+    .shop-index-category-thumbnail {
+        max-height: 300px;
+    }
+
+    .shop-index-category-subtitle {
+        font-size: 16px;
+        font-weight: 300;
+        margin-top: 15px;
+        max-width: 800px;
+        margin-left: 0px;
+    }
+}
+
+/* iPad mini Portrait */
+@media only screen
+and (min-device-width: 768px)
+and (max-device-width: 1024px)
+and (-webkit-min-device-pixel-ratio: 2)
+and (orientation: portrait) {
+    .next-page {
+        margin-top: 15vh;
+        text-align: center;
+    }
+
+    .index-intro-page .pageContent {
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 10px;
+        margin-left: 15vw;
+        float: none;
+        width: 80vw;
+        min-height: 200px;
+        margin-bottom: 25px;
+    }
+
+    .index-intro-page .introText {
+        font-size: 24px;
+        font-weight: 300;
+        line-height: 35px;
+        color: #000;
+        text-align: center;
+    }
+
+    .index-intro-page .pageContent h1 {
+        color: #000;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        font-size: 22px;
+    }
+
+    #topHeaderArea ul > li a {
+        color: #1f7870;
+        text-transform: uppercase;
+        padding: 5px;
+        font-size: 10px;
+    }
+
+    .shop-index-category-products {
+        margin-top: 30px;
+        text-align: center;
+        min-height: 200px;
+        max-height: 200px;
+        max-width: 700px;
+        min-width: 200px;
+    }
+
+    .shop-index-category-product {
+        margin-right: 15px;
+        margin-left: 0px;
+        max-width: 150px;
+        margin: 0 auto;
+        float: left;
+        display: inline;
+        margin-right: 15px;
+    }
+
+    .shop-index-category:nth-of-type(odd) {
+        min-height: 1000px;
+        background-color: #fff;
+    }
+
+    .shop-index-category:nth-of-type(even) {
+        min-height: 1000px;
+        background-color: #fff;
+    }
+
+    .shop-index-category-text {
+        margin-top: 50px;
+        margin-left: -100px;
+    }
+
+    .shop-index-category-thumbnail {
+        max-height: 400px;
+    }
+
+    .shop-index-category-subtitle {
+        font-size: 24px;
+        font-weight: 300;
+        margin-top: 15px;
+        max-width: 800px;
+        margin-left: 0px;
+    }
+}
 

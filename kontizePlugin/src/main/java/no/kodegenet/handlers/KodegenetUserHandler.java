@@ -8,6 +8,7 @@ import no.haagensoftware.contentice.handler.ContenticeHandler;
 import no.haagensoftware.conticious.stormpath.ConticiousStormpath;
 import no.haagensoftware.conticious.stormpath.data.StormpathAccount;
 import no.haagensoftware.hyrrokkin.serializer.RestSerializer;
+import no.kodegenet.email.EpostExecutor;
 import no.kodegenet.handlers.data.KodegenetOrder;
 import no.kodegenet.handlers.data.KodegenetSession;
 import no.kodegenet.handlers.data.KodegenetUser;
@@ -21,6 +22,8 @@ import no.kodegenet.plugin.dao.KodegenetUserDao;
 public class KodegenetUserHandler extends ContenticeHandler {
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, FullHttpRequest fullHttpRequest) throws Exception {
+        EpostExecutor.getInstance(getDomain().getWebappName()).sendRemainingEmails(getStorage());
+
         String uuidToken = getCookieValue(fullHttpRequest, "uuid");
 
         String returnMessage = "";

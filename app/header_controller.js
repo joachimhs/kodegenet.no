@@ -16,6 +16,7 @@ Kodegenet.HeaderController = Ember.ArrayController.extend({
         },
         orderSuccess: function(orderId) {
             console.log('ORDER SUCCESS!!!');
+            if (ga) ga('send', 'pageview', '/shop/paymentSuccess');
             this.transitionToRoute('mypage.orders.order', orderId);
         }
     },

@@ -2,9 +2,11 @@
     <div class="row">
         <div class="col-md-4">
             <div class="list-group mypage-list-group">
-                {{link-to "Min Side" "mypage.index" classNames="list-group-item mypage-list-group-item"}}
+                {{#if session.session.authenticated}}
+                    {{link-to "Min Side" "mypage.index" classNames="list-group-item mypage-list-group-item"}}
 
-                {{link-to "Ordrebekreftelser" "mypage.orders" classNames="list-group-item mypage-list-group-item"}}
+                    {{link-to "Ordrebekreftelser" "mypage.orders" classNames="list-group-item mypage-list-group-item"}}
+                {{/if}}
             </div>
         </div>
         <div class="col-md-8">

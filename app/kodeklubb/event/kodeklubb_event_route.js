@@ -3,6 +3,6 @@ Kodegenet.KodeklubbEventRoute = Ember.Route.extend({
         this._super(controller, model);
         if (ga) ga('send', 'pageview', '/kodeklubb/event/' + model.get('id'));
 
-        document.title = "Event - " + model.get('name') + ' - Kodegenet';
+        document.title = "Kodeklubb - " + model.get('name') + ' - Kodegenet';
     }
 });

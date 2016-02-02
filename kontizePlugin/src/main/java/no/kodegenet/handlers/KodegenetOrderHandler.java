@@ -10,6 +10,8 @@ import no.kodegenet.handlers.data.KodegenetUser;
 import no.kodegenet.plugin.dao.KodegenetOrderDao;
 import no.kodegenet.plugin.dao.KodegenetUserDao;
 
+import java.util.Arrays;
+
 /**
  * Created by jhsmbp on 04/06/15.
  */
@@ -22,19 +24,13 @@ public class KodegenetOrderHandler extends ContenticeHandler {
 
         String returnMessage = "";
 
-        if (uuidToken != null && uuidToken.length() > 10 && orderId != null) {
-            KodegenetSession session = KodegenetUserDao.getSession(getStorage(), getDomain().getWebappName(), uuidToken);
+        if (orderId != null) {
+            KodegenetOrder order = KodegenetOrderDao.getKodegentOrder(getStorage(), getDomain().getWebappName(), orderId);
 
-            if (session != null && session.getUser() != null && session.getUuid().equals(uuidToken) && session.isAuthenticated()) {
-                KodegenetUser user = KodegenetUserDao.getUser(getStorage(), getDomain().getWebappName(), session.getUser());
-
-                KodegenetOrder order = user.getOrder(orderId);
-
-                if (order != null) {
-                    order.setOrderLines(KodegenetOrderDao.getKodegenetOrderLines(getStorage(), getDomain().getWebappName(), order.getId()));
-                    RestSerializer serializer = new RestSerializer();
-                    returnMessage = serializer.serialize(order).toString();
-                }
+            if (order != null) {
+                order.setOrderLines(KodegenetOrderDao.getKodegenetOrderLines(getStorage(), getDomain().getWebappName(), order.getId()));
+                RestSerializer serializer = new RestSerializer();
+                returnMessage = serializer.serialize(order, Arrays.asList("orderLine")).toString();
             }
         }
 

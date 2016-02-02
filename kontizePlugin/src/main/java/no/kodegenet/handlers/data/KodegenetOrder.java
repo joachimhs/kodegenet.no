@@ -27,6 +27,12 @@ public class KodegenetOrder {
     @Expose private String address;
     @Expose private String postalCode;
     @Expose private String city;
+    @Expose private Long createdDate;
+    @Expose private Long paymentDate;
+    @Expose private Long shipmentDate;
+    @Expose private String shippingType;
+    @Expose private Double shippingCost;
+
     private Boolean createAccount;
 
     public KodegenetOrder() {
@@ -159,5 +165,45 @@ public class KodegenetOrder {
 
     public void setCreateAccount(Boolean createAccount) {
         this.createAccount = createAccount;
+    }
+
+    public Long getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Long createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Long getPaymentDate() {
+        return paymentDate;
+    }
+
+    public void setPaymentDate(Long paymentDate) {
+        this.paymentDate = paymentDate;
+    }
+
+    public Long getShipmentDate() {
+        return shipmentDate;
+    }
+
+    public void setShipmentDate(Long shipmentDate) {
+        this.shipmentDate = shipmentDate;
+    }
+
+    public String getShippingType() {
+        return shippingType;
+    }
+
+    public void setShippingType(String shippingType) {
+        this.shippingType = shippingType;
+    }
+
+    public Double getShippingCost() {
+        return shippingCost;
+    }
+
+    public void setShippingCost(Double shippingCost) {
+        this.shippingCost = shippingCost;
     }
 }

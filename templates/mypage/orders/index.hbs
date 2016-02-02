@@ -4,16 +4,16 @@
     <tr>
         <th>Ordrenummer</th>
         <th>Status</th>
-        <th>Bestiller</th>
+        <th>Dato</th>
         <th>Ordrelinjer</th>
         <th></th>
     </tr>
     <tbody>
-        {{#each order in controller.session.session.user.orders}}
+        {{#each order in controller.session.session.user.sortedOrders}}
             <tr>
                 <td>{{order.id}}</td>
                 <td>{{order.status}}</td>
-                <td>{{order.givenName}} {{order.surname}}</td>
+                <td>{{#if order.createdDate}}{{dateTime order.createdDate}}{{/if}}</td>
                 <td>{{order.orderLines.length}}</td>
                 <td>{{link-to "Vis" "mypage.orders.order" order classNames="btn btn-primary"}}</td>
             </tr>

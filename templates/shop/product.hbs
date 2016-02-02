@@ -9,21 +9,49 @@
                 <div class="product-main-thumbnails">
                     <div class="row">
                         {{#each picture in pictures}}
-                            <div class="col-md-3">
+                            <div class="col-sm-3 col-md-3">
                                 <img class="product-image-thumbnail" {{bind-attr src=picture.href}} {{action "selectPhoto" picture}}/>
                             </div>
                         {{/each}}
 
                     </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <h2>{{name}}</h2>
+                <div class="product-price">Pris: NOK {{price}},-</div>
+
+                <div class="product-buttons">
+                    {{#if kanLeggeIHandlekurv}}
+                        <button class="btn btn-primary" {{action "addToCart" model}}><i class="glyphicon glyphicon-shopping-cart"></i> Legg i Handlekurven</button>
+                    {{else}}
+                        {{#if maksAntallBestillt}}
+                            <button class="btn btn-primary disabled" disabled><i class="glyphicon glyphicon-shopping-cart"></i> Vi har ikke flere tilgjengelig</button>
+                        {{else}}
+                            <button class="btn btn-primary disabled" disabled><i class="glyphicon glyphicon-shopping-cart"></i> Midlertidig utsolgt</button>
+                        {{/if}}
+
+                    {{/if}}
 
                 </div>
 
+                <hr>
+
+                Antall på lager i Oslo: {{quantity}}
+
+                <div class="btn btn-default btn-block" {{action "scrollToDescription"}}><i class="fa fa-arrow-circle-o-down pull"></i> Beskrivelse </div>
+                <div class="btn btn-default btn-block" {{action "scrollToLearn"}}><i class="fa fa-arrow-circle-o-down"></i> Lær å bruke</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
                 <a id="productDescription"></a>
                 <div class="product-description">
                     <h1>Beskrivelse</h1>
-                    {{model.content}}
+                    {{markdown model.content}}
                 </div>
-
+            </div>
+            <div class="col-md-6">
                 <a id="productLearn"></a>
                 <div class="product-learn">
                     <h1>Lær å bruke</h1>
@@ -35,19 +63,6 @@
                         </div>
                     {{/each}}
                 </div>
-            </div>
-            <div class="col-md-4">
-                <h2>{{name}}</h2>
-                <div class="product-price">Pris: NOK {{price}},-</div>
-
-                <div class="product-buttons">
-                    <button class="btn btn-primary" {{action "addToCart" model}}><i class="glyphicon glyphicon-shopping-cart"></i> Legg i Handlekurven</button>
-                </div>
-
-                <hr>
-
-                <div {{action "scrollToDescription"}}>Beskrivelse</div>
-                <div {{action "scrollToLearn"}}>Lær å bruke</div>
             </div>
         </div>
     </div>

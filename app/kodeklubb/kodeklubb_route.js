@@ -13,6 +13,6 @@ Kodegenet.KodeklubbRoute = Ember.Route.extend({
         this._super(controller, model);
         if (ga) ga('send', 'pageview', '/kodeklubb');
 
-        document.title = 'Lambertseter Kodeklubb - Kodegenet';
+        document.title = 'Kodegenet Kodeklubb - Kodegenet';
     }
 });

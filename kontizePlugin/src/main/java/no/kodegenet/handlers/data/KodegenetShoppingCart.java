@@ -27,6 +27,9 @@ public class KodegenetShoppingCart {
     @Expose private String address;
     @Expose private String postalCode;
     @Expose private String city;
+    @Expose private String shippingType;
+    @Expose private Double shippingCost;
+
     private Boolean createAccount;
 
     public KodegenetShoppingCart() {
@@ -159,5 +162,21 @@ public class KodegenetShoppingCart {
 
     public void setCreateAccount(Boolean createAccount) {
         this.createAccount = createAccount;
+    }
+
+    public String getShippingType() {
+        return shippingType;
+    }
+
+    public void setShippingType(String shippingType) {
+        this.shippingType = shippingType;
+    }
+
+    public Double getShippingCost() {
+        return shippingCost;
+    }
+
+    public void setShippingCost(Double shippingCost) {
+        this.shippingCost = shippingCost;
     }
 }

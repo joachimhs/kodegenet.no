@@ -2,20 +2,28 @@ package no.kodegenet.handlers;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.stripe.Stripe;
+import com.stripe.exception.CardException;
 import com.stripe.model.Charge;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import no.haagensoftware.contentice.data.SubCategoryData;
 import no.haagensoftware.contentice.handler.ContenticeHandler;
+import no.haagensoftware.contentice.util.DoubleParser;
 import no.haagensoftware.contentice.util.SubCategoryUtil;
 import no.haagensoftware.conticious.stormpath.ConticiousStormpath;
 import no.haagensoftware.conticious.stormpath.data.StormpathAccount;
 import no.kodegenet.handlers.data.*;
+import no.kodegenet.plugin.BringProduct;
+import no.kodegenet.plugin.EmailTemplatePlugin;
+import no.kodegenet.plugin.dao.KodegenetCartDao;
 import no.kodegenet.plugin.dao.KodegenetOrderDao;
 import no.kodegenet.plugin.dao.KodegenetUserDao;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -38,54 +46,70 @@ public class StripePaymentHandler extends ContenticeHandler {
         if (uuidToken != null) {
             KodegenetUser user = KodegenetUserDao.getUserByUuid(getStorage(), getDomain().getWebappName(), uuidToken);
 
-            if (user != null) {
-                logger.info("Stripe Payment payload:");
-                logger.info(messageContent);
+            logger.info("Stripe Payment payload:");
+            logger.info(messageContent);
 
-                StripeToken token = new Gson().fromJson(messageContent, StripeToken.class);
+            StripeToken token = new Gson().fromJson(messageContent, StripeToken.class);
 
-                logger.info("stripeToken:" + token.getStripeToken());
-                logger.info("stripeTokenType:" + token.getStripeTokenString());
-                logger.info("stripeEmail:" + token.getStripeEmail());
+            logger.info("stripeToken:" + token.getStripeToken());
+            logger.info("stripeTokenType:" + token.getStripeTokenString());
+            logger.info("stripeEmail:" + token.getStripeEmail());
 
-                //Get shopping cart
-                SubCategoryData cartSD = getStorage().getSubCategory(getDomain().getWebappName(), "shoppingCarts", uuidToken);
-                KodegenetShoppingCart cart = CartHandler.convertSubCategoryToShoppingCart(cartSD, uuidToken, getStorage(), getDomain().getWebappName());
+            //Get shopping cart
+            SubCategoryData cartSD = getStorage().getSubCategory(getDomain().getWebappName(), "shoppingCarts", uuidToken);
+            KodegenetShoppingCart cart = KodegenetCartDao.convertSubCategoryToShoppingCart(cartSD, uuidToken, getStorage(), getDomain().getWebappName());
 
-                if (cart != null) {
-                    cart.setStripeEmail(token.getStripeEmail());
-                    cart.setStripeToken(token.getStripeToken());
-                    cart.setStripeTokenType(token.getStripeTokenString());
-                    Double subtotal = 0.0d;
-                    for (CartProduct cp : cart.getCartProducts()) {
-                        subtotal += cp.getTotalAmount();
-                    }
+            String stripeMessage = "";
 
-                    //Charge user
-                    Map<String, Object> chargeParams = new HashMap<String, Object>();
-                    chargeParams.put("amount", subtotal.intValue() * 100);
-                    chargeParams.put("currency", "nok");
-                    chargeParams.put("source", token.getStripeToken()); // obtained with Stripe.js
-                    chargeParams.put("description", "Kodegenet ordre for " + token.getStripeEmail());
+            if (cart != null) {
+                cart.setStripeEmail(token.getStripeEmail());
+                cart.setStripeToken(token.getStripeToken());
+                cart.setStripeTokenType(token.getStripeTokenString());
+                Double subtotal = 0.0d;
+                for (CartProduct cp : cart.getCartProducts()) {
+                    subtotal += cp.getTotalAmount();
+                }
+
+                if (cart.getShippingType() != null && cart.getShippingType().equalsIgnoreCase("servicepakke")) {
+                    BringProduct bringProduct = KodegenetCartDao.getShippingPrice(cart, cart.getId(), cart.getPostalCode());
+
+                    cart.setShippingCost(DoubleParser.parseDoubleFromString(bringProduct.getPrice().getPackagePriceWithAdditionalServices().getAmountWithVAT(), 0d));
+                } else {
+                    cart.setShippingCost(0d);
+                }
+
+                //Charge user
+                Map<String, Object> chargeParams = new HashMap<String, Object>();
+                chargeParams.put("amount", (subtotal.intValue() * 100) + (cart.getShippingCost().intValue() * 100));
+                chargeParams.put("currency", "nok");
+                chargeParams.put("source", token.getStripeToken()); // obtained with Stripe.js
+                chargeParams.put("description", "Kodegenet ordre for " + token.getStripeEmail());
+
+                JsonObject purchaseComplete = new JsonObject();
+
+                boolean paymentSuccessful = false;
+
+                try {
 
                     Charge charge = Charge.create(chargeParams);
 
-                    if (cart.getCreateAccount() != null && cart.getCreateAccount().booleanValue()) {
-                        ConticiousStormpath stormpath = ConticiousStormpath.getInstance("Kodegenet");
+                    stripeMessage = new Gson().toJson(charge);
+                    //TODO: Handle payment not successful
+                    paymentSuccessful = charge.getPaid().booleanValue();
+                } catch (CardException cardExeption) {
+                    cardExeption.printStackTrace();
+                    stripeMessage = "Payment failed: " + cardExeption.getMessage();
+                    paymentSuccessful = false;
+                }
 
-                        if (!stormpath.usernameTaken(cart.getEmailAddress())) {
-                            StormpathAccount newAccount = new StormpathAccount();
-                            newAccount.setEmail(cart.getEmailAddress());
-                            newAccount.setUsername(cart.getEmailAddress());
-                            newAccount.setGivenName(cart.getGivenName());
-                            newAccount.setSurname(cart.getSurname());
-                            newAccount.setPassword(UUID.randomUUID().toString());
-                            newAccount.setStatus("ENABLED");
+                logger.info("*********\nSTRIPE MESSAGE: paymentSuccess: " + paymentSuccessful);
+                logger.info(stripeMessage);
 
-                            stormpath.createUser(newAccount);
-                        }
-
-                        stormpath.resetPassword(cart.getEmailAddress());
+                if (paymentSuccessful) {
+                    try {
+                        createAccountIfRequired(cart);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
 
                     //move cart to order
@@ -97,10 +121,48 @@ public class StripePaymentHandler extends ContenticeHandler {
                     for (KodegenetOrderLine ol : order.getOrderLines()) {
                         SubCategoryData olSD = SubCategoryUtil.convertObjectToSubCateogory(ol);
                         getStorage().setSubCategory(getDomain().getWebappName(), "orderLines", ol.getId(), olSD);
+
+                        //Reduce the number of items in stock
+                        SubCategoryData productSd = getStorage().getSubCategory(getDomain().getWebappName(), "products", ol.getProduct());
+                        Integer quantity = productSd.getIntegerValueForKey("quantity");
+                        Integer ordered = ol.getOrderedProductNumber();
+
+                        if (quantity == null || ordered == null) {
+                            quantity = 0;
+                        } else {
+                            quantity = quantity.intValue() - ordered.intValue();
+                        }
+
+                        productSd.getKeyMap().put("quantity", new JsonPrimitive(quantity));
+
+                        getStorage().setSubCategory(
+                                getDomain().getWebappName(),
+                                "products",
+                                productSd.getId(),
+                                productSd);
                     }
 
-                    user.getOrders().add(order);
-                    KodegenetUserDao.persistUser(getStorage(), getDomain().getWebappName(), user);
+                    if (user == null) {
+                        user = KodegenetUserDao.getUser(getStorage(), getDomain().getWebappName(), cart.getEmailAddress());
+                    }
+
+                    if (user == null && cart.getCreateAccount() != null && cart.getCreateAccount().booleanValue()) {
+                        //Create user
+                        user = new KodegenetUser();
+                        user.setId(cart.getEmailAddress());
+                        user.setAddress(cart.getAddress());
+                        user.setCity(cart.getCity());
+                        user.setEmail(cart.getEmailAddress());
+                        user.setGivenName(cart.getGivenName());
+                        user.setSurname(cart.getSurname());
+                        user.setPostalCode(cart.getPostalCode());
+                    }
+
+                    if (user != null) {
+                        //If user has an account add the order to it
+                        user.getOrders().add(order);
+                        KodegenetUserDao.persistUser(getStorage(), getDomain().getWebappName(), user);
+                    }
 
                     //TODO: Verify that order have been stored successfully
                     getStorage().deleteSubcategory(getDomain().getWebappName(), "shoppingCarts", cart.getId());
@@ -108,21 +170,40 @@ public class StripePaymentHandler extends ContenticeHandler {
                         getStorage().deleteSubcategory(getDomain().getWebappName(), "cartProducts", cp.getId());
                     }
 
-                    logger.info(new Gson().toJson(charge));
-
-                    JsonObject purchaseComplete = new JsonObject();
                     purchaseComplete.addProperty("status", "success");
                     purchaseComplete.addProperty("orderId", orderSD.getId());
 
-                    writeContentsToBuffer(channelHandlerContext, purchaseComplete.toString(), "application/json");
+                    KodegenetOrderDao.generateOrderEmail(getStorage(), getDomain().getWebappName(), order);
+                } else {
+                    purchaseComplete.addProperty("status", "failed");
                 }
-            } else {
-                sendError(channelHandlerContext, HttpResponseStatus.NO_CONTENT);
+
+                writeContentsToBuffer(channelHandlerContext, purchaseComplete.toString(), "application/json");
             }
         } else {
             sendError(channelHandlerContext, HttpResponseStatus.NO_CONTENT);
         }
 
+    }
+
+    private void createAccountIfRequired(KodegenetShoppingCart cart) {
+        if (cart.getCreateAccount() != null && cart.getCreateAccount().booleanValue()) {
+            ConticiousStormpath stormpath = ConticiousStormpath.getInstance("Kodegenet");
+
+            if (!stormpath.usernameTaken(cart.getEmailAddress())) {
+                StormpathAccount newAccount = new StormpathAccount();
+                newAccount.setEmail(cart.getEmailAddress());
+                newAccount.setUsername(cart.getEmailAddress());
+                newAccount.setGivenName(cart.getGivenName());
+                newAccount.setSurname(cart.getSurname());
+                newAccount.setPassword(UUID.randomUUID().toString());
+                newAccount.setStatus("ENABLED");
+
+                stormpath.createUser(newAccount);
+            }
+
+            stormpath.resetPassword(cart.getEmailAddress());
+        }
     }
 
      private KodegenetOrder convertCartToOrder(KodegenetShoppingCart cart) {
@@ -144,6 +225,11 @@ public class StripePaymentHandler extends ContenticeHandler {
 
         order.setDiscountAmount(cart.getDiscountAmount());
         order.setDiscountPercentage(cart.getDiscountPercentage());
+        order.setCreatedDate(System.currentTimeMillis());
+        order.setPaymentDate(System.currentTimeMillis());
+
+         order.setShippingType(cart.getShippingType());
+         order.setShippingCost(cart.getShippingCost());
 
         for (CartProduct cp : cart.getCartProducts()) {
             KodegenetOrderLine ol = new KodegenetOrderLine();

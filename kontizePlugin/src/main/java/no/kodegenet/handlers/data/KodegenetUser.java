@@ -19,13 +19,18 @@ public class KodegenetUser  {
     @Expose private String postalCode;
     @Expose private String city;
     @Expose private String phone;
+    @Expose private String role;
     @Expose private List<EventParticipant> eventParticipants;
 
+    /*
+    {"id":"adrianhepso@gmail.com","givenName":"Adrian","surname":"Hepsø","address":"Konglerudtoppen 21","postalCode":"1187","city":"Oslo","phone":"91822797","email":"adrianhepso@gmail.com"}
+     */
     @Expose
     private List<KodegenetOrder> orders;
 
     public KodegenetUser() {
         eventParticipants = new ArrayList<>();
+        orders = new ArrayList<>();
     }
 
     public String getId() {
@@ -106,6 +111,14 @@ public class KodegenetUser  {
 
     public void setEventParticipants(List<EventParticipant> eventParticipants) {
         this.eventParticipants = eventParticipants;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public KodegenetOrder getOrder(String orderId) {

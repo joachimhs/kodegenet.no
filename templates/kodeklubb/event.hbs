@@ -55,13 +55,17 @@
                                 {{else}}
                                     -
                                 {{/if}}
+
+                                {{#if participant.email}}
+                                    <br />{{participant.email}}
+                                {{/if}}
                             </td>
                             <td>{{participant.age}}</td>
                         </tr>
                     {{/each}}
                     <tr>
                         <td colspan="2">
-                            {{#if content.remainingSpots}}
+                            {{#if content.hasSpotsRemaining}}
                                 {{#link-to "event.paamelding" content.id classNames="btn btn-primary form-control"}}
                                     Meld deg på! ({{content.remainingSpots}} plasser igjen)
                                 {{/link-to}}

@@ -81,6 +81,14 @@ public class EventParticipantHandler extends ContenticeHandler {
                     returnParticipant.setGivenName(participant.getGivenName());
                 }
 
+                if (uuidToken != null) {
+                    KodegenetUser user = KodegenetUserDao.getUserByUuid(getStorage(), getDomain().getWebappName(), uuidToken);
+                    if (user != null && user.getRole() != null && user.getRole().equals("admin")) {
+                        returnParticipant.setEmail(participant.getEmail());
+                        returnParticipant.setGivenName(participant.getGivenName() + " " + participant.getSurname());
+                    }
+                }
+
                 RestSerializer serializer = new RestSerializer();
                 returnMessage = serializer.serialize(returnParticipant).toString();
             }

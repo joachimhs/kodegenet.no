@@ -1,4 +1,16 @@
-<h1>Ordrebekreftelse: {{id}}</h1>
+<h1>Ordrebekreftelse for {{id}}</h1>
+
+<p>Takk for din bestilling!
+    {{#if createdDate}}
+        Vi har registrert bestillingen den {{dateTime createdDate}}.
+    {{/if}}
+
+    {{#if shipmentDate}}
+        Bestillingen er sendt den {{dateTime shipmentDate}}.
+    {{else}}
+        Bestillingen er under behandling og vil bli sendt så fort som mulig!
+    {{/if}}
+</p>
 
 <table class="table">
     <thead>
@@ -24,5 +36,56 @@
                 </td>
             </tr>
         {{/each}}
+
+        {{#if shippingType}}
+            <tr>
+                <td>Klimanøytral Servicepakke</td>
+                <td></td>
+                <td>Kr. {{shippingCost}}</td>
+                <td></td>
+            </tr>
+        {{else}}
+            <tr>
+                <td>Hentes på Kodegenet på Munkerud Gård</td>
+                <td></td>
+                <td>Kr. 0,-</td>
+                <td></td>
+            </tr>
+        {{/if}}
+
+    <tr>
+        <td colspan="3" class="rightAlign">Subtotal:</td>
+        <td>Kr. {{currencyFormat subtotal}}</td>
+    </tr>
+
+    <tr>
+        <td colspan="3" class="rightAlign">Hvorav MVA (25%):</td>
+        <td>Kr. {{currencyFormat taxAmount}}</td>
+    </tr>
     </tbody>
 </table>
+
+{{#if shippingType}}
+    <h1>Leveringsdetaljer</h1>
+
+
+    <table class="table">
+        <tbody>
+        <tr>
+            <td>Navn:</td>
+            <td>{{givenName}} {{surname}}</td>
+        </tr>
+        <tr>
+            <td>Leveringsaddresse:</td>
+            <td>
+                {{address}} <br />
+                {{postalCode}} {{city}}
+            </td>
+        </tr>
+        <tr>
+            <td>Telefonnummer:</td>
+            <td>{{phone}}</td>
+        </tr>
+        </tbody>
+    </table>
+{{/if}}

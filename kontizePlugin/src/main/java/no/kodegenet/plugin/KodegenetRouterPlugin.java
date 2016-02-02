@@ -3,6 +3,7 @@ package no.kodegenet.plugin;
 import com.stripe.Stripe;
 import io.netty.channel.ChannelHandler;
 import no.haagensoftware.contentice.spi.RouterPlugin;
+import no.kodegenet.email.EpostExecutor;
 import no.kodegenet.handlers.*;
 import no.kodegenet.instagram.InstagramPlugin;
 
@@ -60,6 +61,10 @@ public class KodegenetRouterPlugin extends RouterPlugin {
 
         routeMap.put("/kodegenet/orders", KodegenetOrderHandler.class);
         routeMap.put("/kodegenet/orders/{orderId}", KodegenetOrderHandler.class);
+
+        routeMap.put("/kodegenet/sendOrderConfirmation/{orderId}", ResendOrderConfirmationHandler.class);
+
+        routeMap.put("/kodegenet/shipping", KodegenetShippingHandler.class);
 
         routeMap.put("/kodegenet/instagramPhotos", KodegenetInstagramHandler.class);
 

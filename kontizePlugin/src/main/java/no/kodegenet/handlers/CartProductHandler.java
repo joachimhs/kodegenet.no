@@ -45,6 +45,12 @@ public class CartProductHandler extends ContenticeHandler {
                     Double price = productSD.getDoubleValueForKey("price");
                     cartProduct.setTotalAmount(price);
                     cartProduct.setOrderedProductNumber(1);
+                    double partOfStandardBoxPerItem = 1d;
+
+                    if (productSD.getDoubleValueForKey("maxItemsInStandardBox") != null) {
+                        partOfStandardBoxPerItem = 1d / productSD.getDoubleValueForKey("maxItemsInStandardBox");
+                    }
+                    cartProduct.setPartOfStandardBoxPerItem(partOfStandardBoxPerItem);
                 }
 
 
@@ -88,6 +94,13 @@ public class CartProductHandler extends ContenticeHandler {
                     Double unitPrice = productSD.getDoubleValueForKey("price");
                     Integer orderNumber = cartProduct.getOrderedProductNumber();
 
+                    double partOfStandardBoxPerItem = 1d;
+
+                    if (productSD.getDoubleValueForKey("maxItemsInStandardBox") != null) {
+                        partOfStandardBoxPerItem = 1d / productSD.getDoubleValueForKey("maxItemsInStandardBox");
+                    }
+                    cartProduct.setPartOfStandardBoxPerItem(partOfStandardBoxPerItem);
+
                     cartProduct.setTotalAmount(unitPrice * orderNumber);
                 }
 
@@ -119,6 +132,10 @@ public class CartProductHandler extends ContenticeHandler {
 
         if (cartProduct.getDiscountAmount() != null) {
             sd.getKeyMap().put("discountAmount", new JsonPrimitive(cartProduct.getDiscountAmount()));
+        }
+
+        if (cartProduct.getPartOfStandardBoxPerItem() != null) {
+            sd.getKeyMap().put("partOfStandardBoxPerItem", new JsonPrimitive(cartProduct.getPartOfStandardBoxPerItem()));
         }
 
         return sd;

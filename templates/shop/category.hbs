@@ -1,0 +1,28 @@
+<div class="pageContent">
+    <h1>{{category.name}}</h1>
+
+    <div class="row mediumBottomPadding">
+        <div class="col-sm-12 col-md-12">
+            <div>
+                {{markdown category.subtitle}}
+
+                {{#link-to "shop.category" category.id tagName="div" classNames="pointer figure figure-md"}}
+                    <img {{bind-attr src=category.thumbnail.href}} />
+                {{/link-to}}
+
+                {{markdown category.content}}
+            </div>
+
+            <h1>Prodkter</h1>
+        </div>
+
+        {{#each product in category.products}}
+            <div class="col-sm-2 col-md-2 shop-index-category-products">
+                {{#link-to "shop.product" product class="shop-index-category-product pointer" tagName="div"}}
+                    <img class="shop-index-category-product-thumbnail" {{bind-attr src=product.thumbnail.href}} />
+                    <div class="shop-index-category-product-name">{{product.name}}<br />Kr. {{product.price}},-</div>
+                {{/link-to}}
+            </div>
+        {{/each}}
+    </div>
+</div>

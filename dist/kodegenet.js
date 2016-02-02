@@ -16,6 +16,7 @@ var Kodegenet = Ember.Application.create({
         this.inject('controller', 'settings', 'session:setting');
         this.inject('controller', 'session', 'session:session');
         this.inject('controller:setting', 'store', 'store:main');
+        this.inject('component:shopping-cart', 'session', 'session:session');
     },
 
     createCookie: function(name, value, days) {
@@ -199,7 +200,7 @@ Kodegenet.ApplicationController = Ember.ObjectController.extend({
             success: function(res, status, xhr) {
                 console.log(res.session.id);
                 //if (res.session.authenticated === true) {
-                    Kodegenet.createCookie("uuid", res.session.id, 10);
+                    Kodegenet.createCookie("uuid", res.session.id, 30);
                     console.log('accepts cookies:');
                     console.log(res.session.acceptedCookies);
 
@@ -403,19 +404,22 @@ Kodegenet.ShoppingCartComponent = Ember.Component.extend({
 
     createAccount: true,
     fullNameValid: false,
+    shippingValid: false,
 
     didInsertElement: function() {
         var elementId = this.get('elementId');
         var self = this;
 
         var stripeHandler = StripeCheckout.configure({
-            key: 'pk_test_khGORg8E5K6jf1qVbnlkzvy1',
+            key: 'pk_live_LhJU5yZTBfjM15GSsxgyJUAd',
             image: '/square-image.png',
             token: function(token) {
                 // Use the token to create the charge with a server-side script.
                 // You can access the token ID with `token.id`
                 console.log("<<<<<TOKEN>>>>>");
                 console.log(token);
+
+                if (ga) ga('send', 'pageview', '/shop/stripeToken');
 
                 var postContent = {
                     stripeToken: token.id,
@@ -436,6 +440,8 @@ Kodegenet.ShoppingCartComponent = Ember.Component.extend({
 
                         if (res.status === "success" && res.orderId) {
                             self.sendAction("orderSuccess", res.orderId);
+                        } else {
+                            alert("Betalingen mislyktes");
                         }
 
 
@@ -451,44 +457,63 @@ Kodegenet.ShoppingCartComponent = Ember.Component.extend({
         Ember.run.schedule('afterRender', function() {
             $("#" + elementId).hide().slideDown();
         });
-
-    },
-
-    willDestroyElement: function ()
-    {
-        if (this.get('stripeHandler')) {
-            this.get('stripeHandler').close();
-        }
-
-        var clone = this.$().clone();
-        this.$().parent().parent().append(clone);
-        clone.slideUp();
     },
 
     actions: {
+        applyServicepakkeValgt: function() {
+            var self = this;
+
+            console.log('SERVICEPAKKE');
+            this.set('shipByServicepakke', true);
+            this.set('shipByHenting', false);
+
+            var cart = this.get('cart');
+            this.updateCartFromUi(true);
+        },
+
+        applyHentingValgt: function() {
+            console.log('HENTING');
+            this.set('shipByServicepakke', false);
+            this.set('shipByHenting', true);
+
+            var cart = this.get('cart');
+            this.updateCartFromUi(true);
+        },
+
         increaseAmount: function(cartProduct) {
-            cartProduct.set('orderedProductNumber', parseInt(cartProduct.get('orderedProductNumber')) + 1);
-            cartProduct.save();
+           var oensketBestilt = parseInt(cartProduct.get('orderedProductNumber')) + 1;
+
+            cartProduct.set('orderedProductNumber', this.antallTilBestilling(oensketBestilt, cartProduct));
+            Ember.run.debounce(this.persistCartProduct(cartProduct), 500);
         },
 
         decreaseAmount: function(cartProduct) {
-            cartProduct.set('orderedProductNumber', parseInt(cartProduct.get('orderedProductNumber')) - 1);
-            cartProduct.save();
+            var oensketBestilt = parseInt(cartProduct.get('orderedProductNumber')) - 1;
+            cartProduct.set('orderedProductNumber', this.antallTilBestilling(oensketBestilt, cartProduct));
+            Ember.run.debounce(this.persistCartProduct(cartProduct), 500);
+        },
+
+        numProductsChanged: function() {
+            var cart = this.get('cart');
+
+            var self = this;
+
+            cart.get('cartProducts').forEach(function(cp) {
+                if (cp.get('isDirty')) {
+                    var oensketBestilt = parseInt(cp.get('orderedProductNumber'));
+                    cp.set('orderedProductNumber', self.antallTilBestilling(oensketBestilt, cp));
+                    Ember.run.debounce(self.persistCartProduct(cp), 500);
+                }
+            });
         },
 
         triggerStripePurchase: function() {
+            if (ga) ga('send', 'pageview', '/shop/triggerPurchase');
             console.log("TRIGGERING PURCHASE!!");
             var self = this;
 
             var cart = this.get('cart');
-            cart.set('emailAddress', this.get('emailAddress'));
-            cart.set('givenName', this.get('givenName'));
-            cart.set('surname', this.get('surname'));
-            cart.set('address', this.get('address'));
-            cart.set('postalCode', this.get('postalCode'));
-            cart.set('city', this.get('city'));
-            cart.set('phone', this.get('phone'));
-            cart.set('createAccount', this.get('createAccount'));
+            this.updateCartFromUi(false);
 
             console.log(cart);
             cart.save().then(function(data) {
@@ -511,6 +536,7 @@ Kodegenet.ShoppingCartComponent = Ember.Component.extend({
         },
 
         doShowCollectShippingDetails: function() {
+            if (ga) ga('send', 'pageview', '/shop/collectShippingDetails');
             this.set('showShippingDetails', true);
             Ember.run.schedule('afterRender', function() {
                 $(".cart-shipping-details").first().hide().slideDown();
@@ -534,6 +560,143 @@ Kodegenet.ShoppingCartComponent = Ember.Component.extend({
         /* // form input handling */
     },
 
+    antallTilBestilling: function(oensketBestillt, cartProduct) {
+        var antallTilBestilling = oensketBestillt;
+        var antallPaaLager = cartProduct.get('product.quantity');
+
+        if (antallTilBestilling > antallPaaLager) {
+            antallTilBestilling = antallPaaLager;
+        }
+
+        return antallTilBestilling;
+    },
+
+    persistCartProduct: function(cartProduct) {
+        var self = this;
+        cartProduct.save().then(function(data) {
+            self.updateShipping();
+        });
+    },
+
+    userObserver: function() {
+        var user = this.get('session.session.user');
+        console.log(JSON.stringify(this.get('session')));
+        console.log(JSON.stringify(this.get('session.session.user')));
+
+        if (user) {
+            this.set('emailAddress', user.get('id'));
+            this.set('givenName', user.get('givenName'));
+            this.set('surname', user.get('surname'));
+            this.set('address', user.get('address'));
+            this.set('postalCode', user.get('postalCode'));
+            this.set('city', user.get('city'));
+            this.set('phone', user.get('phone'));
+            this.set('createAccount', false);
+        }
+
+        return user;
+    }.observes('session.session.user', 'session.session.user.isLoaded', 'session.session.user.givenName').on('init'),
+
+    postalCodeObserver: function() {
+        this.updateShipping(true);
+    }.observes('postalCode', 'cart', 'cart.@each.cartProducts').on('init'),
+
+    /*numProductsObserver: function() {
+        if (this.get('cart.numProducts') >= 0) {
+            var cart = this.get('cart');
+
+            var self = this;
+
+            cart.get('cartProducts').forEach(function (cp) {
+                if (cp.get('isDirty')) {
+                    cp.save().then(function (data) {
+                        self.updateShipping(false);
+                    });
+                }
+            });
+        }
+    }.observes('cart.numProducts').on('init'),*/
+
+    updateShipping: function(persistCart) {
+        var self = this;
+        Ember.run.debounce(function() {
+            self.debounceUpdateShipping(persistCart);
+        }, 500);
+    },
+
+    debounceUpdateShipping: function(persistCart) {
+        var postalCode = this.get('postalCode');
+        var self = this;
+
+        if (postalCode && postalCode.length == 4) {
+            var url = '/kodegenet/shipping?postalCode=' + postalCode;
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                contentType: 'application/json',
+                success: function (res, status, xhr) {
+                    console.log('shipment: ');
+                    console.log(res);
+
+                    if (res.shippingPrice.AmountWithVAT) {
+                        self.set('shippingPrice', res.shippingPrice.AmountWithVAT);
+                        self.set('shippingValid', true);
+
+                        var cart = self.get('cart');
+                        self.updateCartFromUi(persistCart);
+
+
+                    }
+                },
+                error: function(xhr, status, err) {
+                    self.set('shippingValid', false);
+
+                    var cart = self.get('cart');
+                    self.updateCartFromUi(persistCart);
+                }
+            });
+        }
+    },
+
+    willDestroyElement: function ()
+    {
+        if (this.get('stripeHandler')) {
+            this.get('stripeHandler').close();
+        }
+
+        var clone = this.$().clone();
+        this.$().parent().parent().append(clone);
+        clone.slideUp();
+    },
+
+    updateCartFromUi: function(persistCart) {
+        var self = this;
+        var cart = this.get('cart');
+        cart.set('emailAddress', this.get('emailAddress'));
+        cart.set('givenName', this.get('givenName'));
+        cart.set('surname', this.get('surname'));
+        cart.set('address', this.get('address'));
+        cart.set('postalCode', this.get('postalCode'));
+        cart.set('city', this.get('city'));
+        cart.set('phone', this.get('phone'));
+        cart.set('createAccount', this.get('createAccount'));
+
+        if (this.get('shipByServicepakke') === true) {
+            cart.set('shippingType', 'servicepakke');
+        } else {
+            cart.set('shippingType', null);
+        }
+
+        if (persistCart === true) {
+            this.set('shippingValid', false);
+            console.log(cart);
+            cart.save().then(function () {
+                self.set('shippingValid', true);
+            });
+        }
+    },
+
     emailAddressIsInvalid: function() {
         if (this.get('emailEntered') && this.get('emailAddress')) {
             return !this.validateEmail(this.get('emailAddress'));
@@ -543,7 +706,7 @@ Kodegenet.ShoppingCartComponent = Ember.Component.extend({
     }.property('emailAddress', 'emailEntered'),
 
     validateEmail: function(email) {
-        var pattern = /^\w+@[a-zA-Z_0-9\-]+?\.[a-zA-Z]{2,4}$/;
+        var pattern = /^[a-zA-Z_0-9\-\.]+@[a-zA-Z_0-9\-\.]+?\.[a-zA-Z]{2,4}$/;
         if (email) {
             return email.match(pattern);
         }
@@ -552,7 +715,7 @@ Kodegenet.ShoppingCartComponent = Ember.Component.extend({
     },
 
     description: function() {
-        return "Kodegnet " + this.get('cart.numProducts') + " produkter";
+        return "Kodegenet " + this.get('cart.numProducts') + " produkter";
     }.property('cart.numProducts'),
 
     shippingDetailsCollected: function() {
@@ -562,8 +725,9 @@ Kodegenet.ShoppingCartComponent = Ember.Component.extend({
             this.get('address.length') >= 2 &&
             this.get('postalCode.length') >= 4 &&
             this.get('phone.length') >= 4 &&
-            this.get('city.length') > 2;
-    }.property('emailAddressIsInvalid', 'givenName', 'surname', 'address', 'postalCode', 'city', 'phone')
+            this.get('city.length') > 2 &&
+            this.get('shippingValid') === true;
+    }.property('emailAddressIsInvalid', 'givenName', 'surname', 'address', 'postalCode', 'city', 'phone', 'shippingValid')
 });
 Kodegenet.SocialButtonsComponent = Ember.Component.extend({
     classNames: ['fb-like'],
@@ -1124,7 +1288,7 @@ Kodegenet.EventRoute = Ember.Route.extend({
     model: function() {
         return Ember.RSVP.hash({
             events: this.store.find('event')
-        })
+        });
     }
 });
 Kodegenet.EventPaameldingController = Ember.ObjectController.extend({
@@ -1153,6 +1317,8 @@ Kodegenet.EventPaameldingController = Ember.ObjectController.extend({
             var events = this.get('controllers.event.events');
 
             if (this.validateForm()) {
+                //Scroll to the top of the page
+                $("html, body").animate({ scrollTop: 0 }, "slow");
                 var user = this.session.get('ssession.session.user');
 
                 var participant = this.get('chosenParticipant');
@@ -1176,9 +1342,9 @@ Kodegenet.EventPaameldingController = Ember.ObjectController.extend({
                     events.forEach(function(ev) {
                         if (ev.get('meldPaa')) {
                             ev.get('eventParticipants').pushObject(participant);
-                            storePromises.pushObject(ev.save())
+                            storePromises.pushObject(ev.save());
                         }
-                    })
+                    });
                 }
 
                 Ember.RSVP.all(storePromises).then(function() {
@@ -1230,14 +1396,6 @@ Kodegenet.EventPaameldingController = Ember.ObjectController.extend({
             errorMessage += 'Fornavn må inneholde minst 2 tegn <br />';
         }
 
-        if (surname === null || surname.length < 2) {
-            errorMessage += 'Etternavn må inneholde minst 2 tegn <br />';
-        }
-
-        if (age === null || age.length < 1) {
-            errorMessage += 'Alder må inneholde minst 1 tegn <br />';
-        }
-
         if (errorMessage.length > 0) {
             this.set('errorMessage', errorMessage);
         } else {
@@ -1272,6 +1430,7 @@ Kodegenet.HeaderController = Ember.ArrayController.extend({
         },
         orderSuccess: function(orderId) {
             console.log('ORDER SUCCESS!!!');
+            if (ga) ga('send', 'pageview', '/shop/paymentSuccess');
             this.transitionToRoute('mypage.orders.order', orderId);
         }
     },
@@ -1345,6 +1504,13 @@ Ember.Handlebars.registerBoundHelper('dmy_no', function(property) {
     if (property !== null) {
         var parsedDate = moment(property);
         return parsedDate.format("DD/MM/YYYY");
+    }
+});
+
+Ember.Handlebars.registerBoundHelper('dateTime', function(property) {
+    if (property !== null) {
+        var parsedDate = moment(property);
+        return parsedDate.format("DD/MM/YYYY HH:mm:ss");
     }
 });
 Ember.Handlebars.registerBoundHelper('rawhtml', function(property) {
@@ -1562,7 +1728,7 @@ Kodegenet.KodeklubbEventRoute = Ember.Route.extend({
         this._super(controller, model);
         if (ga) ga('send', 'pageview', '/kodeklubb/event/' + model.get('id'));
 
-        document.title = "Event - " + model.get('name') + ' - Kodegenet';
+        document.title = "Kodeklubb - " + model.get('name') + ' - Kodegenet';
     }
 });
 Kodegenet.KodeklubbController = Ember.ObjectController.extend({
@@ -1636,7 +1802,7 @@ Kodegenet.KodeklubbRoute = Ember.Route.extend({
         this._super(controller, model);
         if (ga) ga('send', 'pageview', '/kodeklubb');
 
-        document.title = 'Lambertseter Kodeklubb - Kodegenet';
+        document.title = 'Kodegenet Kodeklubb - Kodegenet';
     }
 });
 Kodegenet.LoginController = Ember.ObjectController.extend({
@@ -1772,12 +1938,12 @@ Kodegenet.LoginController = Ember.ObjectController.extend({
         return valid;
     }*/
 });
-Kodegenet.KodeklubbEventRoute = Ember.Route.extend({
+Kodegenet.MakerspaceEventRoute = Ember.Route.extend({
     setupController: function(controller, model) {
         this._super(controller, model);
         if (ga) ga('send', 'pageview', '/makerspace/event/' + model.get('id'));
 
-        document.title = "Event - " + model.get('name') + ' - Kodegenet';
+        document.title = "Makerspace - " + model.get('name') + ' - Kodegenet';
     }
 });
 Kodegenet.MakerspaceIndexController = Ember.ObjectController.extend({
@@ -1833,10 +1999,17 @@ Kodegenet.MakerspaceRoute = Ember.Route.extend({
     model: function() {
         return Ember.RSVP.hash({
             makerspace: this.store.find('page', 'makerspace'),
-            events: this.store.filter('event', function(event) {
+            events: this.store.filter('event', function (event) {
                 return event.get('type') === "makerspace";
             })
         });
+    },
+
+    setupController: function(controller, model) {
+        this._super(controller, model);
+        if (ga) ga('send', 'pageview', '/makerspace');
+
+        document.title = 'Kodegenet Kodeklubb - Makerspace';
     }
 });
 Kodegenet.MedlemRoute = Ember.Route.extend({
@@ -1897,7 +2070,14 @@ Kodegenet.CartProduct = DS.Model.extend({
                 this.set('orderedProductNumber', number);
             }
         }
-    }.observes('orderedProductNumber').on('init')
+    }.observes('orderedProductNumber').on('init'),
+
+    antallSomKanBestilles: function() {
+        var tilgjengeligAntall = this.get('product.quantity');
+        var orderedProductNumber = this.get('orderedProductNumber');
+
+        return tilgjengeligAntall - orderedProductNumber;
+    }.property('orderedProductNumber', 'product.quantity')
 });
 Kodegenet.Chapter = DS.Model.extend({
     tittel: DS.attr('string'),
@@ -1986,7 +2166,11 @@ Kodegenet.Event = DS.Model.extend({
 
     isMakerspace: function() {
         return this.get('type') === 'makerspace';
-    }.property('type')
+    }.property('type'),
+
+    hasSpotsRemaining: function() {
+        return this.get('remainingSpots') > 0;
+    }.property('remainingSpots')
 });
 Kodegenet.EventParticipant = DS.Model.extend({
     givenName: DS.attr('string'),
@@ -2021,7 +2205,38 @@ Kodegenet.Order = DS.Model.extend({
     address: DS.attr('string'),
     postalCode: DS.attr('string'),
     city: DS.attr('string'),
-    orderLines: DS.hasMany('orderLines', {async: true})
+    orderLines: DS.hasMany('orderLines', {async: true}),
+    createdDate: DS.attr('number'),
+    paymentDate: DS.attr('date'),
+    shipmentDate: DS.attr('date'),
+
+    shippingType: DS.attr('string'),
+    shippingCost: DS.attr('number'),
+
+    subtotal: function() {
+        var subtotal = 0;
+
+        if (this.get('orderLines')) {
+            this.get('orderLines').forEach(function (ol) {
+                subtotal += ol.get('totalAmount');
+            });
+        }
+
+        if (this.get('shippingType') && this.get('shippingCost')) {
+            subtotal += this.get('shippingCost');
+        }
+
+        return subtotal;
+    }.property('orderLines.@each.totalAmount'),
+
+    taxAmount: function() {
+        var tax = 0;
+        if (this.get('subtotal')) {
+            tax = this.get('subtotal') * 0.2;
+        }
+
+        return tax;
+    }.property('subtotal')
 });
 Kodegenet.OrderLine = DS.Model.extend({
     product: DS.belongsTo('product', {async: true}),
@@ -2052,14 +2267,38 @@ Kodegenet.Product = DS.Model.extend({
     thumbnail: DS.belongsTo('figur', {async: true}),
     price: DS.attr('number'),
     content: DS.attr('string'),
-    learn: DS.hasMany('course', {async: true})
+    learn: DS.hasMany('course', {async: true}),
+    quantity: DS.attr('number'),
+    maxItemsInStandardBox: DS.attr('number')
 });
 Kodegenet.ProductCategory = DS.Model.extend({
     name: DS.attr('string'),
+    content: DS.attr('string'),
     subtitle: DS.attr('string'),
     sortIndex: DS.attr('number'),
     products: DS.hasMany('product', {async: true}),
-    thumbnail: DS.belongsTo('figur', {async: true})
+    thumbnail: DS.belongsTo('figur', {async: true}),
+
+    sortedProducts: function() {
+        var products = this.get('products');
+
+        var sortedResult = Em.ArrayProxy.createWithMixins(
+            Ember.SortableMixin,
+            {content: products, sortProperties: ['name'], sortAscending: true}
+        );
+
+        return sortedResult;
+    }.property('products'),
+
+    sortedProductsLimited: function() {
+        var limited = [];
+
+        if (this.get('sortedProducts')) {
+            limited = this.get('sortedProducts').toArray().splice(0, 3);
+        }
+
+        return limited;
+    }.property('sortedProducts')
 });
 Kodegenet.Session = DS.Model.extend({
     authenticated: DS.attr('boolean'),
@@ -2088,6 +2327,9 @@ Kodegenet.ShoppingCart = DS.Model.extend({
 
     cartProducts: DS.hasMany('cartProduct', {async: true}),
 
+    shippingType: DS.attr('string'),
+    shippingCost: DS.attr('number'),
+
     subtotal: function() {
         var total = 0;
         this.get('cartProducts').forEach(function(cp) {
@@ -2096,8 +2338,12 @@ Kodegenet.ShoppingCart = DS.Model.extend({
             }
         });
 
+        if (this.get('shippingType') && this.get('shippingCost')) {
+            total += this.get('shippingCost');
+        }
+
         return total;
-    }.property('cartProducts.@each.totalAmount', 'cartProducts.@each.orderedProductNumber'),
+    }.property('cartProducts.@each.totalAmount', 'cartProducts.@each.orderedProductNumber', 'shippingType', 'shippingCost'),
 
     numProducts: function() {
         var numProducts = 0;
@@ -2150,7 +2396,25 @@ Kodegenet.User = DS.Model.extend({
     givenName: DS.attr('string'),
     surname: DS.attr('string'),
     orders: DS.hasMany('order', {async: true}),
-    eventParticipants: DS.hasMany('eventParticipant', {async: true, inverse: 'username'})
+    address: DS.attr('string'),
+    postalCode: DS.attr('string'),
+    city: DS.attr('string'),
+    phone: DS.attr('string'),
+    eventParticipants: DS.hasMany('eventParticipant', {async: true, inverse: 'username'}),
+
+    sortedOrders: function() {
+        var orders = this.get('orders');
+        var sortedOrders = [];
+
+        if (orders) {
+            sortedOrders = Em.ArrayProxy.createWithMixins(
+                Ember.SortableMixin,
+                { content:orders, sortProperties: ['createdDate'], sortAscending: false }
+            );
+        }
+
+        return sortedOrders;
+    }.property('orders.@each.createdDate')
 });
 Kodegenet.MypageController = Ember.Controller.extend({
 
@@ -2163,6 +2427,10 @@ Kodegenet.MypageRoute = Ember.Route.extend({
         });
     } 
 });
+/**
+ * Created by jhsmbp on 18/10/15.
+ */
+
 Kodegenet.MyspaceOrdersRoute = Ember.Route.extend({
 
 });
@@ -2273,6 +2541,7 @@ Kodegenet.Router.map(function() {
     this.route("newsIndex", {path: "/news"});
 
     this.resource("shop", function() {
+        this.route('category', {path: "/category/:category_id"});
         this.route('product', {path: '/product/:product_id'});
     });
 
@@ -2282,7 +2551,10 @@ Kodegenet.Router.map(function() {
     this.route('makerspace', function() {
         this.route('event', {path: "/event/:event_id"});
     });
+
     this.route('medlem');
+    this.route('julekalender');
+
 
     this.route('login');
     this.route('userRegistered');
@@ -2304,6 +2576,20 @@ Kodegenet.SettingController = Ember.Controller.extend({
 
 });
 
+Kodegenet.ShopCategoryRoute = Ember.Route.extend({
+    model: function(param) {
+        return Ember.RSVP.hash({
+            category: this.store.find('productCategory', param.category_id)
+        });
+    },
+
+    setupController: function(controller, model) {
+        this._super(controller, model);
+        if (ga) ga('send', 'pageview', '/shop/category/' + model.category.get('id'));
+
+        document.title = model.category.get('name') + ' - Kodegenets Nettbutikk';
+    }
+});
 Kodegenet.ShopProductController = Ember.ObjectController.extend({
     needs: ['application'],
 
@@ -2350,6 +2636,49 @@ Kodegenet.ShopProductController = Ember.ObjectController.extend({
         }
     },
 
+    tilgjengeligAntall: function() {
+        var shoppingCart = this.get('session.shoppingCart');
+        var quantity = this.get('model.quantity');
+        var product = this.get('model');
+        var tilgjengeligAntall = quantity;
+
+        if (shoppingCart) {
+            var productInCart = this.getProductInCart(shoppingCart, product);
+
+            if (productInCart) {
+                var itemsInCart = productInCart.get('orderedProductNumber');
+                if (itemsInCart) {
+                    tilgjengeligAntall -= itemsInCart;
+                }
+            }
+        }
+
+        return tilgjengeligAntall;
+    }.property('session.shoppingCart.numProducts', 'quantity'),
+
+    kanLeggeIHandlekurv: function() {
+        return this.get('tilgjengeligAntall') > 0;
+    }.property('tilgjengeligAntall'),
+
+    maksAntallBestillt: function() {
+        var maks = false;
+        var product = this.get('model');
+        var quantity = this.get('model.quantity');
+
+        var shoppingCart = this.get('session.shoppingCart');
+
+        if (shoppingCart) {
+            var productInCart = this.getProductInCart(shoppingCart, product);
+
+            if (productInCart) {
+                maks = quantity <= productInCart.get('orderedProductNumber');
+            }
+        }
+
+        return maks;
+
+    }.property('tilgjengeligAntall', 'session.shoppingCart.numProducts'),
+
     modelObserver: function() {
         console.log('<<<<<<----ShopProductController--->>>>>>>>>');
         console.log('modelObserver: ' + this.get('model.pictures.length'));
@@ -2386,15 +2715,38 @@ Kodegenet.ShopProductController = Ember.ObjectController.extend({
         return foundProduct;
     }
 });
+Kodegenet.ShopProductRoute = Ember.Route.extend({
+    setupController: function (controller, model) {
+        this._super(controller, model);
+        if (ga) ga('send', 'pageview', '/shop/product/' + model.get('id'));
+
+        document.title = model.get('name') + ' - Kodegenets Nettbutikk';
+    }
+});
 Kodegenet.ShopProductView = Ember.View.extend(Kodegenet.AnimateInViewMixin, {
 
 });
 Kodegenet.ShopIndexController = Ember.ArrayController.extend({
     sortProperties: ['sortIndex']
 });
+Kodegenet.ShopIndexRoute = Ember.Route.extend({
+    setupController: function(controller, model) {
+        this._super(controller, model);
+        if (ga) ga('send', 'pageview', '/shop');
+
+        document.title = 'Kodegenets Nettbutikk';
+    }
+});
 Kodegenet.ShopRoute = Ember.Route.extend({
     model: function() {
         return this.store.find('productCategory');
+    },
+
+    setupController: function(controller, model) {
+        this._super(controller, model);
+        if (ga) ga('send', 'pageview', '/shop');
+
+        document.title = 'Kodegenets Nettbutikk';
     }
 });
 Kodegenet.TrackIndexController = Ember.ObjectController.extend({

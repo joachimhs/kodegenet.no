@@ -63,7 +63,7 @@ Kodegenet.ApplicationController = Ember.ObjectController.extend({
             success: function(res, status, xhr) {
                 console.log(res.session.id);
                 //if (res.session.authenticated === true) {
-                    Kodegenet.createCookie("uuid", res.session.id, 10);
+                    Kodegenet.createCookie("uuid", res.session.id, 30);
                     console.log('accepts cookies:');
                     console.log(res.session.acceptedCookies);
 

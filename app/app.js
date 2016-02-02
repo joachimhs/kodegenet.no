@@ -5,6 +5,7 @@ var Kodegenet = Ember.Application.create({
         this.inject('controller', 'settings', 'session:setting');
         this.inject('controller', 'session', 'session:session');
         this.inject('controller:setting', 'store', 'store:main');
+        this.inject('component:shopping-cart', 'session', 'session:session');
     },
 
     createCookie: function(name, value, days) {

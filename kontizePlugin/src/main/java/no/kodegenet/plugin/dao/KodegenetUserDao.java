@@ -21,39 +21,42 @@ public class KodegenetUserDao {
 
         if (plugin != null) {
             SubCategoryData sd = plugin.getSubCategory(host, "users", username);
-            user = convertSubcategoryToUser(sd);
+            if (sd != null) {
 
-            if (user != null && user.getId() != null && user.getId().startsWith("users_")) {
-                user.setId(user.getId().substring(6));
+                user = convertSubcategoryToUser(sd);
+
+                if (user != null && user.getId() != null && user.getId().startsWith("users_")) {
+                    user.setId(user.getId().substring(6));
+                }
+
+                List<KodegenetOrder> orderList = new ArrayList<>();
+                for (String orderId : sd.getListForKey("orders")) {
+                    if (orderId.startsWith("orders_")) {
+                        orderId = orderId.substring(7);
+                    }
+
+
+                    KodegenetOrder ko = KodegenetOrderDao.getKodegentOrder(plugin, host, orderId);
+                    if (ko != null) {
+                        orderList.add(ko);
+                    }
+                }
+                user.setOrders(orderList);
+
+                List<EventParticipant> eventParticipantList = new ArrayList<>();
+                for (String eventParticipantId : sd.getListForKey("eventParticipants")) {
+                    if (eventParticipantId.startsWith("eventParticipants_")) {
+                        eventParticipantId = eventParticipantId.substring(18);
+                    }
+
+
+                    EventParticipant ep = KodegenetEventDao.getEventParticipant(plugin, host, eventParticipantId);
+                    if (ep != null) {
+                        eventParticipantList.add(ep);
+                    }
+                }
+                user.setEventParticipants(eventParticipantList);
             }
-
-            List<KodegenetOrder> orderList = new ArrayList<>();
-            for (String orderId : sd.getListForKey("orders")) {
-                if (orderId.startsWith("orders_")) {
-                    orderId = orderId.substring(7);
-                }
-
-
-                KodegenetOrder ko = KodegenetOrderDao.getKodegentOrder(plugin, host, orderId);
-                if (ko != null) {
-                    orderList.add(ko);
-                }
-            }
-            user.setOrders(orderList);
-
-            List<EventParticipant> eventParticipantList = new ArrayList<>();
-            for (String eventParticipantId : sd.getListForKey("eventParticipants")) {
-                if (eventParticipantId.startsWith("eventParticipants_")) {
-                    eventParticipantId = eventParticipantId.substring(18);
-                }
-
-
-                EventParticipant ep = KodegenetEventDao.getEventParticipant(plugin, host, eventParticipantId);
-                if (ep != null) {
-                    eventParticipantList.add(ep);
-                }
-            }
-            user.setEventParticipants(eventParticipantList);
 
         }
 
@@ -84,7 +87,17 @@ public class KodegenetUserDao {
 
         if (plugin != null && host != null && host.length() > 4 && uuid != null) {
             SubCategoryData sd = plugin.getSubCategory(host, "sessions", uuid);
-            session = convertSubcatgoryToSession(sd);
+
+            if (sd == null && uuid != null) {
+                session = new KodegenetSession();
+                session.setLastAccessed(System.currentTimeMillis());
+                session.setCreated(System.currentTimeMillis());
+                session.setUuid(uuid);
+                session.setAcceptedCookies(false);
+                persistSession(plugin, host, session);
+            } else {
+                session = convertSubcatgoryToSession(sd);
+            }
         }
 
         return session;
@@ -106,6 +119,10 @@ public class KodegenetUserDao {
             user.setAddress(sd.getValueForKey("streetAddress"));
             user.setPostalCode(sd.getValueForKey("postalCode"));
             user.setCity(sd.getValueForKey("city"));
+            user.setRole(sd.getValueForKey("role"));
+            if (user.getRole() == null) {
+                user.setRole("user");
+            }
             user.setPhone(sd.getValueForKey("phone"));
         }
 
@@ -121,6 +138,7 @@ public class KodegenetUserDao {
         sd.setValueForKey("postalCode", user.getPostalCode());
         sd.setValueForKey("city", user.getCity());
         sd.setValueForKey("phone", user.getPhone());
+        sd.setValueForKey("role", user.getRole());
 
         List<String> orderIds = new ArrayList<>();
         if (user.getOrders() != null) {

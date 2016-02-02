@@ -14,5 +14,12 @@ Kodegenet.CartProduct = DS.Model.extend({
                 this.set('orderedProductNumber', number);
             }
         }
-    }.observes('orderedProductNumber').on('init')
+    }.observes('orderedProductNumber').on('init'),
+
+    antallSomKanBestilles: function() {
+        var tilgjengeligAntall = this.get('product.quantity');
+        var orderedProductNumber = this.get('orderedProductNumber');
+
+        return tilgjengeligAntall - orderedProductNumber;
+    }.property('orderedProductNumber', 'product.quantity')
 });

@@ -44,6 +44,49 @@ Kodegenet.ShopProductController = Ember.ObjectController.extend({
         }
     },
 
+    tilgjengeligAntall: function() {
+        var shoppingCart = this.get('session.shoppingCart');
+        var quantity = this.get('model.quantity');
+        var product = this.get('model');
+        var tilgjengeligAntall = quantity;
+
+        if (shoppingCart) {
+            var productInCart = this.getProductInCart(shoppingCart, product);
+
+            if (productInCart) {
+                var itemsInCart = productInCart.get('orderedProductNumber');
+                if (itemsInCart) {
+                    tilgjengeligAntall -= itemsInCart;
+                }
+            }
+        }
+
+        return tilgjengeligAntall;
+    }.property('session.shoppingCart.numProducts', 'quantity'),
+
+    kanLeggeIHandlekurv: function() {
+        return this.get('tilgjengeligAntall') > 0;
+    }.property('tilgjengeligAntall'),
+
+    maksAntallBestillt: function() {
+        var maks = false;
+        var product = this.get('model');
+        var quantity = this.get('model.quantity');
+
+        var shoppingCart = this.get('session.shoppingCart');
+
+        if (shoppingCart) {
+            var productInCart = this.getProductInCart(shoppingCart, product);
+
+            if (productInCart) {
+                maks = quantity <= productInCart.get('orderedProductNumber');
+            }
+        }
+
+        return maks;
+
+    }.property('tilgjengeligAntall', 'session.shoppingCart.numProducts'),
+
     modelObserver: function() {
         console.log('<<<<<<----ShopProductController--->>>>>>>>>');
         console.log('modelObserver: ' + this.get('model.pictures.length'));

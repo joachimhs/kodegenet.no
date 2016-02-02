@@ -24,6 +24,7 @@ public class InputKodegenetShoppingCart {
     private String postalCode;
     private String city;
     private Boolean createAccount;
+    private String shippingType;
 
     public InputKodegenetShoppingCart() {
         cartProducts = new ArrayList<>();
@@ -155,5 +156,13 @@ public class InputKodegenetShoppingCart {
 
     public void setCreateAccount(Boolean createAccount) {
         this.createAccount = createAccount;
+    }
+
+    public String getShippingType() {
+        return shippingType;
+    }
+
+    public void setShippingType(String shippingType) {
+        this.shippingType = shippingType;
     }
 }

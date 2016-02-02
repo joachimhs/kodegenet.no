@@ -10,19 +10,23 @@
                             {{category.subtitle}}
                         </div>
                     </div>
-                    <img class="shop-index-category-thumbnail" {{bind-attr src=category.thumbnail.href}} />
+                    {{#link-to "shop.category" category.id}}
+                        <img class="shop-index-category-thumbnail" {{bind-attr src=category.thumbnail.href}} />
+                    {{/link-to}}
                 </div>
 
                 <div class="col-sm-12 col-md-2 shop-index-category-products">
-                    {{#each product in category.products}}
-                        {{#link-to "shop.product" product class="shop-index-category-product" tagName="div"}}
+                    {{#each product in category.sortedProductsLimited}}
+                        {{#link-to "shop.product" product class="shop-index-category-product pointer" tagName="div"}}
                             <img class="shop-index-category-product-thumbnail" {{bind-attr src=product.thumbnail.href}} />
-                            <div class="shop-index-category-product-name">{{product.name}}</div>
+                            <div class="shop-index-category-product-name">{{product.name}}<br />Kr. {{product.price}},-</div>
                         {{/link-to}}
                     {{/each}}
 
                     <div class="shop-index-category-button">
-                        <button class="btn btn-primary">Flere Produkter <span class="glyphicon glyphicon-chevron-right"></span></button>
+                        {{#link-to "shop.category" category.id}}
+                            <div class="btn btn-primary pointer">Flere Produkter <span class="glyphicon glyphicon-chevron-right"></span></div>
+                        {{/link-to}}
                     </div>
                 </div>
             </div>

@@ -113,7 +113,12 @@
 
                 {{#each event in controllers.event.futureEvents}}
                     <tr>
-                        <td>{{input type="checkbox" checked=event.meldPaa}}</td>
+                        <td>
+                            {{#if event.hasSpotsRemaining}}
+                                {{input type="checkbox" checked=event.meldPaa}}</td>
+                            {{else}}
+                                (Fullt)</td>
+                            {{/if}}
                         <td>{{dmy_no event.date}}</td>
                         <td class="capitalize">{{event.type}}</td>
                         <td>{{event.name}}</td>

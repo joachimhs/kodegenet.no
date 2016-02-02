@@ -28,6 +28,7 @@ Kodegenet.Router.map(function() {
     this.route("newsIndex", {path: "/news"});
 
     this.resource("shop", function() {
+        this.route('category', {path: "/category/:category_id"});
         this.route('product', {path: '/product/:product_id'});
     });
 
@@ -37,7 +38,10 @@ Kodegenet.Router.map(function() {
     this.route('makerspace', function() {
         this.route('event', {path: "/event/:event_id"});
     });
+
     this.route('medlem');
+    this.route('julekalender');
+
 
     this.route('login');
     this.route('userRegistered');

@@ -1,4 +1,4 @@
-<div class="pageContent">
+<div class="pageContent" xmlns="http://www.w3.org/1999/html">
     <div class="row">
 
         {{#each cartProduct in cart.cartProducts}}
@@ -10,7 +10,7 @@
                     <div class="form-group">
                         <div class="input-group">
                             <div class="input-group-addon pointer"{{action "decreaseAmount" cartProduct}}>-</div>
-                            {{input type="text" value=cartProduct.orderedProductNumber classNames="form-control" placeholder="Antall"}}
+                            {{input type="text" value=cartProduct.orderedProductNumber classNames="form-control" placeholder="Antall" focus-out="numProductsChanged" key-up="numProductsChanged" required=""}}
                             <div class="input-group-addon pointer" {{action "increaseAmount" cartProduct}}>+</div>
                         </div>
                     </div>
@@ -35,7 +35,7 @@
                 <div class="input-set">
                     <fieldset>
                         {{input elementId="emailAddress" type="text" name="emailAddress" value=emailAddress classNames="input-placeholder" focus-out="emailFocusOut" key-down="emailKeyDown" required=""}}
-                        <label for="emailAddress">Epost addresse</label>
+                        <label for="emailAddress">Epost adresse</label>
                         {{#if emailAddressIsInvalid}}
                             <div class="input-form-validation input-form-validation-error">* Epost addressen er ikke gyldig</div>
                         {{/if}}
@@ -85,18 +85,62 @@
                 </div>
             </div>
 
-            <div class="checkout-checkbox-input">
-                <fieldset>
-                    {{input id="inputCreateAccount" type="checkbox" name="inputCreateAccount" checked=createAccount}}
-                    <label for="inputCreateAccount">Opprett ny konto?</label>
-                </fieldset>
-                {{#if createAccount}}
-                    <div class="input-form-validation input-form-validation-error"> * vi vil sende deg en passord-reset pr. epost</div>
-                {{/if}}
+            {{#unless session.session.authenticated}}
+                <div class="checkout-checkbox-input">
 
-            </div>
+                        <fieldset>
+                            {{input id="inputCreateAccount" type="checkbox" name="inputCreateAccount" checked=createAccount}}
+                            <label for="inputCreateAccount">Opprett ny konto?</label>
+                        </fieldset>
+
+                    {{#if createAccount}}
+                        <div class="input-form-validation input-form-validation-error"> * vi vil sende deg en passord-reset pr. epost</div>
+                    {{/if}}
+
+                </div>
+            {{/unless}}
 
             <div class="clearfix"></div>
+
+            <h1>Leveringsalternativer:</h1>
+
+            <div class="text-left">
+                <div class="radio">
+                    <label {{action "applyServicepakkeValgt"}}>
+                        {{#if shipByServicepakke}}
+                            <input type="radio" name="shippingOptions" value="servicepakke" checked>
+                                Klimanøytral Servicepakke kr. {{shippingPrice}}
+                            </input>
+                        {{else}}
+                            <input type="radio" name="shippingOptions" value="servicepakke">
+                                Klimanøytral Servicepakke kr. {{shippingPrice}}
+                            </input>
+                        {{/if}}
+
+                    </label>
+                </div>
+
+                <div class="radio">
+                    <label {{action "applyHentingValgt"}}>
+                        {{#if shipByHenting}}
+                            <input type="radio" name="shippingOptions" value="hent" checked>
+                                Hent hos Kodegenet på Munkerud Gård kr. 0,-
+                            </input>
+                        {{else}}
+                            <input type="radio" name="shippingOptions" value="hent">
+                                Hent hos Kodegenet på Munkerud Gård kr. 0,-
+                            </input>
+                        {{/if}}
+                    </label>
+                </div>
+
+                {{#if shipByHenting}}
+                    <div class="alert alert-warning">
+                        Dersom du ønsker å hente varene hos Kodegenet på Munkerud Gård, må du sende oss en epost ti post@kodegenet.no etter at bestillingen er foretatt for å avtale et hente tidspunkt. Henting kan stort sett arrangeres fra kl 10 til kl. 16 mandag til fredag.
+                    </div>
+                {{/if}}
+            </div>
+
 
             <div class="text-left">
                 {{#if shippingDetailsCollected}}
@@ -105,7 +149,10 @@
                     </div>
                 {{else}}
                     <div class="btn btn-primary disabled">
-                        <i class="fa fa-times"></i> Leveringsinformasjon mangler
+                        <i class="fa fa-times"></i> Leveringsinformasjon mangler<br />
+                        {{#unless shippingValid}}
+                            Postnummer er ikke gyldig
+                        {{/unless}}
                     </div>
                 {{/if}}
             </div>

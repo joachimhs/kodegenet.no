@@ -11,7 +11,9 @@ import io.netty.handler.codec.http.QueryStringDecoder;
 import no.haagensoftware.contentice.data.SubCategoryData;
 import no.haagensoftware.contentice.handler.ContenticeHandler;
 import no.haagensoftware.hyrrokkin.serializer.RestSerializer;
+import no.kodegenet.email.EpostExecutor;
 import no.kodegenet.handlers.data.KodegenetSession;
+import no.kodegenet.instagram.SessionCleanupPlugin;
 import no.kodegenet.plugin.dao.KodegenetUserDao;
 
 import java.util.Date;
@@ -28,6 +30,9 @@ public class CreateSessionHandler extends ContenticeHandler {
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, FullHttpRequest fullHttpRequest) throws Exception {
+        EpostExecutor.getInstance(getDomain().getWebappName()).sendRemainingEmails(getStorage());
+        SessionCleanupPlugin.getInstance(getDomain().getWebappName(), getStorage());
+
         String uuidToken = getCookieValue(fullHttpRequest, "uuid");
 
         if (isPost(fullHttpRequest)) {

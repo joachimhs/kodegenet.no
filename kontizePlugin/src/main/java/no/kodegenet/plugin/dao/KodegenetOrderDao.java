@@ -2,11 +2,19 @@ package no.kodegenet.plugin.dao;
 
 import no.haagensoftware.contentice.data.SubCategoryData;
 import no.haagensoftware.contentice.spi.StoragePlugin;
+import no.haagensoftware.contentice.util.SubCategoryUtil;
+import no.kodegenet.handlers.data.KodegenetEmail;
 import no.kodegenet.handlers.data.KodegenetOrder;
 import no.kodegenet.handlers.data.KodegenetOrderLine;
+import no.kodegenet.handlers.data.KodegenetProduct;
+import no.kodegenet.plugin.EmailTemplatePlugin;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by jhsmbp on 27/08/15.
@@ -27,6 +35,18 @@ public class KodegenetOrderDao {
         return order;
     }
 
+    public static KodegenetProduct getKodegenetProduct(StoragePlugin plugin, String host, String productId) {
+        KodegenetProduct product = null;
+
+        SubCategoryData sd = plugin.getSubCategory(host, "products", productId);
+
+        if (sd != null) {
+            product = SubCategoryUtil.convertSubcategoryToObject("products", sd, KodegenetProduct.class);
+        }
+
+        return product;
+    }
+
     public static List<KodegenetOrderLine> getKodegenetOrderLines(StoragePlugin plugin, String host, String orderId) {
         List<KodegenetOrderLine> lines = new ArrayList<>();
 
@@ -42,6 +62,55 @@ public class KodegenetOrderDao {
         }
 
         return lines;
+    }
+
+    public static void generateOrderEmail(StoragePlugin storage, String webapp, KodegenetOrder order) {
+
+        Map<String, String> emailMap = new HashMap<>();
+        emailMap.put("{ordernumber}", "<a href=\"https://kodegenet.no/mypage/orders/confirmation/" + order.getId() + "\">" + order.getId() + "</a>");
+        emailMap.put("{orderlines}", generateOrderLinesHtml(storage, webapp, order));
+        String email = EmailTemplatePlugin.fetchAndFillInTemplate(webapp, "orderTemplate.html", emailMap);
+
+        KodegenetEmail kodegenetEmail = new KodegenetEmail();
+        kodegenetEmail.setId(order.getEmailAddress() + "_" + System.currentTimeMillis());
+        kodegenetEmail.setSubject("Takk for din bestilling hos Kodegenet!");
+        kodegenetEmail.setMessage(email);
+        kodegenetEmail.setEpost(order.getEmailAddress());
+
+        storage.setSubCategory(
+                webapp,
+                "emailsNotSent",
+                kodegenetEmail.getId(),
+                SubCategoryUtil.convertObjectToSubCateogory(kodegenetEmail)
+        );
+    }
+
+    private static String generateOrderLinesHtml(StoragePlugin storage, String webapp, KodegenetOrder order) {
+        NumberFormat nf = new DecimalFormat();
+        nf.setMinimumFractionDigits(2);
+        nf.setMaximumFractionDigits(2);
+        nf.setGroupingUsed(true);
+        String html = "<table><thead><tr><th>Produkt</th><th>Antall</th><th>Pris</th><th>Rabatt</th></tr></thead><tbody>";
+
+        int subtotal = 0;
+        for (KodegenetOrderLine ol : order.getOrderLines()) {
+            KodegenetProduct product = KodegenetOrderDao.getKodegenetProduct(storage, webapp, ol.getProduct());
+
+            String productName = ol.getProduct();
+            if (product != null) {
+                productName = product.getName();
+            }
+
+            html += "<tr><td>" + productName + "</td><td>" + ol.getOrderedProductNumber() + "</td><td>Kr. " + nf.format(ol.getTotalAmount()) + "</td><td>Kr. " + nf.format(ol.getDiscountAmount() != null ? ol.getDiscountAmount() : 0) + "</td></tr>";
+            subtotal += ol.getTotalAmount();
+        }
+        double tax = subtotal * 0.2;
+
+        html += "<tr><td colspan=\"2\" class=\"rightAlign\">Subtotal:</td><td>Kr. " + nf.format(subtotal) + "</td></tr><tr><td colspan=\"2\" class=\"rightAlign\">Hvorav MVA (25%):</td><td>Kr. " + nf.format(tax) + "</td></tr>";
+
+        html += "</tbody></table>";
+
+        return  html;
     }
 
     private static KodegenetOrderLine convertSubcategoryToOrderLine(SubCategoryData sd) {
@@ -87,6 +156,13 @@ public class KodegenetOrderDao {
 
             order.setSession(sd.getValueForKey("session"));
             order.setCreateAccount(sd.getBooleanValueForKey("createAccount"));
+
+            order.setCreatedDate(sd.getLongValueForKey("createdDate"));
+            order.setPaymentDate(sd.getLongValueForKey("paymentDate"));
+            order.setShipmentDate(sd.getLongValueForKey("shipmentDate"));
+
+            order.setShippingType(sd.getValueForKey("shippingType"));
+            order.setShippingCost(sd.getDoubleValueForKey("shippingCost"));
         }
 
         return order;

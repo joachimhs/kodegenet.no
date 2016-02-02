@@ -3,17 +3,21 @@
         <th>Dato</th>
         <th>Type</th>
         <th>Tittel</th>
-        <th>Ledige Plasser</th>
+        {{#if event.isInFuture}}
+            <th>Ledige Plasser</th>
+        {{/if}}
         <th>Anbefalt aldersgruppe</th>
         <th style="min-width: 100px;"></th>
     </tr>
 
     {{#each event in events}}
         <tr>
-            <td>{{dmy_no event.date}}</td>
+            <td>{{dmy_no event.date}} {{event.timeslot}}</td>
             <td class="capitalize">{{event.type}}</td>
             <td>{{event.name}}</td>
-            <td>{{event.remainingSpots}} ledige / {{event.capacity}} totalt</td>
+            {{#if event.isInFuture}}
+                <td>{{event.remainingSpots}} ledige / {{event.capacity}} totalt</td>
+            {{/if}}
             <td>{{event.ageGroup}}</td>
             <td>
                 {{#if event.isKodeklubb}}

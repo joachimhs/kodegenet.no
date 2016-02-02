@@ -14,6 +14,7 @@ public class CartProduct {
     @Expose private Integer orderedProductNumber;
     @Expose private Double totalAmount;
     @Expose private Double discountAmount;
+    @Expose private Double partOfStandardBoxPerItem;
 
     public CartProduct() {
     }
@@ -57,5 +58,13 @@ public class CartProduct {
 
     public void setDiscountAmount(Double discountAmount) {
         this.discountAmount = discountAmount;
+    }
+
+    public Double getPartOfStandardBoxPerItem() {
+        return partOfStandardBoxPerItem;
+    }
+
+    public void setPartOfStandardBoxPerItem(Double partOfStandardBoxPerItem) {
+        this.partOfStandardBoxPerItem = partOfStandardBoxPerItem;
     }
 }

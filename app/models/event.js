@@ -33,5 +33,9 @@ Kodegenet.Event = DS.Model.extend({
 
     isMakerspace: function() {
         return this.get('type') === 'makerspace';
-    }.property('type')
+    }.property('type'),
+
+    hasSpotsRemaining: function() {
+        return this.get('remainingSpots') > 0;
+    }.property('remainingSpots')
 });
