@@ -57,28 +57,6 @@
     <a href="https://www.facebook.com/Kodegenet"><img src="/figurer/facebook_logo.png"/></a>
 </div>
 
-{{#if controller.showTracks}}
-    <div class="headerIntroArea">
-        <div class="introCourses pageContent">
-            {{#each track in controllers.application.sortedTracks}}
-                {{#if track.isVisible}}
-                    <div class="courseBox">
-                        {{#link-to "track" track tagName="a" class="boxlink"}}
-                            <div class="courseImageDiv">
-                                <img {{bind-attr src=track.smallImg.href}} />
-                            </div>
-
-                            <div class="courseHeader">
-                                {{track.name}}
-                            </div>
-                        {{/link-to}}
-                    </div>
-                {{/if}}
-            {{/each}}
-        </div>
-    </div>
-{{/if}}
-
 {{#if controller.showShoppingCart}}
     <div class="shopping-cart-header">
             <div class="row text-left">

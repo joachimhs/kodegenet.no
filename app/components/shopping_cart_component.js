@@ -12,6 +12,7 @@ Kodegenet.ShoppingCartComponent = Ember.Component.extend({
     createAccount: true,
     fullNameValid: false,
     shippingValid: false,
+    shipByFixedCost: false,
 
     didInsertElement: function() {
         var elementId = this.get('elementId');
@@ -19,6 +20,7 @@ Kodegenet.ShoppingCartComponent = Ember.Component.extend({
 
         var stripeHandler = StripeCheckout.configure({
             key: 'pk_live_LhJU5yZTBfjM15GSsxgyJUAd',
+            //key: 'pk_test_khGORg8E5K6jf1qVbnlkzvy1',
             image: '/square-image.png',
             token: function(token) {
                 // Use the token to create the charge with a server-side script.
@@ -72,15 +74,27 @@ Kodegenet.ShoppingCartComponent = Ember.Component.extend({
 
             console.log('SERVICEPAKKE');
             this.set('shipByServicepakke', true);
+            this.set('shipByFixedCost', false);
             this.set('shipByHenting', false);
 
+
             var cart = this.get('cart');
+            this.updateCartFromUi(true);
+        },
+
+        applyFixedShippingValgt: function() {
+
+            this.set('shipByServicepakke', false);
+            this.set('shipByFixedCost', true);
+            this.set('shipByHenting', false);
+
             this.updateCartFromUi(true);
         },
 
         applyHentingValgt: function() {
             console.log('HENTING');
             this.set('shipByServicepakke', false);
+            this.set('shipByFixedCost', false);
             this.set('shipByHenting', true);
 
             var cart = this.get('cart');
@@ -123,23 +137,20 @@ Kodegenet.ShoppingCartComponent = Ember.Component.extend({
             this.updateCartFromUi(false);
 
             console.log(cart);
-            cart.save().then(function(data) {
-                var handler = self.get('stripeHandler');
-                console.log("Handling stripe: " + handler);
+            cart.save();
 
-                if (handler) {
-                    handler.open({
-                        name: 'Stripe.com',
-                        description: self.get('description'),
-                        amount: self.get('cart.subtotal') * 100,
-                        email: self.get('emailAddress'),
-                        currency: 'nok'
-                    });
-                }
-            }, function(err) {
-                console.log("ERROR");
-                console.log(err);
-            });
+            var handler = self.get('stripeHandler');
+            console.log("Handling stripe: " + handler);
+
+            if (handler) {
+                handler.open({
+                    name: 'Stripe.com',
+                    description: self.get('description'),
+                    amount: self.get('cart.subtotal') * 100,
+                    email: self.get('emailAddress'),
+                    currency: 'nok'
+                });
+            }
         },
 
         doShowCollectShippingDetails: function() {
@@ -182,6 +193,7 @@ Kodegenet.ShoppingCartComponent = Ember.Component.extend({
         var self = this;
         cartProduct.save().then(function(data) {
             self.updateShipping();
+            self.get('cart').reload();
         });
     },
 
@@ -291,6 +303,8 @@ Kodegenet.ShoppingCartComponent = Ember.Component.extend({
 
         if (this.get('shipByServicepakke') === true) {
             cart.set('shippingType', 'servicepakke');
+        } else if (this.get('shipByFixedCost') === true) {
+            cart.set('shippingType', 'fixedCost');
         } else {
             cart.set('shippingType', null);
         }

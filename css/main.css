@@ -178,12 +178,14 @@ a {
 }
 
 .index-intro {
-    padding-top: 320px;
+    padding-top: 200px;
 }
 
 .index-intro-box {
 
 }
+
+
 
 .index-intro-box a {
     border: 2px #fff solid;
@@ -193,22 +195,58 @@ a {
     margin-right: 5px;
 }
 
+.index-box {
+    height: 20vh;
+    background: #fff;
+    border-radius: 10px;
+}
+
+.index-box-header {
+    color: #fff;
+}
+
+.gradient {
+    background: rgba(3, 33, 72, 0.46);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.small-margin-bottom {
+    margin-bottom: 15px;
+}
+
+.small-padding-bottom {
+    padding-bottom: 15px;
+}
+
 .index-intro-page {
     position: relative;
-    height: 103vh;
-    background: url('/figurer/forside_karusell1.jpg') 0% 50% no-repeat;
+    min-height: 90vh;
     background-size: cover;
     z-index: 0;
-    padding-top: 30vh;
+    padding-top: 200px;
+    background: #fff url('/figurer/forside_karusell2.jpg');
+    background-size: cover;
 }
 
 .index-intro-page h1 {
-    padding-top: 100px;
-    font-size: 24px;
+    padding-top: 5px;
+    font-size: 18px;
+    text-align: center;
+    color: #000;
+    margin-left: 0;
 }
 
 .index-intro-page h2 {
     text-align: center;
+    color: #000;
+}
+
+.index-intro-page img {
+    max-width: 100px;
 }
 
 .index-intro-page .introText {
@@ -219,13 +257,15 @@ a {
     text-align: center;
 }
 
+.index-intro-page .image-box {
+    min-height: 90px;
+    margin-top: 25px;
+}
+
 .index-intro-page .pageContent {
-    background-color: rgba(255, 255, 255, 0.9);
     padding: 25px;
-    width: 30vw;
-    margin-left: 15vw;
-    float: left;
-    min-height: 410px;
+    margin: 0 auto;
+    min-height: 85%;
 }
 
 .index-intro-page .led-background {
@@ -252,13 +292,156 @@ a {
     color: #000;
 }
 
+.index-intro-page a {
+    font-family: Lato;
+    font-weight:300;
+    text-decoration: none;
+}
+
+.index-intro-page .index-box {
+    background: rgba(41,187,156,0.85);
+    color: #000;
+    text-align: center;
+    padding-top: 1px;
+    height: 200px;
+    margin-bottom: 15px;
+}
+
+.index-intro-page .index-box img {
+    margin: 0;
+}
+
+.tracks-intro-page {
+    position: relative;
+    min-height: 100vh;
+    background-size: cover;
+    z-index: 0;
+    padding-top: 30px;
+    background: #fff url('/figurer/forside_karusell4.jpg');
+    background-size: cover;
+}
+
+.tracks-intro-page h1 {
+    color: #fff;
+    font-size: 20px;
+    margin-left: 0;
+}
+.tracks-intro-page .index-box {
+    background: rgba(41,187,156,0.85);
+    color: #000;
+    text-align: center;
+    padding-top: 15px;
+    height: 350px;
+    min-height: 350px;
+    max-height: 350px;
+}
+
+.tracks-intro-page .image-box img{
+    min-height: 65px;
+}
+
+.tracks-intro-page ul {
+    margin-left: 15px;
+    text-align: left;
+    color: #fff;
+    margin-top: 20px;
+}
+
+.tracks-intro-page ul li {
+    text-align: left;
+    list-style: none;
+}
+
+.large-header-box {
+    background-color: rgba(47, 176, 168, 0.78);
+    padding: 15px;
+    color: #fff;
+    height: 40vh;
+    background: url('/figurer/kodeleir_montage.jpg');
+    background-size: cover;
+    text-align: center;
+    padding-top: 100px;
+    border-radius: 10px;
+}
+
+.large-header-box span {
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #000;
+    font-size: 36px;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.mini-header-box {
+    margin-bottom: 25px;
+    padding: 15px;
+    color: #fff;
+    height: 6vh;
+    padding-top: 20px;
+    text-align: center;
+    border-radius: 4px;
+    background-color: #2D5A2E;
+}
+
+.mini-header-box span {
+    color: #fff;
+    font-size: 25px;
+    padding: 5px;
+}
+
+.small-header-box {
+    margin-bottom: 25px;
+    padding: 15px;
+    color: #fff;
+    height: 14.6vh;
+    padding-top: 50px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.small-header-box span {
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #000;
+    font-size: 36px;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.skole-box {
+    background: url('/figurer/forside_karusell1.jpg');
+    background-size: cover;
+}
+
+.nettbutikk-box {
+    background: url('/figurer/penbot_bygget_1.jpg');
+    background-size: cover;
+}
+
+.small-screen-box {
+
+}
+
+.small-screen-box-margin {
+
+}
+
+.insta-box {
+    float: left;
+    width: 250px;
+}
+
 .instagram-thumbnail {
-    max-width: 100px;
+    max-width: 250px;
+}
+
+.insta-image-caption {
+    margin-top: 10px;
 }
 
 .instagramHeader {
     font-size: 22px;
     line-height: 35px;
+    text-align: center;
 }
 
 .instagramHeader img {
@@ -274,8 +457,10 @@ a {
 }
 
 .instagram-panel {
-    background-color: rgba(255, 255, 255, 1);
+    background-color: #ddd;
     color: #3c0a0a;
+    padding-top: 30px;
+    padding-bottom: 30px;
 }
 
 .next-page {
@@ -569,7 +754,7 @@ a.boxlink {
 }
 
 .mainAreaIndex {
-    margin-top: -220px;
+    margin-top: -120px;
     background-color: #ecf0f1;
 }
 
@@ -1147,20 +1332,28 @@ h4 {
 
 .shop-index-category-thumbnail {
     max-height: 400px;
+    max-width: 600px;
+    padding-left: 25px;
+    padding-right: 25px;
 }
 
 .shop-index-category {
-    min-height: 800px;
+    min-height: 400px;
     border-bottom: 1px solid #919191;
+    padding-left: 25px;
+    padding-right: 25px;
+    background-color: #f5f5f5;;
 }
 
 .shop-index-category:nth-of-type(even) {
-    min-height: 800px;
+    min-height: 400px;
     background-color: #fff;
 }
 
 .shop-index-category-thumb {
     margin-left: 100px;
+    margin-top: 30px;
+    text-transform: uppercase;
 }
 
 .shop-index-category-text {
@@ -1168,14 +1361,18 @@ h4 {
 }
 
 .shop-index-category-button {
-    margin-top: 25px;
+    margin-top: 50px;
     margin-bottom: 25px;
+    margin-right: 50px;
+    text-align: right;
 }
 
 .shop-index-category-title {
     font-size: 36px;
     text-align: left;
     margin-left: 20px;
+    padding-top: 30px;
+    text-transform: uppercase;
 }
 
 .shop-index-category-subtitle {
@@ -1191,23 +1388,21 @@ h4 {
     margin-left: 0px;
     max-width: 150px;
     margin: 0 auto;
+    font-weight: 400;
+    margin-left: -4px;
 }
 .shop-index-category-products {
-    margin-top: 30px;
-    text-align: center;
-    min-height: 200px;
-    max-height: 200px;
-    max-width: 200px;
-    min-width: 200px;
+    margin-right: 15px;
+    margin-left: 0px;
+
+    margin: 0 auto;
+    font-weight: 400;
+    margin-left: -4px;
 }
 
 .shop-index-category-products img{
-    margin-right: 15px;
-    margin-left: 0px;
-    max-width: 150px;
-    min-width: 150px;
     max-height: 100px;
-    min-height: 100px;
+    margin-left: 0px;
 }
 
 .shop-index-category-product-name {
@@ -1219,18 +1414,23 @@ h4 {
     min-height: 100px;
     max-height: 100px;
     overflow: hidden;
+    margin-left: -5px;
+}
+
+.product-main-image {
+    min-width: 700px;
+    min-height: 500px;
+    max-width: 700px;
 }
 
 .product-image-lightboard {
     min-width: 700px;
-    min-height: 500px;
-    max-height: 500px;
     max-width: 700px;
     margin: 0px;
 }
 
 .product-image-thumbnail {
-    max-width: 200px;
+    max-width: 180px;
     max-height: 150px;
 }
 
@@ -1244,6 +1444,10 @@ h4 {
 
 .product-buttons button {
     width: 100%;
+}
+
+.search-label {
+    text-transform: uppercase;
 }
 
 /* Animated placeholder */
@@ -1480,11 +1684,20 @@ a.mypage-list-group-item.active, a.mypage-list-group-item.active:hover, a.mypage
     }
 
     .product-image-lightboard {
-        min-height: 100%;
-        max-height: 100%;
         max-width: 100%;
-        margin: 0px;
         min-width: 100%;
+        margin: 0px;
+    }
+
+    .product-main-image {
+        min-height: 100%;
+        max-width: 100%;
+        min-width: 100%;
+    }
+
+    .product-image-thumbnail {
+        max-width: 160px;
+        max-height: 150px;
     }
 }
 
@@ -1613,10 +1826,10 @@ a.mypage-list-group-item.active, a.mypage-list-group-item.active:hover, a.mypage
         max-height: 25px;
     }
 
+
+
     .product-image-lightboard {
         min-width: 100%;
-        min-height: 100%;
-        max-height: 100%;
         max-width: 100%;
         margin: 0px;
     }
@@ -1627,6 +1840,11 @@ a.mypage-list-group-item.active, a.mypage-list-group-item.active:hover, a.mypage
         margin-right: 30px;
         line-height: 100px;
         padding-top: 30px;
+    }
+
+    .pageContent {
+        margin: 0 auto;
+        width: 650px;
     }
 
     .navbar-header {
@@ -1652,8 +1870,16 @@ a.mypage-list-group-item.active, a.mypage-list-group-item.active:hover, a.mypage
         text-align: center;
     }
 
+    .index-intro-page {
+        padding: 200px;
+    }
+
+    .index-intro-page .index-box {
+        margin-bottom: 15px;
+    }
+
     .index-intro-page .pageContent {
-        background-color: rgba(255, 255, 255, 0.9);
+
         padding: 25px;
         /* width: 30vw; */
         margin-left: 15vw;
@@ -1714,11 +1940,6 @@ a.mypage-list-group-item.active, a.mypage-list-group-item.active:hover, a.mypage
         position: relative;
         width: 300px;
         top:10px;left:-200px;
-    }
-
-    .pageContent {
-        margin: 0 auto;
-        width: 750px;
     }
 
     .courseBox {
@@ -1841,14 +2062,26 @@ and (orientation: landscape) {
         text-align: center;
     }
 
+    .index-intro-page {
+        padding-top: 200px;
+    }
+
+    .pageContent {
+        width: 900px;
+    }
     .index-intro-page .pageContent {
-        background-color: rgba(255, 255, 255, 0.9);
+
         padding: 10px;
-        margin-left: 15vw;
-        float: left;
+        margin-left: 10vw;
+        float: none;
         min-height: 150px;
         margin-bottom: 25px;
-        display: none;
+    }
+
+    .shop-index-category-products {
+        text-align: center;
+        max-width: 100%;
+        min-width: 100%;
     }
 
     .index-intro-page .introText {
@@ -1872,6 +2105,34 @@ and (orientation: landscape) {
         padding: 5px;
         font-size: 10px;
     }
+
+    .mini-header-box {
+        width: 20%;
+        height: 10vw;
+        float: left;
+        display: none;
+    }
+
+    .small-header-box {
+        height: 10vh;
+    }
+
+    .large-header-box {
+        height: 20vh;
+        width: 100%;
+        padding-top: 40px;
+    }
+
+    .small-screen-box {
+        width: 20%;
+        max-width: 20%;
+        float: left;
+        display: none;
+    }
+
+    .small-screen-box-margin {
+        margin-left: 5%;
+    }
 }
 
 /* iPhone 5 Portrait */
@@ -1885,14 +2146,30 @@ and (orientation: portrait) {
         text-align: center;
     }
 
+    .pageContent {
+        width: 750px;
+    }
+
+    .index-intro-page {
+        padding-top: 200px;
+    }
+
+    .index-intro-page .index-box {
+        margin-bottom: 15px;
+        padding-top: 5px;
+    }
+
     .index-intro-page .pageContent {
-        background-color: rgba(255, 255, 255, 0.9);
         padding: 10px;
-        margin-left: 15vw;
+        margin-left: 25vw;
         float: none;
-        width: 80vw;
+        width: 60vw;
         min-height: 200px;
         margin-bottom: 25px;
+    }
+
+    .index-intro-page .pageContent img {
+        margin: 0;
     }
 
     .index-intro-page .introText {
@@ -1918,12 +2195,9 @@ and (orientation: portrait) {
     }
 
     .shop-index-category-products {
-        margin-top: 30px;
         text-align: center;
-        min-height: 200px;
-        max-height: 200px;
-        max-width: 700px;
-        min-width: 200px;
+        max-width: 100%;
+        min-width: 100%;
     }
 
     .shop-index-category-product {
@@ -1934,15 +2208,17 @@ and (orientation: portrait) {
         float: left;
         display: inline;
         margin-right: 15px;
+        font-weight: 400;
+        margin-left: -4px;
     }
 
     .shop-index-category:nth-of-type(odd) {
-        min-height: 1000px;
+        min-height: 400px;
         background-color: #fff;
     }
 
     .shop-index-category:nth-of-type(even) {
-        min-height: 1000px;
+        min-height: 400px;
         background-color: #fff;
     }
 
@@ -1961,6 +2237,7 @@ and (orientation: portrait) {
 
     .shop-index-category-thumbnail {
         max-height: 250px;
+        max-width: 350px;
     }
 
     .shop-index-category-subtitle {
@@ -1969,6 +2246,16 @@ and (orientation: portrait) {
         margin-top: 15px;
         max-width: 800px;
         margin-left: 0px;
+    }
+
+    .small-screen-box {
+        width: 45%;
+        max-width: 45%;
+        float: left;
+    }
+
+    .small-screen-box-margin {
+        margin-left: 10%;
     }
 }
 
@@ -1983,8 +2270,12 @@ and (orientation: portrait) {
         text-align: center;
     }
 
+    .pageContent {
+        width: 350px;
+    }
+
     .index-intro-page .pageContent {
-        background-color: rgba(255, 255, 255, 0.9);
+
         padding: 10px;
         margin-left: 15vw;
         float: none;
@@ -2016,12 +2307,9 @@ and (orientation: portrait) {
     }
 
     .shop-index-category-products {
-        margin-top: 30px;
         text-align: center;
-        min-height: 200px;
-        max-height: 200px;
-        max-width: 700px;
-        min-width: 200px;
+        max-width: 100%;
+        min-width: 100%;
     }
 
     .shop-index-category-product {
@@ -2032,15 +2320,17 @@ and (orientation: portrait) {
         float: left;
         display: inline;
         margin-right: 15px;
+        font-weight: 400;
+        margin-left: -4px;
     }
 
     .shop-index-category:nth-of-type(odd) {
-        min-height: 1000px;
+        min-height: 400px;
         background-color: #fff;
     }
 
     .shop-index-category:nth-of-type(even) {
-        min-height: 1000px;
+        min-height: 400px;
         background-color: #fff;
     }
 
@@ -2059,6 +2349,7 @@ and (orientation: portrait) {
 
     .shop-index-category-thumbnail {
         max-height: 300px;
+        max-width: 400px;
     }
 
     .shop-index-category-subtitle {
@@ -2067,6 +2358,37 @@ and (orientation: portrait) {
         margin-top: 15px;
         max-width: 800px;
         margin-left: 0px;
+    }
+
+    .mini-header-box {
+        height: 4vh;
+    }
+    .small-header-box {
+        height: 7vh;
+    }
+
+    .large-header-box {
+        height: 40vh;
+    }
+
+    .small-screen-box {
+        width: 45%;
+        max-width: 45%;
+        float: left;
+    }
+
+    .small-screen-box-margin {
+        margin-left: 10%;
+    }
+
+    .small-screen-box {
+        width: 45%;
+        max-width: 45%;
+        float: left;
+    }
+
+    .small-screen-box-margin {
+        margin-left: 10%;
     }
 }
 
@@ -2082,13 +2404,12 @@ and (orientation: landscape) {
     }
 
     .index-intro-page .pageContent {
-        background-color: rgba(255, 255, 255, 0.9);
+
         padding: 10px;
         margin-left: 15vw;
-        float: left;
+        float: none;
         min-height: 150px;
         margin-bottom: 25px;
-        display: none;
     }
 
     .index-intro-page .introText {
@@ -2114,31 +2435,29 @@ and (orientation: landscape) {
     }
 
     .shop-index-category-products {
-        margin-top: 30px;
         text-align: center;
-        min-height: 200px;
-        max-height: 200px;
-        max-width: 700px;
-        min-width: 200px;
+        max-width: 100%;
+        min-width: 100%;
     }
 
     .shop-index-category-product {
         margin-right: 15px;
         margin-left: 0px;
-        max-width: 150px;
         margin: 0 auto;
         float: left;
         display: inline;
         margin-right: 15px;
+        font-weight: 400;
+        margin-left: -4px;
     }
 
     .shop-index-category:nth-of-type(odd) {
-        min-height: 800px;
+        min-height: 400px;
         background-color: #fff;
     }
 
     .shop-index-category:nth-of-type(even) {
-        min-height: 800px;
+        min-height: 400px;
         background-color: #fff;
     }
 
@@ -2157,6 +2476,7 @@ and (orientation: landscape) {
 
     .shop-index-category-thumbnail {
         max-height: 300px;
+        max-width: 400px;
     }
 
     .shop-index-category-subtitle {
@@ -2165,6 +2485,35 @@ and (orientation: landscape) {
         margin-top: 15px;
         max-width: 800px;
         margin-left: 0px;
+    }
+
+    .mini-header-box {
+        width: 20%;
+        height: 10vw;
+        float: left;
+        display: none;
+    }
+
+    .small-header-box {
+        height: 10vh;
+    }
+
+    .large-header-box {
+        height: 20vh;
+        width: 100%;
+        padding-top: 40px;
+        display: block;
+    }
+
+    .small-screen-box {
+        width: 20%;
+        max-width: 20%;
+        float: left;
+        display: none;
+    }
+
+    .small-screen-box-margin {
+        margin-left: 5%;
     }
 }
 
@@ -2180,10 +2529,10 @@ and (orientation: landscape) {
     }
 
     .index-intro-page .pageContent {
-        background-color: rgba(255, 255, 255, 0.9);
+
         padding: 10px;
         margin-left: 15vw;
-        float: left;
+        float: none;
         min-height: 150px;
         margin-bottom: 25px;
         display: none;
@@ -2212,12 +2561,9 @@ and (orientation: landscape) {
     }
 
     .shop-index-category-products {
-        margin-top: 30px;
         text-align: center;
-        min-height: 200px;
-        max-height: 200px;
-        max-width: 700px;
-        min-width: 200px;
+        max-width: 100%;
+        min-width: 100%;
     }
 
     .shop-index-category-product {
@@ -2228,15 +2574,17 @@ and (orientation: landscape) {
         float: left;
         display: inline;
         margin-right: 15px;
+        font-weight: 400;
+        margin-left: -4px;
     }
 
     .shop-index-category:nth-of-type(odd) {
-        min-height: 800px;
+        min-height: 400px;
         background-color: #fff;
     }
 
     .shop-index-category:nth-of-type(even) {
-        min-height: 800px;
+        min-height: 400px;
         background-color: #fff;
     }
 
@@ -2255,6 +2603,7 @@ and (orientation: landscape) {
 
     .shop-index-category-thumbnail {
         max-height: 300px;
+        max-width: 400px;
     }
 
     .shop-index-category-subtitle {
@@ -2263,6 +2612,34 @@ and (orientation: landscape) {
         margin-top: 15px;
         max-width: 800px;
         margin-left: 0px;
+    }
+
+    .mini-header-box {
+        width: 20%;
+        height: 10vw;
+        float: left;
+        display: none;
+    }
+
+    .small-header-box {
+        height: 10vh;
+    }
+
+    .large-header-box {
+        height: 20vh;
+        width: 100%;
+        padding-top: 40px;
+    }
+
+    .small-screen-box {
+        width: 20%;
+        max-width: 20%;
+        float: left;
+        display: none;
+    }
+
+    .small-screen-box-margin {
+        margin-left: 5%;
     }
 }
 
@@ -2278,13 +2655,12 @@ and (orientation: landscape) {
     }
 
     .index-intro-page .pageContent {
-        background-color: rgba(255, 255, 255, 0.9);
+
         padding: 10px;
         margin-left: 15vw;
-        float: left;
+        float: none;
         min-height: 150px;
         margin-bottom: 25px;
-        display: none;
     }
 
     .index-intro-page .introText {
@@ -2310,12 +2686,9 @@ and (orientation: landscape) {
     }
 
     .shop-index-category-products {
-        margin-top: 30px;
         text-align: center;
-        min-height: 200px;
-        max-height: 200px;
-        max-width: 700px;
-        min-width: 200px;
+        max-width: 100%;
+        min-width: 100%;
     }
 
     .shop-index-category-product {
@@ -2326,15 +2699,17 @@ and (orientation: landscape) {
         float: left;
         display: inline;
         margin-right: 15px;
+        font-weight: 400;
+        margin-left: -4px;
     }
 
     .shop-index-category:nth-of-type(odd) {
-        min-height: 800px;
+        min-height: 400px;
         background-color: #fff;
     }
 
     .shop-index-category:nth-of-type(even) {
-        min-height: 800px;
+        min-height: 400px;
         background-color: #fff;
     }
 
@@ -2353,6 +2728,7 @@ and (orientation: landscape) {
 
     .shop-index-category-thumbnail {
         max-height: 300px;
+        max-width: 400px;
     }
 
     .shop-index-category-subtitle {
@@ -2361,6 +2737,34 @@ and (orientation: landscape) {
         margin-top: 15px;
         max-width: 800px;
         margin-left: 0px;
+    }
+
+    .mini-header-box {
+        width: 20%;
+        height: 10vw;
+        float: left;
+        display: none;
+    }
+
+    .small-header-box {
+        height: 10vh;
+    }
+
+    .large-header-box {
+        height: 20vh;
+        width: 100%;
+        padding-top: 40px;
+    }
+
+    .small-screen-box {
+        width: 20%;
+        max-width: 20%;
+        float: left;
+        display: none;
+    }
+
+    .small-screen-box-margin {
+        margin-left: 5%;
     }
 }
 
@@ -2376,7 +2780,7 @@ and (orientation: portrait) {
     }
 
     .index-intro-page .pageContent {
-        background-color: rgba(255, 255, 255, 0.9);
+
         padding: 10px;
         margin-left: 15vw;
         float: none;
@@ -2408,12 +2812,9 @@ and (orientation: portrait) {
     }
 
     .shop-index-category-products {
-        margin-top: 30px;
         text-align: center;
-        min-height: 200px;
-        max-height: 200px;
-        max-width: 700px;
-        min-width: 200px;
+        max-width: 100%;
+        min-width: 100%;
     }
 
     .shop-index-category-product {
@@ -2424,15 +2825,17 @@ and (orientation: portrait) {
         float: left;
         display: inline;
         margin-right: 15px;
+        font-weight: 400;
+        margin-left: -4px;
     }
 
     .shop-index-category:nth-of-type(odd) {
-        min-height: 1000px;
+        min-height: 400px;
         background-color: #fff;
     }
 
     .shop-index-category:nth-of-type(even) {
-        min-height: 1000px;
+        min-height: 400px;
         background-color: #fff;
     }
 
@@ -2443,6 +2846,7 @@ and (orientation: portrait) {
 
     .shop-index-category-thumbnail {
         max-height: 400px;
+        max-width: 600px;
     }
 
     .shop-index-category-subtitle {
@@ -2451,6 +2855,110 @@ and (orientation: portrait) {
         margin-top: 15px;
         max-width: 800px;
         margin-left: 0px;
+    }
+
+    .small-screen-box {
+        width: 45%;
+        max-width: 45%;
+        float: left;
+    }
+
+    .small-screen-box-margin {
+        margin-left: 10%;
+    }
+}
+
+/* iPad mini Landscape */
+@media only screen
+and (min-device-width: 768px)
+and (max-device-width: 1024px)
+and (-webkit-min-device-pixel-ratio: 2)
+and (orientation: landscape) {
+    .next-page {
+        margin-top: 15vh;
+        text-align: center;
+    }
+
+    .index-intro-page .pageContent {
+
+        padding: 10px;
+        margin-left: 10vw;
+        float: none;
+        width: 80vw;
+        min-height: 200px;
+        margin-bottom: 25px;
+    }
+
+    .index-intro-page .introText {
+        font-size: 24px;
+        font-weight: 300;
+        line-height: 35px;
+        color: #000;
+        text-align: center;
+    }
+
+    .index-intro-page .pageContent h1 {
+        color: #000;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        font-size: 22px;
+    }
+
+    #topHeaderArea ul > li a {
+        color: #1f7870;
+        text-transform: uppercase;
+        padding: 5px;
+        font-size: 10px;
+    }
+
+    .shop-index-category-products {
+        text-align: center;
+        max-width: 100%;
+        min-width: 100%;
+    }
+
+    .shop-index-category-product {
+        margin-right: 15px;
+        margin-left: 0px;
+        max-width: 150px;
+        margin: 0 auto;
+        float: left;
+        display: inline;
+        margin-right: 15px;
+        font-weight: 400;
+        margin-left: -4px;
+    }
+
+    .shop-index-category:nth-of-type(odd) {
+        min-height: 400px;
+        background-color: #fff;
+    }
+
+    .shop-index-category:nth-of-type(even) {
+        min-height: 400px;
+        background-color: #fff;
+    }
+
+    .shop-index-category-text {
+        margin-top: 50px;
+        margin-left: -100px;
+    }
+
+    .shop-index-category-thumbnail {
+        max-height: 400px;
+        max-width: 600px;
+    }
+
+    .shop-index-category-subtitle {
+        font-size: 24px;
+        font-weight: 300;
+        margin-top: 15px;
+        max-width: 800px;
+        margin-left: 0px;
+    }
+
+    .mini-header-box {
+        padding-top: 10px;
     }
 }
 

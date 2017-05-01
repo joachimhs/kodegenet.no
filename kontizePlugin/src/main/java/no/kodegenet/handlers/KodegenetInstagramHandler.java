@@ -42,7 +42,11 @@ public class KodegenetInstagramHandler extends ContenticeHandler {
             }
         }
 
-        RestSerializer serializer = new RestSerializer();
-        writeContentsToBuffer(channelHandlerContext, serializer.serialize(instagramDatas).toString(), "application/json");
+        if (instagramDatas.size() == 0) {
+            writeContentsToBuffer(channelHandlerContext, "{ \"instagramPhotos\": []}", "application/json");
+        } else {
+            RestSerializer serializer = new RestSerializer();
+            writeContentsToBuffer(channelHandlerContext, serializer.serialize(instagramDatas).toString(), "application/json");
+        }
     }
 }

@@ -8,7 +8,7 @@ Kodegenet.KodeklubbIndexController = Ember.ObjectController.extend({
 
         var sortedResult = Em.ArrayProxy.createWithMixins(
             Ember.SortableMixin,
-            { content:events, sortProperties: ['date'] }
+            { content:events, sortProperties: ['date', 'type'] }
         );
 
         return sortedResult;

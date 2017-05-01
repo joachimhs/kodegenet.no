@@ -84,8 +84,9 @@ public class EventParticipantHandler extends ContenticeHandler {
                 if (uuidToken != null) {
                     KodegenetUser user = KodegenetUserDao.getUserByUuid(getStorage(), getDomain().getWebappName(), uuidToken);
                     if (user != null && user.getRole() != null && user.getRole().equals("admin")) {
-                        returnParticipant.setEmail(participant.getEmail());
+                        returnParticipant.setEmail(participant.getEmail() + " :: " + participant.getUsername());
                         returnParticipant.setGivenName(participant.getGivenName() + " " + participant.getSurname());
+                        returnParticipant.setAllowPictures(participant.getAllowPictures());
                     }
                 }
 

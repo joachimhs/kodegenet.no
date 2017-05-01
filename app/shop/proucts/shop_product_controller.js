@@ -25,6 +25,8 @@ Kodegenet.ShopProductController = Ember.ObjectController.extend({
 
             if (product && shoppingCart.get('cartProducts')) {
 
+                if (ga) ga('send', 'pageview', '/shop/addToCart/' + product.get('id'));
+
                 var newShoppingProduct = this.getProductInCart(shoppingCart, product);
                 if (newShoppingProduct) {
                     newShoppingProduct.set('orderedProductNumber', parseInt(newShoppingProduct.get('orderedProductNumber')) + 1);

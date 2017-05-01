@@ -33,6 +33,17 @@ public class CartHandler extends ContenticeHandler {
             if (uuid != null && cartId.equals(uuid)) {
                 KodegenetShoppingCart cart = KodegenetCartDao.getCartFromUuid(getStorage(), getDomain().getWebappName(), uuid);
 
+                Integer shippingPrice = 0;
+                for (CartProduct cp : cart.getCartProducts()) {
+                    if (cp.getFixedShippingCost() != null) {
+                        shippingPrice += cp.getFixedShippingCost() * cp.getOrderedProductNumber();
+                    } else {
+                        shippingPrice += 95 * cp.getOrderedProductNumber();
+                    }
+                }
+
+                cart.setFixedShippingCost(shippingPrice.doubleValue());
+
                if (cart != null) {
                     RestSerializer serializer = new RestSerializer();
                     String retVal = serializer.serialize(cart, cartSideloadKeys).toString();
@@ -72,12 +83,23 @@ public class CartHandler extends ContenticeHandler {
 
                 cart.setShippingType("servicepakke");
                 cart.setShippingCost(DoubleParser.parseDoubleFromString(bringProduct.getPrice().getPackagePriceWithAdditionalServices().getAmountWithVAT(), 0d));
-
-
+            } else if (cartFromClient.getShippingType() != null && cartFromClient.getShippingType().equalsIgnoreCase("fixedCost")) {
+                cart.setShippingType("fixedCost");
             } else {
                 cart.setShippingCost(0d);
                 cart.setShippingType("");
             }
+
+            Integer shippingPrice = 0;
+            for (CartProduct cp : cart.getCartProducts()) {
+                if (cp.getFixedShippingCost() != null) {
+                    shippingPrice += cp.getFixedShippingCost() * cp.getOrderedProductNumber();
+                } else {
+                    shippingPrice += 95 * cp.getOrderedProductNumber();
+                }
+            }
+
+            cart.setFixedShippingCost(shippingPrice.doubleValue());
 
             SubCategoryData cartSubCategory = KodegenetCartDao.convertShoppingCartToSubcategory(cart);
 
@@ -93,7 +115,7 @@ public class CartHandler extends ContenticeHandler {
             RestSerializer serializer = new RestSerializer();
             String retVal = serializer.serialize(cart).toString();
 
-            writeContentsToBuffer(channelHandlerContext, retVal, "application/json");
+                writeContentsToBuffer(channelHandlerContext, retVal, "application/json");
 
         } else {
             sendError(channelHandlerContext, HttpResponseStatus.METHOD_NOT_ALLOWED);

@@ -6,6 +6,7 @@ import com.google.gson.JsonPrimitive;
 import com.stripe.Stripe;
 import com.stripe.exception.CardException;
 import com.stripe.model.Charge;
+import com.stripe.model.Subscription;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -51,7 +52,8 @@ public class StripePaymentHandler extends ContenticeHandler {
 
             StripeToken token = new Gson().fromJson(messageContent, StripeToken.class);
 
-            logger.info("stripeToken:" + token.getStripeToken());
+            logger.info("stripeToken:" + token.getStripeToken
+                    ());
             logger.info("stripeTokenType:" + token.getStripeTokenString());
             logger.info("stripeEmail:" + token.getStripeEmail());
 
@@ -74,6 +76,18 @@ public class StripePaymentHandler extends ContenticeHandler {
                     BringProduct bringProduct = KodegenetCartDao.getShippingPrice(cart, cart.getId(), cart.getPostalCode());
 
                     cart.setShippingCost(DoubleParser.parseDoubleFromString(bringProduct.getPrice().getPackagePriceWithAdditionalServices().getAmountWithVAT(), 0d));
+                } else if (cart.getShippingType() != null && cart.getShippingType().equalsIgnoreCase("fixedCost")) {
+                    Integer shippingPrice = 0;
+                    for (CartProduct cp : cart.getCartProducts()) {
+                        if (cp.getFixedShippingCost() != null) {
+                            shippingPrice += cp.getFixedShippingCost() * cp.getOrderedProductNumber();
+                        } else {
+                            shippingPrice += 95 * cp.getOrderedProductNumber();
+                        }
+                    }
+
+                    cart.setFixedShippingCost(shippingPrice.doubleValue());
+                    cart.setShippingCost(cart.getFixedShippingCost());
                 } else {
                     cart.setShippingCost(0d);
                 }
@@ -90,7 +104,6 @@ public class StripePaymentHandler extends ContenticeHandler {
                 boolean paymentSuccessful = false;
 
                 try {
-
                     Charge charge = Charge.create(chargeParams);
 
                     stripeMessage = new Gson().toJson(charge);

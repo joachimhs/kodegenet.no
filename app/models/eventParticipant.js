@@ -4,5 +4,6 @@ Kodegenet.EventParticipant = DS.Model.extend({
     age: DS.attr('number'),
     email: DS.attr('string'),
     publishInfo: DS.attr('boolean'),
-    username: DS.belongsTo('user', {async: true, inverse: 'eventParticipants'})
+    username: DS.belongsTo('user', {async: true, inverse: 'eventParticipants'}),
+    allowPictures: DS.attr('boolean')
 });

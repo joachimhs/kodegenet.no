@@ -41,14 +41,14 @@
                         {{/if}}
                     </fieldset>
                     <fieldset>
-                        {{validating-textfield type="text" name="givenName" value=givenName classNames="input-placeholder" minLength=5 valueValid=givenNameValid required=""}}
+                        {{validating-textfield type="text" name="givenName" value=givenName classNames="input-placeholder" minLength=1 valueValid=givenNameValid required=""}}
                         <label for="firstName">Fornavn</label>
                         {{#unless givenNameValid}}
                             <div class="input-form-validation input-form-validation-error">* Fornavnet må inneholde minst 1 tegn</div>
                         {{/unless}}
                     </fieldset>
                     <fieldset>
-                        {{validating-textfield type="text" name="surname" value=surname classNames="input-placeholder" minLength=5 valueValid=surnameValid required=""}}
+                        {{validating-textfield type="text" name="surname" value=surname classNames="input-placeholder" minLength=1 valueValid=surnameValid required=""}}
                         <label for="firstName">Etternavn</label>
                         {{#unless surnameValid}}
                             <div class="input-form-validation input-form-validation-error">* Etternavnet må inneholde minst 1 tegn</div>
@@ -119,6 +119,23 @@
 
                     </label>
                 </div>
+
+
+                {{#if cart.canShipWithFixedCost}}
+                    <div class="radio">
+                        <label {{action "applyFixedShippingValgt"}}>
+                            {{#if shipByFixedCost}}
+                                <input type="radio" name="shippingOptions" value="fixedCost" checked>
+                                Fastpris A-post kr. {{cart.fixedShippingCost}}
+                                </input>
+                            {{else}}
+                                <input type="radio" name="shippingOptions" value="fixedCost">
+                                Fastpris A-post kr. {{cart.fixedShippingCost}}
+                                </input>
+                            {{/if}}
+                        </label>
+                    </div>
+                {{/if}}
 
                 <div class="radio">
                     <label {{action "applyHentingValgt"}}>

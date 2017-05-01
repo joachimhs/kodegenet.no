@@ -1,0 +1,36 @@
+{{!#if session.session.user.isAdmin}}
+    <h1>Send ny SMS</h1>
+
+    <div class="row">
+        <div class="col-md-4">
+            Navn
+        </div>
+        <div class="col-md-8">
+            {{input type="text" value=newSmsName}}
+        </div>
+        <div class="col-md-4">
+            Melding
+        </div>
+        <div class="col-md-8">
+            {{textarea type="text" value=newSmsMessage}}
+        </div>
+        <div class="col-md-4">
+            Mottakere <br/>(Komma-separert)
+        </div>
+        <div class="col-md-8">
+            {{textarea type="text" value=newSmsRecipients}}
+        </div>
+        <div class="col-md-12 text-center">
+            <button class="btn btn-primary" {{action "sendSms"}}>Send SMS</button>
+        </div>
+    </div>
+
+    <h1>Tidligere sendte SMS</h1>
+
+    - {{model.smses}} - {{model.smses.length}} -
+    {{#each sms in model.smses}}
+        <div>
+            {{sms.id}} - {{sms.name}}
+        </div>
+    {{/each}}
+{{!/if}}

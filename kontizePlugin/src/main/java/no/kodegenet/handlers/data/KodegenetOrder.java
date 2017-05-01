@@ -32,6 +32,7 @@ public class KodegenetOrder {
     @Expose private Long shipmentDate;
     @Expose private String shippingType;
     @Expose private Double shippingCost;
+    @Expose private String trackingUrl;
 
     private Boolean createAccount;
 
@@ -205,5 +206,13 @@ public class KodegenetOrder {
 
     public void setShippingCost(Double shippingCost) {
         this.shippingCost = shippingCost;
+    }
+
+    public String getTrackingUrl() {
+        return trackingUrl;
+    }
+
+    public void setTrackingUrl(String trackingUrl) {
+        this.trackingUrl = trackingUrl;
     }
 }

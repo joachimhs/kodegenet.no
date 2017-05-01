@@ -30,7 +30,7 @@ public class KodegenetEpostThread implements Runnable {
     @Override
     public void run() {
         if (email != null) {
-            if (sendEmailWithSSL("Takk for din Kodegenet.no ordre!", email.getMessage(), email.getEpost())) {
+            if (sendEmailWithSSL(email.getSubject() != null ? email.getSubject() : "Takk for din Kodegenet.no ordre!", email.getMessage(), email.getEpost())) {
                 //TODO: move to emailsSent
                 storagePlugin.deleteSubcategory(host, "emailsNotSent", email.getId());
                 storagePlugin.setSubCategory(host, "emailsSent", email.getId(), SubCategoryUtil.convertObjectToSubCateogory(email));

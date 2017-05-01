@@ -17,7 +17,7 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: io.netty:netty-all:4.0.26.Final" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.jsoup:jsoup:1.7.3" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: commons-io:commons-io:2.4" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: no.haagensoftware.hyrrokkin:hyrrokkin:0.7-SNAPSHOT" level="project" />
+    <orderEntry type="module" module-name="hyrrokkin" scope="PROVIDED" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.fasterxml.jackson.core:jackson-core:2.5.2" level="project" />
     <orderEntry type="library" name="Maven: com.stripe:stripe-java:1.25.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.7" level="project" />
@@ -27,6 +27,7 @@
     <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.6" level="project" />
     <orderEntry type="module" module-name="Conticious.StormpathPlugin" scope="PROVIDED" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: juniversalchardet:juniversalchardet:1.0.3" level="project" />
+    <orderEntry type="module" module-name="conticious-nexmo" scope="PROVIDED" />
     <orderEntry type="library" name="Maven: javax.mail:mail:1.4.4" level="project" />
     <orderEntry type="library" name="Maven: javax.activation:activation:1.1" level="project" />
   </component>

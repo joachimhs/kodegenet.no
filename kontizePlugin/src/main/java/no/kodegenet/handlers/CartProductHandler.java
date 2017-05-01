@@ -51,6 +51,10 @@ public class CartProductHandler extends ContenticeHandler {
                         partOfStandardBoxPerItem = 1d / productSD.getDoubleValueForKey("maxItemsInStandardBox");
                     }
                     cartProduct.setPartOfStandardBoxPerItem(partOfStandardBoxPerItem);
+
+                    if (productSD.getIntegerValueForKey("fixedShippingCost") != null) {
+                        cartProduct.setFixedShippingCost(productSD.getIntegerValueForKey("fixedShippingCost"));
+                    }
                 }
 
 
@@ -101,6 +105,10 @@ public class CartProductHandler extends ContenticeHandler {
                     }
                     cartProduct.setPartOfStandardBoxPerItem(partOfStandardBoxPerItem);
 
+                    if (productSD.getIntegerValueForKey("fixedShippingCost") != null) {
+                        cartProduct.setFixedShippingCost(productSD.getIntegerValueForKey("fixedShippingCost"));
+                    }
+
                     cartProduct.setTotalAmount(unitPrice * orderNumber);
                 }
 
@@ -136,6 +144,10 @@ public class CartProductHandler extends ContenticeHandler {
 
         if (cartProduct.getPartOfStandardBoxPerItem() != null) {
             sd.getKeyMap().put("partOfStandardBoxPerItem", new JsonPrimitive(cartProduct.getPartOfStandardBoxPerItem()));
+        }
+
+        if (cartProduct.getFixedShippingCost() != null) {
+            sd.getKeyMap().put("fixedShippingCost", new JsonPrimitive(cartProduct.getFixedShippingCost()));
         }
 
         return sd;

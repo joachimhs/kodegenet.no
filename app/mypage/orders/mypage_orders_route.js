@@ -1,3 +1,3 @@
-Kodegenet.MyspaceOrdersRoute = Ember.Route.extend({
+Kodegenet.MypageOrdersRoute = Ember.Route.extend({
 
 });

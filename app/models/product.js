@@ -6,5 +6,6 @@ Kodegenet.Product = DS.Model.extend({
     content: DS.attr('string'),
     learn: DS.hasMany('course', {async: true}),
     quantity: DS.attr('number'),
-    maxItemsInStandardBox: DS.attr('number')
+    maxItemsInStandardBox: DS.attr('number'),
+    digitalDownload: DS.attr('string')
 });

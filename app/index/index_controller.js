@@ -59,7 +59,7 @@ Kodegenet.IndexController = Ember.ObjectController.extend({
         (new Image()).src = '/figurer/forside_karusell5.jpg';
         (new Image()).src = '/figurer/forside_karusell6.jpg';
         Ember.run.later(function() {
-            controller.nextPhoto();
+            //controller.nextPhoto();
         }, 15000);
     },
 
@@ -139,7 +139,7 @@ Kodegenet.IndexController = Ember.ObjectController.extend({
     sortedInstagramsLimited: function() {
         var limited = [];
         if (this.get("sortedInstagrams")) {
-            limited = this.get('sortedInstagrams').toArray().splice(0, 10);
+            limited = this.get('sortedInstagrams').toArray().splice(0, 20);
         }
         return limited;
     }.property('sortedInstagrams')

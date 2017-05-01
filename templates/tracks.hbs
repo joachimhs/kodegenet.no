@@ -1,0 +1,38 @@
+<div class="tracks-intro-page">
+    <div class="gradient"></div>
+    <div class="container">
+        <div class="row">
+            {{#each track in model}}
+                <div class="col-md-4 small-margin-bottom">
+                    <div class="index-box">
+                        <div class="image-box">
+                            <img {{bind-attr src="track.smallImg.href"}} />
+                        </div>
+                        <h1 class="index-box-header">{{track.name}}</h1>
+
+                        {{#if track.faktaark}}
+                            <ul>
+                                <li>{{#link-to "page" track.faktaark.id}}
+                                    {{track.name}} Faktaark <br/>
+                                {{/link-to}}
+                                </li>
+                            </ul>
+                        {{/if}}
+
+                        <ul>
+                            {{#each course in track.courses}}
+                                {{#if course.visible}}
+                                    <li>
+                                        {{#link-to "course" track.id course.id}}
+                                            {{course.title}}
+                                        {{/link-to}}
+                                    </li>
+                                {{/if}}
+                            {{/each}}
+                        </ul>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    </div>
+</div>

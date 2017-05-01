@@ -8,9 +8,10 @@ Kodegenet.Order = DS.Model.extend({
     postalCode: DS.attr('string'),
     city: DS.attr('string'),
     orderLines: DS.hasMany('orderLines', {async: true}),
+    trackingUrl: DS.attr('string'),
     createdDate: DS.attr('number'),
-    paymentDate: DS.attr('date'),
-    shipmentDate: DS.attr('date'),
+    paymentDate: DS.attr('number'),
+    shipmentDate: DS.attr('number'),
 
     shippingType: DS.attr('string'),
     shippingCost: DS.attr('number'),

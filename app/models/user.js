@@ -6,6 +6,7 @@ Kodegenet.User = DS.Model.extend({
     postalCode: DS.attr('string'),
     city: DS.attr('string'),
     phone: DS.attr('string'),
+    role: DS.attr('string'),
     eventParticipants: DS.hasMany('eventParticipant', {async: true, inverse: 'username'}),
 
     sortedOrders: function() {
@@ -20,5 +21,11 @@ Kodegenet.User = DS.Model.extend({
         }
 
         return sortedOrders;
-    }.property('orders.@each.createdDate')
+    }.property('orders.@each.createdDate'),
+
+    isAdmin: function() {
+        var role = this.get('role');
+
+        return role && role === 'admin';
+    }.property('role')
 });

@@ -1,36 +1,46 @@
 <div class="shopIndex">
-
-    {{#each category in controller}}
-        <div class="row shop-index-category">
-            <div class="pageContent">
-                <div class="col-sm-12 col-md-7 col-md-offset-2 shop-index-category-thumb">
-                    <div class="shop-index-category-text">
-                        <div class="shop-index-category-title">{{category.name}}</div>
-                        <div class="shop-index-category-subtitle">
-                            {{category.subtitle}}
-                        </div>
-                    </div>
-                    {{#link-to "shop.category" category.id}}
-                        <img class="shop-index-category-thumbnail" {{bind-attr src=category.thumbnail.href}} />
-                    {{/link-to}}
-                </div>
-
-                <div class="col-sm-12 col-md-2 shop-index-category-products">
-                    {{#each product in category.sortedProductsLimited}}
-                        {{#link-to "shop.product" product class="shop-index-category-product pointer" tagName="div"}}
-                            <img class="shop-index-category-product-thumbnail" {{bind-attr src=product.thumbnail.href}} />
-                            <div class="shop-index-category-product-name">{{product.name}}<br />Kr. {{product.price}},-</div>
-                        {{/link-to}}
-                    {{/each}}
-
-                    <div class="shop-index-category-button">
-                        {{#link-to "shop.category" category.id}}
-                            <div class="btn btn-primary pointer">Flere Produkter <span class="glyphicon glyphicon-chevron-right"></span></div>
-                        {{/link-to}}
-                    </div>
-                </div>
+    <div class="pageContent">
+        <div class="small-padding-bottom"></div>
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-search"></span>
+                </span>
+                {{input type="text" placeholder="Søk blandt produktene" class="form-control" id="filterProducts" value=filterString}}
             </div>
         </div>
-    {{/each}}
 
-</div>
+        {{#each category in controller}}
+            {{#if category.sortedProductsLimited.length}}
+            <div class="shop-index-category">
+
+                <div class="shop-index-category-title">{{category.name}}</div>
+
+                <div class="row">
+                    {{#each product in category.sortedProductsLimited}}
+                        <div class="col-md-2">
+                            <div class="shop-index-category-products">
+                                {{#link-to "shop.product" product class="shop-index-category-product pointer" tagName="a"}}
+                                    <img class="shop-index-category-product-thumbnail" {{bind-attr src=product.thumbnail.href}} />
+                                    <div class="shop-index-category-product-name">{{product.name}}
+                                        <br/>Kr. {{product.price}},-
+                                    </div>
+                                {{/link-to}}
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+                <div class="row">
+                    <div>
+                        <div class="shop-index-category-button">
+                            {{#link-to "shop.category" category.id}}
+                                <div class="btn btn-primary pointer">Flere Produkter <span
+                                        class="glyphicon glyphicon-chevron-right"></span></div>
+                            {{/link-to}}
+                        </div>
+                    </div>
+                </div>
+            {{/if}}
+        {{/each}}
+    </div>
+    </div>

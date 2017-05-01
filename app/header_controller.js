@@ -8,10 +8,12 @@ Kodegenet.HeaderController = Ember.ArrayController.extend({
 
     actions: {
         doShowExtendedShoppingCart: function() {
+            if (ga) ga('send', 'pageview', '/shop/showExtendedShoppingCart');
             this.set('showExtendedShoppingCart', true);
         },
 
         doHideExtendedShoppingCart: function() {
+            if (ga) ga('send', 'pageview', '/shop/hideExtendedShoppingCart');
             this.set('showExtendedShoppingCart', false);
         },
         orderSuccess: function(orderId) {

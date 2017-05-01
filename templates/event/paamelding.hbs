@@ -87,14 +87,29 @@
                 </div>
             </div>
 
-            <div class="checkout-checkbox-input">
-                <fieldset>
-                    {{input id="inputPublishInfo" type="checkbox" name="inputPublishInfo" checked=controller.publishInfo}}
-                    <label for="inputPublishInfo">Publiser fornavn og alder på Kodegenet.no?</label>
-                </fieldset>
-                {{#if publishInfo}}
-                    <div class="input-form-validation input-form-validation-error"> * Fornavn og alder vil vises på kodegenet.no.</div>
-                {{/if}}
+            <div class="input-set">
+                <div class="checkout-checkbox-input">
+                    <fieldset>
+                        {{input id="inputPublishInfo" type="checkbox" name="inputPublishInfo" checked=controller.publishInfo}}
+                        <label for="inputPublishInfo">Publiser fornavn og alder på Kodegenet.no?</label>
+                    </fieldset>
+                    {{#if publishInfo}}
+                        <div class="input-form-validation input-form-validation-error"> * Fornavn og alder vil vises på kodegenet.no.</div>
+                    {{else}}
+                        <div class="input-form-validation input-form-validation-error"></div>
+                    {{/if}}
+                </div>
+            </div>
+
+            <div class="input-set">
+                <div class="checkout-checkbox-input">
+                    <fieldset>
+                        {{input id="inputPicture" type="checkbox" name="inputPicture" checked=controller.allowPictures}}
+                        <label for="inputPicture">Kan vi publisere bilde nettsiden og Facebook/Instagram konto ?</label>
+                    </fieldset>
+                    <div class="input-form-validation input-form-validation-error"> * Huk av dersom dette ikke er ønskelig.</div>
+
+                </div>
             </div>
 
             <div class="clearfix"></div>

@@ -1,0 +1,11 @@
+<div class="pageContent mediumBottomPadding">
+    {{#if model.page.tittel}}
+        <h1>{{model.page.tittel}}</h1>
+    {{/if}}
+
+    {{#if model.page.content}}
+        {{markdown model.page.content}}
+    {{/if}}
+</div>
+
+<div class="mediumBottomPadding"></div>

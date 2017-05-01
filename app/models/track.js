@@ -4,5 +4,6 @@ Kodegenet.Track = DS.Model.extend({
     isVisible: DS.attr('boolean'),
     smallImg: DS.belongsTo('figur', {async: true}),
     sortIndex: DS.attr('number'),
-    content: DS.attr('string')
+    content: DS.attr('string'),
+    faktaark: DS.belongsTo('page', {async: true})
 });

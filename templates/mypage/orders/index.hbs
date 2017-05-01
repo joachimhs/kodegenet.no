@@ -14,7 +14,8 @@
                 <td>{{order.id}}</td>
                 <td>{{order.status}}</td>
                 <td>{{#if order.createdDate}}{{dateTime order.createdDate}}{{/if}}</td>
-                <td>{{order.orderLines.length}}</td>
+                <td>{{order.orderLines.length}} <br />
+                </td>
                 <td>{{link-to "Vis" "mypage.orders.order" order classNames="btn btn-primary"}}</td>
             </tr>
         {{/each}}

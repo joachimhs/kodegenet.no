@@ -4,6 +4,9 @@ Kodegenet.Router = Ember.Router.extend({
 
 Kodegenet.Router.map(function() {
     this.resource('index', {path: "/"}, function() { });
+
+    this.resource('tracks');
+
     this.resource("track", {path: "/track/:track_id"}, function() {
         this.resource('courses', {path: "/courses"}, function() {
             this.resource('course', {path: "/:course_id"}, function() {
@@ -33,6 +36,7 @@ Kodegenet.Router.map(function() {
     });
 
     this.route('epostliste');
+    this.route('scratchfrascratch');
     this.route('emailVerificationTokens');
 
     this.route('makerspace', function() {
@@ -50,6 +54,12 @@ Kodegenet.Router.map(function() {
     this.resource('mypage', {path: '/mypage'}, function() {
         this.route('orders', {path: '/orders'}, function() {
             this.route('order', {path: '/confirmation/:order_id'});
+        });
+        this.resource('allOrders', {path: '/allOrders'}, function() {
+
+        });
+        this.route('sms', {path: '/sms'}, function() {
+
         });
     });
 });

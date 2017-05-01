@@ -127,10 +127,16 @@ public class KodegenetCartDao {
         cart.setShippingCost(sd.getDoubleValueForKey("shippingCost"));
 
         List<String> cartProducts = sd.getListForKey("cartProducts");
+        boolean canShipWithFixedCost = false;
         for (String cp : cartProducts) {
             SubCategoryData cpSd = storage.getSubCategory(webappName, "cartProducts", cp);
             cart.getCartProducts().add(convertSubCategoryToCartProduct(cpSd));
+            if (cpSd.getIntegerValueForKey("fixedShippingCost") != null) {
+                canShipWithFixedCost = true;
+            }
         }
+
+        cart.setCanShipWithFixedCost(canShipWithFixedCost);
 
         return cart;
     }
@@ -196,6 +202,7 @@ public class KodegenetCartDao {
         cp.setDiscountAmount(sd.getDoubleValueForKey("discountAmount"));
         cp.setProduct(sd.getValueForKey("product"));
         cp.setPartOfStandardBoxPerItem(sd.getDoubleValueForKey("partOfStandardBoxPerItem"));
+        cp.setFixedShippingCost(sd.getIntegerValueForKey("fixedShippingCost"));
 
         return cp;
     }

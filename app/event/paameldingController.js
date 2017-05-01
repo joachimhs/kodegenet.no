@@ -7,6 +7,7 @@ Kodegenet.EventPaameldingController = Ember.ObjectController.extend({
     age: null,
     email: null,
     publishInfo: null,
+    allowPictures: true,
 
     errorMessage: null,
     eventLagret: false,
@@ -41,6 +42,7 @@ Kodegenet.EventPaameldingController = Ember.ObjectController.extend({
                 participant.set('age', this.get('age'));
                 participant.set('email', this.get('email'));
                 participant.set('publishInfo', this.get('publishInfo'));
+                participant.set('allowPictures', this.get('allowPictures'));
 
                 participant.save();
 

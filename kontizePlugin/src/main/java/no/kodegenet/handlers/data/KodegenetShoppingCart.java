@@ -29,6 +29,8 @@ public class KodegenetShoppingCart {
     @Expose private String city;
     @Expose private String shippingType;
     @Expose private Double shippingCost;
+    @Expose private Double fixedShippingCost;
+    @Expose private Boolean canShipWithFixedCost;
 
     private Boolean createAccount;
 
@@ -178,5 +180,21 @@ public class KodegenetShoppingCart {
 
     public void setShippingCost(Double shippingCost) {
         this.shippingCost = shippingCost;
+    }
+
+    public Boolean getCanShipWithFixedCost() {
+        return canShipWithFixedCost;
+    }
+
+    public void setCanShipWithFixedCost(Boolean canShipWithFixedCost) {
+        this.canShipWithFixedCost = canShipWithFixedCost;
+    }
+
+    public Double getFixedShippingCost() {
+        return fixedShippingCost;
+    }
+
+    public void setFixedShippingCost(Double fixedShippingCost) {
+        this.fixedShippingCost = fixedShippingCost;
     }
 }

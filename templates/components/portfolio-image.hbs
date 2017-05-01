@@ -1,0 +1,8 @@
+<div class="insta-image">
+    <a {{bind-attr href=image.link}}><img {{bind-attr src=image.lowResolution}} class="instagram-thumbnail" /></a>
+</div>
+
+<div class="insta-image-text">
+    Av: <a {{bind-attr href=image.usernameLink}} >@{{image.postedBy}}</a><br/>
+    <div class="insta-image-caption">{{image.caption}}</div>
+</div>

@@ -57,7 +57,10 @@ public class FetchInstagramThread extends Thread {
         }
 
         instaObject.getData().clear();
-        instaObject.getData().addAll(newinstaObject.getData());
+        if (newinstaObject != null) {
+            //Might be null if Instagram cannot be reached..
+            instaObject.getData().addAll(newinstaObject.getData());
+        }
     }
 
     private String fetchJsonContent(String url) {

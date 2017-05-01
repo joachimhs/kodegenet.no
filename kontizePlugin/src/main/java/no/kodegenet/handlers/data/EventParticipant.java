@@ -15,6 +15,7 @@ public class EventParticipant {
     @Expose private String email;
     @Expose private Boolean publishInfo;
     @Expose private String username;
+    @Expose private Boolean allowPictures;
 
     public EventParticipant() {
     }
@@ -65,6 +66,14 @@ public class EventParticipant {
 
     public void setPublishInfo(Boolean publishInfo) {
         this.publishInfo = publishInfo;
+    }
+
+    public Boolean getAllowPictures() {
+        return allowPictures;
+    }
+
+    public void setAllowPictures(Boolean allowPictures) {
+        this.allowPictures = allowPictures;
     }
 
     public String getUsername() {

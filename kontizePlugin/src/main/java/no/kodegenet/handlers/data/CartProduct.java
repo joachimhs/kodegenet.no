@@ -15,6 +15,7 @@ public class CartProduct {
     @Expose private Double totalAmount;
     @Expose private Double discountAmount;
     @Expose private Double partOfStandardBoxPerItem;
+    @Expose private Integer fixedShippingCost;
 
     public CartProduct() {
     }
@@ -66,5 +67,13 @@ public class CartProduct {
 
     public void setPartOfStandardBoxPerItem(Double partOfStandardBoxPerItem) {
         this.partOfStandardBoxPerItem = partOfStandardBoxPerItem;
+    }
+
+    public Integer getFixedShippingCost() {
+        return fixedShippingCost;
+    }
+
+    public void setFixedShippingCost(Integer fixedShippingCost) {
+        this.fixedShippingCost = fixedShippingCost;
     }
 }

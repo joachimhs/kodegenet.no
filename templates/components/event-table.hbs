@@ -30,7 +30,11 @@
                 {{/if}}
 
                 {{#if event.isInFuture}}
-                    {{link-to "Påmelding" "event.paamelding" event.id classNames="label label-primary"}}
+                    {{#if event.hasSpotsRemaining}}
+                        {{link-to "Påmelding" "event.paamelding" event.id classNames="label label-primary"}}
+                    {{else}}
+                        <span class="label label-danger">Fullt</span>
+                    {{/if}}
                 {{/if}}
             </td>
         </tr>

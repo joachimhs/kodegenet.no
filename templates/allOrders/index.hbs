@@ -1,0 +1,59 @@
+<h2>All Orders</h2>
+
+<button class="btn btn-primary" {{action "generateCsv"}}>CSV for ikke sendte ordre</button>
+{{input type="text" value=filterString}}
+
+<table class="table table-striped">
+    <tr>
+        <th>Ordrenummer</th>
+        <th>E-post</th>
+        <th>Status</th>
+        <th>Opprettet</th>
+        <th>Sendt</th>
+        <th>Ordrelinjer</th>
+        <th></th>
+    </tr>
+    <tbody>
+    {{#each order in filteredOrders}}
+        <tr>
+            <td>{{order.id}}</td>
+            <td>{{order.emailAddress}}</td>
+            <td>{{order.status}}</td>
+            <td>{{#if order.createdDate}}{{dateTime order.createdDate}}{{/if}}</td>
+            <td>{{#if order.shipmentDate}}{{dateTime order.shipmentDate}} - {{order.shippingType}} - {{order.shippingCost}}{{/if}}</td>
+            <td>
+                {{#each ol in order.orderLines}}
+                    <div>{{ol.product.name}} ({{ol.orderedProductNumber}})</div>
+                {{/each}}
+            </td>
+            <td>
+                {{link-to "Vis" "mypage.orders.order" order classNames="btn btn-sm btn-primary"}}
+                <button class="btn btn-sm btn-primary" {{action "updateOrder" order}}>Oppdater Ordre</button>
+            </td>
+        </tr>
+
+    {{#if order.showUpdatePanel}}
+        <tr>
+            <td colspan="3">Marker Sendt:</td>
+            <td colspan="4"><button class="btn btn-sm btn-primary" {{action "markSent" order}}>Marker Sendt</button></td>
+        </tr>
+        <tr>
+            <td colspan="3">Registrer tracking URL:</td>
+            <td colspan="4">{{input type="text" value=order.trackingUrl}}</td>
+        </tr>
+        <tr>
+            <td colspan="3"></td>
+            <td colspan="5">
+                <button class="btn btn-sm btn-primary" {{action "sendOrdreEpost" order}}>Send Ordreinfo på E-post</button>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3"></td>
+            <td colspan="5">
+                <button class="btn btn-sm btn-primary" {{action "finishUpdateOrder" order}}>Lagre endringer til ordre</button>
+            </td>
+        </tr>
+    {{/if}}
+    {{/each}}
+    </tbody>
+</table>

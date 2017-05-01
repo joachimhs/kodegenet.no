@@ -6,6 +6,11 @@
                     {{link-to "Min Side" "mypage.index" classNames="list-group-item mypage-list-group-item"}}
 
                     {{link-to "Ordrebekreftelser" "mypage.orders" classNames="list-group-item mypage-list-group-item"}}
+
+                    {{#if session.session.user.isAdmin}}
+                        {{link-to "SMS" "mypage.sms" classNames="list-group-item mypage-list-group-item"}}
+                        {{link-to "Alle Ordre" "allOrders" classNames="list-group-item mypage-list-group-item"}}
+                    {{/if}}
                 {{/if}}
             </div>
         </div>

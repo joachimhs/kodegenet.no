@@ -10,11 +10,13 @@ Kodegenet.ShoppingCart = DS.Model.extend({
     city: DS.attr('string'),
     phone: DS.attr('string'),
     createAccount: DS.attr('boolean'),
+    canShipWithFixedCost: DS.attr('boolean'),
 
     cartProducts: DS.hasMany('cartProduct', {async: true}),
 
     shippingType: DS.attr('string'),
     shippingCost: DS.attr('number'),
+    fixedShippingCost: DS.attr('number'),
 
     subtotal: function() {
         var total = 0;
@@ -24,12 +26,14 @@ Kodegenet.ShoppingCart = DS.Model.extend({
             }
         });
 
-        if (this.get('shippingType') && this.get('shippingCost')) {
+        if (this.get('shippingType') === 'fixedCost' && this.get('fixedShippingCost')) {
+            total += this.get('fixedShippingCost');
+        } else if (this.get('shippingType') && this.get('shippingCost')) {
             total += this.get('shippingCost');
         }
 
         return total;
-    }.property('cartProducts.@each.totalAmount', 'cartProducts.@each.orderedProductNumber', 'shippingType', 'shippingCost'),
+    }.property('cartProducts.@each.totalAmount', 'cartProducts.@each.orderedProductNumber', 'shippingType', 'shippingCost', 'fixedShippingCost'),
 
     numProducts: function() {
         var numProducts = 0;

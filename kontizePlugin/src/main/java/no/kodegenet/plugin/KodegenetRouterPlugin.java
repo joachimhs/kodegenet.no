@@ -59,14 +59,20 @@ public class KodegenetRouterPlugin extends RouterPlugin {
         routeMap.put("/kodegenet/eventParticipants", EventParticipantHandler.class);
         routeMap.put("/kodegenet/eventParticipants/{eventParticipantId}", EventParticipantHandler.class);
 
-        routeMap.put("/kodegenet/orders", KodegenetOrderHandler.class);
+        routeMap.put("/kodegenet/orders", KodegenetOrdersHandler.class);
         routeMap.put("/kodegenet/orders/{orderId}", KodegenetOrderHandler.class);
 
         routeMap.put("/kodegenet/sendOrderConfirmation/{orderId}", ResendOrderConfirmationHandler.class);
+        routeMap.put("/kodegenet/sendOrderUpdate/{orderId}", ResendOrderConfirmationHandler.class);
 
         routeMap.put("/kodegenet/shipping", KodegenetShippingHandler.class);
 
+        routeMap.put("/kodegenet/sendSms", KodegenetSendSmsHandler.class);
+
         routeMap.put("/kodegenet/instagramPhotos", KodegenetInstagramHandler.class);
+
+        routeMap.put("/blockuino/projects", BlockuinoProjectHandler.class);
+        routeMap.put("/blockuino/projects/{projectId}", BlockuinoProjectHandler.class);
 
         routeMap.put("/reveal.html", RevealHandler.class);
 

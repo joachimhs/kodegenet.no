@@ -47,6 +47,7 @@ Kodegenet.Adapter = DS.RESTAdapter.extend();
 Ember.Inflector.inflector.irregular('oppgave', 'oppgaver');
 Ember.Inflector.inflector.irregular('productCategory', 'productCategories');
 Ember.Inflector.inflector.irregular('figur', 'figurer');
+Ember.Inflector.inflector.irregular('sms', 'smses');
 
 Kodegenet.ApplicationStore = DS.Store.extend({
     adapter:  "Kodegenet.Adapter"
@@ -122,4 +123,8 @@ Kodegenet.EventParticipantAdapter = Kodegenet.Adapter.extend({
 
 Kodegenet.EventAdapter = Kodegenet.Adapter.extend({
     namespace: 'kodegenet'
+});
+
+Kodegenet.SmsAdapter = Kodegenet.Adapter.extend({
+    namespace: 'json/data'
 });

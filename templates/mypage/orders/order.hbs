@@ -24,7 +24,16 @@
     <tbody>
         {{#each orderLine in orderLines}}
             <tr>
-                <td>{{orderLine.product.name}}</td>
+                <td>
+                    <div>
+                        {{orderLine.product.name}}
+                        {{#if orderLine.product.digitalDownload}}
+                            <br /><br />
+                            <h5>Dette produktet inkluderer en digital fil</h5>
+                            <a {{bind-attr href=orderLine.product.digitalDownload}}>{{orderLine.product.digitalDownload}}</a>
+                        {{/if}}
+                    </div>
+                </td>
                 <td>{{orderLine.orderedProductNumber}}</td>
                 <td>Kr. {{currencyFormat orderLine.totalAmount}}</td>
                 <td>
@@ -39,18 +48,16 @@
 
         {{#if shippingType}}
             <tr>
-                <td>Klimanøytral Servicepakke</td>
+                <td>Frakt</td>
                 <td></td>
                 <td>Kr. {{shippingCost}}</td>
                 <td></td>
             </tr>
-        {{else}}
-            <tr>
-                <td>Hentes på Kodegenet på Munkerud Gård</td>
-                <td></td>
-                <td>Kr. 0,-</td>
-                <td></td>
-            </tr>
+            {{#if trackingUrl}}
+                <tr>
+                    <td colspan="4">Leveransen kan spores på: <a  target="_blank" {{bind-attr href=trackingUrl}}>{{trackingUrl}}</a></td>
+                </tr>
+            {{/if}}
         {{/if}}
 
     <tr>
@@ -65,7 +72,7 @@
     </tbody>
 </table>
 
-{{#if shippingType}}
+
     <h1>Leveringsdetaljer</h1>
 
 
@@ -76,16 +83,25 @@
             <td>{{givenName}} {{surname}}</td>
         </tr>
         <tr>
+            <td>E-post:</td>
+            <td>{{emailAddress}}</td>
+        </tr>
+        <tr>
+            <td>Telefonnummer:</td>
+            <td>{{phone}}</td>
+        </tr>
+{{#if shippingType}}
+        <tr>
             <td>Leveringsaddresse:</td>
             <td>
                 {{address}} <br />
                 {{postalCode}} {{city}}
             </td>
         </tr>
-        <tr>
-            <td>Telefonnummer:</td>
-            <td>{{phone}}</td>
-        </tr>
+{{else}}
+    <tr>
+        <td colspan="2">Hentes på Kodegenet på Munkerud Gård</td>
+    </tr>
+{{/if}}
         </tbody>
     </table>
-{{/if}}

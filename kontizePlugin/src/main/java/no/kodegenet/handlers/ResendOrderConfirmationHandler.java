@@ -34,7 +34,7 @@ public class ResendOrderConfirmationHandler extends ContenticeHandler {
             KodegenetOrder order = KodegenetOrderDao.getKodegentOrder(getStorage(), getDomain().getWebappName(), orderid);
             order.setOrderLines(KodegenetOrderDao.getKodegenetOrderLines(getStorage(), getDomain().getWebappName(), orderid));
 
-            KodegenetOrderDao.generateOrderEmail(getStorage(), getDomain().getWebappName(), order);
+            KodegenetOrderDao.generateOrderUpdateEmail(getStorage(), getDomain().getWebappName(), order);
         }
 
         writeContentsToBuffer(channelHandlerContext, "{\"status\": \"OK\"}", "application/json");
